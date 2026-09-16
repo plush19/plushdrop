@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PashaDrop v5.0 Beta</title>
+    <title>PashaDrop v5.1 Beta</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            /* === ФОН === */
             --bg-base: #0b0c10;
             --bg-deep: #08090d;
             --bg-mid: #12131a;
@@ -16,25 +15,19 @@
             --bg-elev: #1e2029;
             --bg-soft: #252836;
 
-            /* === ГРАНИЦЫ === */
             --border-dark: #1a1c24;
             --border: #262934;
             --border-soft: #343846;
             --border-light: #454a5c;
 
-            /* === ТЕКСТ === */
             --text-bright: #ffffff;
             --text: #d8dae4;
             --text-dim: #8a8fa3;
             --text-mute: #555a6e;
-            --text-dark: #3a3e4d;
 
-            /* === АКЦЕНТЫ === */
             --red: #e11d48;
             --red-light: #f43f5e;
-            --red-deep: #9f1239;
             --red-glow: rgba(225, 29, 72, 0.55);
-            --red-soft: rgba(225, 29, 72, 0.12);
 
             --purple: #8b5cf6;
             --purple-glow: rgba(139, 92, 246, 0.45);
@@ -43,9 +36,7 @@
             --gold-glow: rgba(251, 191, 36, 0.5);
         }
 
-        html, body {
-            background: var(--bg-base);
-        }
+        html, body { background: var(--bg-base); }
 
         body {
             min-height: 100vh;
@@ -56,89 +47,36 @@
             position: relative;
         }
 
-        /* ============ СЛОИ ФОНА ============ */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139, 92, 246, 0.18), transparent 60%),
-                radial-gradient(ellipse 60% 40% at 90% 100%, rgba(225, 29, 72, 0.12), transparent 60%),
-                radial-gradient(ellipse 70% 50% at 10% 50%, rgba(59, 130, 246, 0.08), transparent 60%),
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139, 92, 246, 0.12), transparent 60%),
+                radial-gradient(ellipse 60% 40% at 90% 100%, rgba(225, 29, 72, 0.08), transparent 60%),
                 linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 100%);
             z-index: -3;
         }
 
-        /* Тонкая сетка */
         body::after {
             content: '';
             position: fixed;
             inset: 0;
             background-image:
-                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -2;
-            mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 20%, transparent 90%);
-            -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 20%, transparent 90%);
             pointer-events: none;
         }
 
-        /* Мягкие пятна */
-        .bg-blobs {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .bg-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-            animation: blobFloat 20s ease-in-out infinite;
-        }
-
-        .bg-blob.b1 {
-            width: 400px; height: 400px;
-            background: rgba(139, 92, 246, 0.5);
-            top: -100px; left: -100px;
-            animation-delay: 0s;
-        }
-
-        .bg-blob.b2 {
-            width: 350px; height: 350px;
-            background: rgba(225, 29, 72, 0.4);
-            bottom: -80px; right: -80px;
-            animation-delay: -7s;
-        }
-
-        .bg-blob.b3 {
-            width: 300px; height: 300px;
-            background: rgba(59, 130, 246, 0.3);
-            top: 40%; right: 20%;
-            animation-delay: -14s;
-        }
-
-        @keyframes blobFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(40px, -30px) scale(1.1); }
-            66% { transform: translate(-30px, 40px) scale(0.9); }
-        }
-
-        /* ============ ПРИЛИПАЮЩАЯ ШАПКА ============ */
         .sticky-header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(11, 12, 16, 0.75);
-            backdrop-filter: blur(20px) saturate(150%);
-            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            background: rgba(11, 12, 16, 0.95);
             border-bottom: 1px solid var(--border-dark);
-            padding: 10px 16px 10px;
-            position: relative;
+            padding: 10px 16px;
         }
 
         .sticky-header::after {
@@ -148,7 +86,7 @@
             left: 10%;
             right: 10%;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), rgba(225, 29, 72, 0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), rgba(225, 29, 72, 0.3), transparent);
         }
 
         .top-panel {
@@ -160,7 +98,6 @@
             gap: 10px;
         }
 
-        /* Логотип */
         .logo-block {
             display: flex;
             align-items: center;
@@ -177,32 +114,12 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            box-shadow:
-                0 4px 12px rgba(225, 29, 72, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .logo-icon::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -50%;
-            width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: skewX(-20deg);
-            animation: logoShine 4s ease-in-out infinite;
-        }
-
-        @keyframes logoShine {
-            0%, 100% { left: -50%; }
-            50% { left: 150%; }
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         .logo-text {
             font-size: 15px;
             font-weight: 900;
-            letter-spacing: -0.02em;
             color: #fff;
             line-height: 1;
         }
@@ -212,7 +129,6 @@
             text-shadow: 0 0 12px var(--red-glow);
         }
 
-        /* Аватарка в шапке */
         .avatar-btn {
             width: 42px;
             height: 42px;
@@ -228,18 +144,16 @@
             flex-shrink: 0;
             transition: all 0.2s;
             line-height: 1;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
 
         .avatar-btn:hover {
             border-color: rgba(225, 29, 72, 0.6);
-            box-shadow: 0 0 20px rgba(225, 29, 72, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(225, 29, 72, 0.35);
             transform: scale(1.05);
         }
 
         .avatar-btn:active { transform: scale(0.95); }
 
-        /* Баланс */
         .balance {
             flex: 1;
             display: flex;
@@ -254,9 +168,7 @@
             font-weight: 800;
             min-width: 0;
             position: relative;
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
         }
 
         .balance::before {
@@ -264,7 +176,7 @@
             position: absolute;
             inset: 0;
             border-radius: 100px;
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), transparent 50%);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), transparent 50%);
             pointer-events: none;
         }
 
@@ -276,10 +188,8 @@
         .balance .amount {
             color: #fff;
             text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
-            letter-spacing: 0.3px;
         }
 
-        /* Кнопка звука */
         .sound-toggle {
             width: 42px;
             height: 42px;
@@ -302,7 +212,6 @@
             box-shadow: 0 0 15px rgba(225, 29, 72, 0.25);
         }
 
-        /* ============ МЕНЮ ============ */
         .top-bar {
             width: 100%;
             max-width: 720px;
@@ -321,9 +230,7 @@
             justify-content: center;
             width: 100%;
             max-width: 520px;
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .nav-btn {
@@ -338,7 +245,6 @@
             cursor: pointer;
             transition: all 0.25s;
             white-space: nowrap;
-            position: relative;
         }
 
         .nav-btn:hover {
@@ -350,19 +256,14 @@
             background: linear-gradient(135deg, rgba(225, 29, 72, 0.18), rgba(139, 92, 246, 0.12));
             color: #fff;
             border-color: rgba(225, 29, 72, 0.45);
-            box-shadow:
-                0 0 0 1px rgba(225, 29, 72, 0.2),
-                0 4px 15px rgba(225, 29, 72, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.2), 0 4px 15px rgba(225, 29, 72, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
-        /* ============ КОНТЕНТ ============ */
         .content-area {
             max-width: 720px;
             margin: 0 auto;
             padding: 20px 16px 40px;
             width: 100%;
-            position: relative;
         }
 
         .screen {
@@ -374,7 +275,7 @@
 
         .screen.active {
             display: flex;
-            animation: screenFadeIn 0.4s ease;
+            animation: screenFadeIn 0.3s ease;
         }
 
         @keyframes screenFadeIn {
@@ -382,59 +283,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ============ СЕКЦИИ С РАЗДЕЛИТЕЛЯМИ ============ */
-        .section-divider {
-            width: 100%;
-            height: 1px;
-            margin: 20px 0;
-            background: linear-gradient(90deg, transparent, var(--border-soft) 30%, var(--border-soft) 70%, transparent);
-            position: relative;
-        }
-
-        .section-divider::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--red-light), transparent);
-            filter: blur(2px);
-        }
-
-        .section-title {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            padding: 0 4px;
-        }
-
-        .section-title h2 {
-            font-size: 15px;
-            font-weight: 800;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: -0.01em;
-        }
-
-        .section-title h2 .title-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, rgba(225, 29, 72, 0.2), rgba(139, 92, 246, 0.15));
-            border: 1px solid rgba(225, 29, 72, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            box-shadow: 0 0 12px rgba(225, 29, 72, 0.2);
-        }
-
-        /* ============ КЕЙСЫ ============ */
+        /* КЕЙСЫ */
         .case-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -455,17 +304,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow:
-                0 6px 18px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        }
-
-        .case-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .case-card.silver { background: radial-gradient(ellipse at 50% 100%, rgba(230, 130, 40, 0.25), transparent 70%), linear-gradient(180deg, var(--bg-card), var(--bg-mid)); }
@@ -493,10 +332,7 @@
         .case-card:hover::before { opacity: 1; }
         .case-card:hover {
             transform: translateY(-4px);
-            box-shadow:
-                0 16px 40px rgba(0, 0, 0, 0.55),
-                0 0 30px rgba(225, 29, 72, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 30px rgba(225, 29, 72, 0.15);
         }
 
         .case-card:active { transform: translateY(0) scale(0.98); }
@@ -522,9 +358,7 @@
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .case-card:hover .case-art img {
-            transform: translateY(-6px) scale(1.08);
-        }
+        .case-card:hover .case-art img { transform: translateY(-6px) scale(1.08); }
 
         .case-art .case-glow {
             position: absolute;
@@ -542,7 +376,6 @@
         }
 
         .case-card:hover .case-art .case-glow { opacity: 0.85; }
-
         .case-card.silver .case-glow { background: rgba(240, 140, 40, 0.85); }
         .case-card.zeus .case-glow { background: rgba(170, 120, 200, 0.85); }
         .case-card.dustin .case-glow { background: rgba(60, 120, 220, 0.85); }
@@ -559,7 +392,7 @@
             z-index: 2;
         }
 
-        .case-name { font-size: 14px; font-weight: 800; margin-bottom: 3px; color: #fff; letter-spacing: -0.01em; }
+        .case-name { font-size: 14px; font-weight: 800; margin-bottom: 3px; color: #fff; }
         .case-desc { font-size: 10px; color: var(--text-mute); margin-bottom: 10px; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 700; }
 
         .case-price {
@@ -571,11 +404,9 @@
             font-size: 12px;
             font-weight: 800;
             color: #fbbf24;
-            letter-spacing: 0.3px;
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
         }
 
-        /* ============ КНОПКИ ============ */
+        /* КНОПКИ */
         button {
             font-family: inherit;
             font-size: 14px;
@@ -587,28 +418,13 @@
             padding: 14px 32px;
             cursor: pointer;
             transition: all 0.2s;
-            position: relative;
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            pointer-events: none;
         }
 
         button:hover:not(:disabled) {
             border-color: rgba(225, 29, 72, 0.75);
-            box-shadow:
-                0 6px 20px rgba(225, 29, 72, 0.35),
-                0 0 25px rgba(225, 29, 72, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 6px 20px rgba(225, 29, 72, 0.35), 0 0 25px rgba(225, 29, 72, 0.25);
             transform: translateY(-1px);
         }
 
@@ -626,52 +442,55 @@
             box-shadow: none;
         }
 
-        .back-btn::before { display: none; }
-        .back-btn:hover { border-color: var(--border-light); color: var(--text); box-shadow: 0 0 12px rgba(255,255,255,0.05); }
+        .back-btn:hover { border-color: var(--border-light); color: var(--text); }
 
-        .start-btn {
-            margin-top: 16px;
-            padding: 18px 48px;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 1px;
+        /* Кнопка ОТКРЫТЬ под кейсом */
+        .open-btn {
+            width: 100%;
+            max-width: 360px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             background: linear-gradient(135deg, #e11d48, #8b5cf6);
             border: none;
-            box-shadow:
-                0 8px 25px rgba(225, 29, 72, 0.45),
-                0 0 40px rgba(225, 29, 72, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
-        }
-
-        .start-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow:
-                0 12px 35px rgba(225, 29, 72, 0.55),
-                0 0 55px rgba(225, 29, 72, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-        }
-
-        .start-btn.hidden { display: none; }
-
-        .result-actions {
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.45), 0 0 40px rgba(225, 29, 72, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            margin-top: 20px;
             display: none;
-            gap: 10px;
-            margin-top: 16px;
-            width: 100%;
-            max-width: 400px;
         }
 
-        .result-actions.active { display: flex; }
-        .result-actions button { flex: 1; padding: 14px 12px; font-size: 14px; }
+        .open-btn.active { display: block; }
 
-        .btn-keep { border-color: rgba(34, 197, 94, 0.45); }
-        .btn-keep:hover:not(:disabled) { border-color: rgba(34, 197, 94, 0.85); box-shadow: 0 0 20px rgba(34, 197, 94, 0.35); }
+        .open-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(225, 29, 72, 0.55), 0 0 55px rgba(225, 29, 72, 0.35);
+        }
 
-        .btn-sell { border-color: rgba(251, 191, 36, 0.45); }
-        .btn-sell:hover:not(:disabled) { border-color: rgba(251, 191, 36, 0.85); box-shadow: 0 0 20px rgba(251, 191, 36, 0.35); }
+        /* Кнопка ПРОДАТЬ после выпадения */
+        .sell-only-btn {
+            width: 100%;
+            max-width: 360px;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #e11d48);
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.45), 0 0 40px rgba(245, 158, 11, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            margin-top: 16px;
+            display: none;
+        }
 
-        /* ============ ЛЕНТА ============ */
+        .sell-only-btn.active { display: block; }
+
+        .sell-only-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.55), 0 0 55px rgba(245, 158, 11, 0.35);
+        }
+
+        /* ЛЕНТА */
         .strip-wrapper {
             position: relative;
             width: 100%;
@@ -680,11 +499,7 @@
             border-radius: 18px;
             background: linear-gradient(180deg, #06070a, #0d0e14);
             border: 1px solid rgba(225, 29, 72, 0.3);
-            box-shadow:
-                0 0 40px rgba(225, 29, 72, 0.15),
-                0 20px 50px rgba(0, 0, 0, 0.6),
-                inset 0 0 60px rgba(0, 0, 0, 0.7);
-            margin-top: 20px;
+            box-shadow: 0 0 40px rgba(225, 29, 72, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(0, 0, 0, 0.7);
             display: none;
         }
 
@@ -727,7 +542,6 @@
             font-weight: 700;
             color: #fff;
             background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(6px);
             z-index: 2;
         }
 
@@ -741,10 +555,9 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(6px);
         }
 
-        /* ============ РЕДКОСТИ ============ */
+        /* РЕДКОСТИ */
         .rarity-common    { border-color: #94a3b8; }
         .rarity-common .rarity-badge    { color: #94a3b8; }
         .rarity-uncommon  { border-color: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.4), 0 4px 15px rgba(0, 0, 0, 0.5); }
@@ -768,10 +581,7 @@
             transform: translateX(-50%);
             z-index: 5;
             pointer-events: none;
-            box-shadow:
-                0 0 15px var(--red-light),
-                0 0 35px var(--red-glow),
-                0 0 60px rgba(225, 29, 72, 0.3);
+            box-shadow: 0 0 15px var(--red-light), 0 0 35px var(--red-glow);
         }
 
         .pointer::before,
@@ -813,7 +623,7 @@
 
         .result.show { opacity: 1; }
 
-        /* ============ ИНВЕНТАРЬ ============ */
+        /* ИНВЕНТАРЬ */
         .inventory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -852,7 +662,6 @@
             font-weight: 700;
             color: #fff;
             background: rgba(0, 0, 0, 0.78);
-            backdrop-filter: blur(4px);
             z-index: 2;
             white-space: nowrap;
             overflow: hidden;
@@ -881,7 +690,6 @@
             font-weight: 800;
             text-transform: uppercase;
             background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(4px);
         }
 
         .inv-item.rarity-common    { border-color: #94a3b8; }
@@ -929,7 +737,7 @@
             font-size: 13px;
         }
 
-        /* ============ ПРОФИЛЬ — новый ============ */
+        /* ПРОФИЛЬ */
         .profile-header-card {
             width: 100%;
             background: linear-gradient(135deg, var(--bg-card), var(--bg-mid));
@@ -939,9 +747,7 @@
             margin-bottom: 16px;
             position: relative;
             overflow: hidden;
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .profile-header-card::before {
@@ -952,21 +758,10 @@
             background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
         }
 
-        .profile-header-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; right: -20%;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(225, 29, 72, 0.12), transparent 70%);
-            pointer-events: none;
-        }
-
         .profile-main {
             display: flex;
             align-items: center;
             gap: 16px;
-            position: relative;
-            z-index: 2;
         }
 
         .profile-avatar {
@@ -983,22 +778,7 @@
             transition: all 0.25s;
             line-height: 1;
             flex-shrink: 0;
-            box-shadow:
-                0 8px 20px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .profile-avatar::after {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(225, 29, 72, 0.4), rgba(139, 92, 246, 0.4));
-            z-index: -1;
-            filter: blur(8px);
-            opacity: 0;
-            transition: opacity 0.25s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .profile-avatar:hover {
@@ -1006,12 +786,7 @@
             transform: scale(1.03);
         }
 
-        .profile-avatar:hover::after { opacity: 1; }
-
-        .profile-info {
-            flex: 1;
-            min-width: 0;
-        }
+        .profile-info { flex: 1; min-width: 0; }
 
         .profile-name {
             font-size: 22px;
@@ -1025,19 +800,12 @@
             padding: 2px 8px;
             border-radius: 8px;
             transition: background 0.2s;
-            letter-spacing: -0.02em;
         }
 
         .profile-name:hover { background: rgba(255, 255, 255, 0.05); }
         .profile-name .edit-icon { font-size: 12px; opacity: 0.4; }
+        .profile-since { font-size: 12px; color: var(--text-dim); padding-left: 8px; }
 
-        .profile-since {
-            font-size: 12px;
-            color: var(--text-dim);
-            padding-left: 8px;
-        }
-
-        /* Статистика 2×3 */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1054,28 +822,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 4px 12px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.04);
             transition: all 0.2s;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
 
         .stat-card:hover {
             border-color: var(--border-soft);
-            box-shadow:
-                0 6px 16px rgba(0, 0, 0, 0.4),
-                0 0 20px rgba(225, 29, 72, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 20px rgba(225, 29, 72, 0.1);
         }
 
         .stat-icon {
@@ -1089,20 +842,15 @@
             flex-shrink: 0;
             background: linear-gradient(135deg, rgba(225, 29, 72, 0.15), rgba(139, 92, 246, 0.1));
             border: 1px solid rgba(225, 29, 72, 0.25);
-            box-shadow: 0 0 12px rgba(225, 29, 72, 0.15);
         }
 
-        .stat-info {
-            flex: 1;
-            min-width: 0;
-        }
+        .stat-info { flex: 1; min-width: 0; }
 
         .stat-value {
             font-size: 18px;
             font-weight: 900;
             color: #fff;
             line-height: 1.2;
-            letter-spacing: -0.01em;
         }
 
         .stat-label {
@@ -1114,7 +862,6 @@
             margin-top: 2px;
         }
 
-        /* Коллекция */
         .collection-block {
             width: 100%;
             background: linear-gradient(135deg, var(--bg-card), var(--bg-mid));
@@ -1122,18 +869,7 @@
             border-radius: 18px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow:
-                0 8px 24px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-
-        .collection-block::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.4), transparent);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .collection-header {
@@ -1150,7 +886,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            letter-spacing: -0.01em;
         }
 
         .collection-count {
@@ -1171,7 +906,6 @@
             overflow: hidden;
             margin-bottom: 14px;
             border: 1px solid var(--border-dark);
-            position: relative;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
@@ -1181,16 +915,6 @@
             border-radius: 5px;
             transition: width 0.6s ease;
             box-shadow: 0 0 15px rgba(225, 29, 72, 0.6);
-            position: relative;
-        }
-
-        .collection-progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), transparent);
-            border-radius: 5px 5px 0 0;
         }
 
         .rarity-progress {
@@ -1212,20 +936,13 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .rarity-chip:hover {
-            border-color: var(--border-soft);
-            transform: translateY(-1px);
-        }
-
+        .rarity-chip:hover { border-color: var(--border-soft); }
         .rarity-chip.active {
             background: linear-gradient(135deg, rgba(225, 29, 72, 0.2), rgba(139, 92, 246, 0.15));
             border-color: rgba(225, 29, 72, 0.55);
-            box-shadow:
-                0 0 12px rgba(225, 29, 72, 0.3),
-                0 2px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 12px rgba(225, 29, 72, 0.3);
         }
 
         .rarity-chip .chip-dot {
@@ -1234,13 +951,11 @@
             border-radius: 50%;
         }
 
-        /* ============ МОДАЛКИ ============ */
+        /* МОДАЛКИ */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5, 6, 10, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(5, 6, 10, 0.9);
             display: none;
             align-items: center;
             justify-content: center;
@@ -1248,10 +963,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-            animation: fadeIn 0.2s ease;
-        }
+        .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
 
         .modal-box {
             background: linear-gradient(135deg, var(--bg-card), var(--bg-mid));
@@ -1262,10 +974,7 @@
             width: 100%;
             text-align: center;
             animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.7),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
         }
@@ -1283,20 +992,8 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        .modal-box h2 {
-            font-size: 20px;
-            color: #fff;
-            margin-bottom: 8px;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-        }
-
-        .modal-box p {
-            color: var(--text-dim);
-            font-size: 13px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
+        .modal-box h2 { font-size: 20px; color: #fff; margin-bottom: 8px; font-weight: 900; }
+        .modal-box p { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
 
         .modal-input {
             width: 100%;
@@ -1317,9 +1014,7 @@
 
         .modal-input:focus {
             border-color: rgba(225, 29, 72, 0.6);
-            box-shadow:
-                0 0 20px rgba(225, 29, 72, 0.25),
-                inset 0 2px 6px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(225, 29, 72, 0.25), inset 0 2px 6px rgba(0, 0, 0, 0.4);
         }
 
         .avatar-grid {
@@ -1342,19 +1037,13 @@
             transition: all 0.2s;
             padding: 0;
             line-height: 1;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        .avatar-option:hover {
-            border-color: var(--border-soft);
-            transform: scale(1.06);
-        }
+        .avatar-option:hover { border-color: var(--border-soft); transform: scale(1.06); }
 
         .avatar-option.selected {
             border-color: var(--red);
-            box-shadow:
-                0 0 18px rgba(225, 29, 72, 0.55),
-                0 2px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 18px rgba(225, 29, 72, 0.55);
             background: linear-gradient(135deg, rgba(225, 29, 72, 0.15), var(--bg-elev));
         }
 
@@ -1374,9 +1063,8 @@
         .modal-btns { display: flex; gap: 10px; }
         .modal-btns button { flex: 1; padding: 12px; font-size: 13px; }
         .modal-close { border-color: var(--border); color: var(--text-dim); background: var(--bg-mid); }
-        .modal-close:hover { border-color: var(--border-soft); color: var(--text); box-shadow: 0 0 12px rgba(255,255,255,0.05); }
 
-        /* ============ АПГРЕЙД — новый ============ */
+        /* АПГРЕЙД */
         .upgrade-screen {
             width: 100%;
             max-width: 640px;
@@ -1399,19 +1087,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
-            box-shadow:
-                0 6px 18px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
-            overflow: hidden;
-        }
-
-        .swap-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 15%; right: 15%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .swap-label-top {
@@ -1463,15 +1139,14 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(6px);
             line-height: 1.2;
         }
 
-        /* Круглый индикатор шанса */
+        /* КРУГЛЫЙ ИНДИКАТОР СО СТРЕЛКОЙ СНАРУЖИ */
         .chance-circle-wrap {
             position: relative;
-            width: 130px;
-            height: 130px;
+            width: 150px;
+            height: 150px;
             flex-shrink: 0;
         }
 
@@ -1481,22 +1156,19 @@
             transform: rotate(-90deg);
         }
 
-        .chance-circle-bg {
+        .chance-circle-track {
             fill: none;
             stroke: var(--bg-deep);
-            stroke-width: 8;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+            stroke-width: 10;
+            opacity: 0.6;
         }
 
-        .chance-circle-progress {
+        .chance-circle-gradient {
             fill: none;
-            stroke: url(#chanceGradient);
-            stroke-width: 8;
-            stroke-linecap: round;
-            stroke-dasharray: 339.29;
-            stroke-dashoffset: 339.29;
-            transition: stroke-dashoffset 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 0 8px rgba(225, 29, 72, 0.7));
+            stroke: url(#chanceGradientCircle);
+            stroke-width: 10;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 6px rgba(225, 29, 72, 0.3));
         }
 
         .chance-circle-content {
@@ -1507,6 +1179,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 20px;
         }
 
         .chance-circle-label {
@@ -1514,20 +1187,55 @@
             font-weight: 800;
             color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
+            letter-spacing: 1.2px;
+            margin-bottom: 3px;
         }
 
         .chance-circle-value {
-            font-size: 26px;
+            font-size: 30px;
             font-weight: 900;
             color: #fff;
             letter-spacing: -0.03em;
             line-height: 1;
-            text-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
+            text-shadow: 0 0 25px rgba(225, 29, 72, 0.5);
         }
 
-        /* Пресеты шансов */
+        /* СТРЕЛКА СНАРУЖИ */
+        .outer-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 85px;
+            margin-left: -3px;
+            margin-top: 0;
+            transform-origin: 50% 0%;
+            z-index: 10;
+            pointer-events: none;
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.3, 1);
+            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.9));
+        }
+
+        .outer-arrow::before {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-bottom-color: var(--red-light);
+            filter: drop-shadow(0 0 8px var(--red-light));
+        }
+
+        .outer-arrow::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, transparent, #0a0a0d 30%, #000000);
+            border-radius: 3px;
+        }
+
+        /* ПРЕСЕТЫ */
         .mode-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1546,16 +1254,6 @@
             cursor: pointer;
             transition: all 0.25s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mode-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 20%; right: 20%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
 
         .mode-btn:hover:not(:disabled) {
@@ -1568,13 +1266,9 @@
             background: linear-gradient(135deg, rgba(225, 29, 72, 0.25), rgba(139, 92, 246, 0.15));
             border-color: rgba(225, 29, 72, 0.6);
             color: #fff;
-            box-shadow:
-                0 0 20px rgba(225, 29, 72, 0.35),
-                0 2px 8px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(225, 29, 72, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* Кнопка улучшить */
         .upgrade-main-btn {
             width: 100%;
             padding: 20px;
@@ -1600,39 +1294,21 @@
             color: #fff;
             background: linear-gradient(135deg, #e11d48, #8b5cf6);
             border-color: transparent;
-            box-shadow:
-                0 8px 25px rgba(225, 29, 72, 0.5),
-                0 0 40px rgba(225, 29, 72, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5), 0 0 40px rgba(225, 29, 72, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         .upgrade-main-btn:not(:disabled):hover {
             transform: translateY(-2px);
-            box-shadow:
-                0 12px 35px rgba(225, 29, 72, 0.6),
-                0 0 55px rgba(225, 29, 72, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 35px rgba(225, 29, 72, 0.6), 0 0 55px rgba(225, 29, 72, 0.4);
         }
 
-        /* Инвентарь в апгрейде */
         .upgrade-inventory-block {
             width: 100%;
             background: linear-gradient(135deg, var(--bg-card), var(--bg-mid));
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 18px;
-            position: relative;
-            box-shadow:
-                0 6px 18px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
-        }
-
-        .upgrade-inventory-block::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 10%; right: 10%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
         .upgrade-inventory-header {
@@ -1649,7 +1325,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            letter-spacing: -0.01em;
         }
 
         .upgrade-inventory-grid {
@@ -1667,88 +1342,6 @@
 
         .upgrade-inventory-grid .inv-item { aspect-ratio: 3 / 4; }
 
-        /* Стрелка-указатель для апгрейда */
-        .arrow {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 5px;
-            height: 122px;
-            margin-left: -2.5px;
-            margin-top: 0;
-            transform-origin: 50% 0%;
-            z-index: 5;
-            pointer-events: none;
-            transition: transform 4s cubic-bezier(0.15, 0.85, 0.3, 1);
-            filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.9));
-        }
-
-        .arrow::before {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 9px solid transparent;
-            border-top-color: var(--red-light);
-            filter: drop-shadow(0 0 8px var(--red-light));
-        }
-
-        .arrow::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, #0a0a0d, #000000);
-            border-radius: 3px;
-            border: 1px solid #333;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.95);
-        }
-
-        /* Старый апгрейд — запасной вариант (не используется) */
-        .wheel-wrap {
-            position: relative;
-            width: 260px;
-            height: 260px;
-            margin: 10px auto 20px;
-        }
-
-        .wheel-svg { width: 100%; height: 100%; }
-        .wheel-svg .wheel-bg { fill: #1a1a1f; stroke: #2a2a30; stroke-width: 2; }
-        .wheel-svg .fail-sector { fill: #2e2e36; opacity: 1; transition: fill 0.3s; }
-        .wheel-svg .chance-sector { fill: #2e2e36; opacity: 1; transition: fill 0.3s; }
-
-        .wheel-wrap.armed .wheel-svg .fail-sector { fill: #dc2626; opacity: 0.9; }
-        .wheel-wrap.armed .wheel-svg .chance-sector { fill: #16a34a; opacity: 0.9; }
-
-        .wheel-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 110px; height: 110px;
-            border-radius: 50%;
-            background: var(--bg-main);
-            border: 2px solid var(--border-soft);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-            overflow: hidden;
-        }
-
-        .wheel-center .wheel-icon {
-            width: 100%; height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            filter: grayscale(1) opacity(0.4);
-            transition: filter 0.3s;
-            overflow: hidden;
-        }
-
-        .wheel-wrap.armed .wheel-center .wheel-icon { filter: none; }
-        .wheel-center .wheel-icon img, .wheel-center .wheel-icon svg { width: 100%; height: 100%; object-fit: cover; }
-
         .chance-text {
             text-align: center;
             font-size: 13px;
@@ -1759,7 +1352,7 @@
 
         .chance-text b { color: #fff; font-size: 15px; }
 
-        /* ============ РАБОТА ============ */
+        /* РАБОТА */
         .work-panel {
             width: 100%;
             text-align: center;
@@ -1784,42 +1377,18 @@
             -webkit-tap-highlight-color: transparent;
             transition: all 0.15s;
             padding: 0;
-            box-shadow:
-                0 0 40px rgba(225, 29, 72, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .work-btn::before {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(225, 29, 72, 0.4), rgba(139, 92, 246, 0.4));
-            z-index: -1;
-            filter: blur(15px);
-            opacity: 0.6;
-            animation: workGlow 3s ease-in-out infinite;
-        }
-
-        @keyframes workGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.85; transform: scale(1.05); }
+            box-shadow: 0 0 40px rgba(225, 29, 72, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .work-btn:hover {
             border-color: rgba(225, 29, 72, 0.85);
-            box-shadow:
-                0 0 60px rgba(225, 29, 72, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 60px rgba(225, 29, 72, 0.5);
             transform: scale(1.02);
         }
 
         .work-btn:active {
             transform: scale(0.94);
-            box-shadow:
-                0 0 80px rgba(225, 29, 72, 0.7),
-                inset 0 2px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 80px rgba(225, 29, 72, 0.7), inset 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .work-info {
@@ -1827,7 +1396,6 @@
             font-size: 12px;
             color: var(--text-dim);
             line-height: 1.6;
-            letter-spacing: 0.3px;
         }
 
         .work-info span { color: #fff; font-weight: 800; }
@@ -1838,7 +1406,6 @@
             font-weight: 900;
             color: #fbbf24;
             min-height: 28px;
-            letter-spacing: 0.3px;
             text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
         }
 
@@ -1850,9 +1417,7 @@
             animation: floatUp 0.9s ease-out forwards;
             font-weight: 900;
             color: #fbbf24;
-            text-shadow:
-                0 0 15px rgba(251, 191, 36, 0.9),
-                0 0 30px rgba(251, 191, 36, 0.5);
+            text-shadow: 0 0 15px rgba(251, 191, 36, 0.9);
         }
 
         @keyframes floatUp {
@@ -1860,7 +1425,6 @@
             100% { opacity: 0; transform: translate(-50%, -90px) scale(1.5); }
         }
 
-        /* ============ МОБИЛЬНАЯ ============ */
         @media (max-width: 600px) {
             .content-area { padding: 16px 12px 30px; }
             .case-grid { gap: 10px; }
@@ -1868,7 +1432,6 @@
             .case-art { height: 110px; }
             .case-art img { max-height: 110px; }
             .case-name { font-size: 13px; }
-            .case-price { font-size: 11px; padding: 4px 10px; }
 
             .logo-icon { width: 36px; height: 36px; font-size: 18px; }
             .logo-text { font-size: 13px; }
@@ -1876,16 +1439,11 @@
             .avatar-btn { font-size: 20px; }
             .sound-toggle { font-size: 15px; }
             .balance { font-size: 13px; padding: 9px 14px; }
-            .balance .coin { font-size: 16px; }
 
             .nav-btn { padding: 9px 4px; font-size: 11px; }
-            .nav-btns { border-radius: 12px; }
 
             .strip-wrapper { height: 240px; border-radius: 14px; }
             .photo { flex: 0 0 130px; height: 180px; border-radius: 10px; }
-            .rarity-badge { font-size: 9px; }
-            .photo-name { font-size: 9px; }
-            .result { font-size: 14px; }
 
             .inventory-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
             .upgrade-inventory-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
@@ -1894,10 +1452,9 @@
 
             .upgrade-main-block { gap: 8px; }
             .swap-card { padding: 10px; border-radius: 12px; }
-            .swap-label-top { font-size: 9px; margin-bottom: 8px; }
-            .chance-circle-wrap { width: 110px; height: 110px; }
-            .chance-circle-value { font-size: 22px; }
-            .chance-circle-label { font-size: 8px; }
+            .chance-circle-wrap { width: 120px; height: 120px; }
+            .chance-circle-value { font-size: 24px; }
+            .outer-arrow { height: 68px; }
             .mode-btn { padding: 12px 4px; font-size: 12px; }
 
             .profile-header-card { padding: 18px 16px; }
@@ -1906,49 +1463,30 @@
             .stat-card { padding: 12px 10px; gap: 10px; }
             .stat-icon { width: 32px; height: 32px; font-size: 16px; }
             .stat-value { font-size: 16px; }
-            .stat-label { font-size: 9px; }
-
-            .collection-block { padding: 16px 14px; border-radius: 16px; }
-            .rarity-chip { font-size: 9px; padding: 4px 8px; }
 
             .avatar-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
             .avatar-option { font-size: 22px; border-radius: 10px; }
 
             .modal-box { padding: 22px 18px; }
-            .section-title h2 { font-size: 14px; }
-            .section-title h2 .title-icon { width: 24px; height: 24px; font-size: 12px; }
-        }
-
-        /* ============ SVG-ГРАДИЕНТЫ ============ */
-        .svg-defs {
-            position: absolute;
-            width: 0;
-            height: 0;
-            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
-    <!-- SVG-градиенты для использования в других местах -->
-    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg">
+    <!-- SVG-ГРАДИЕНТЫ -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute; width:0; height:0;">
         <defs>
-            <linearGradient id="chanceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#e11d48" />
-                <stop offset="50%" stop-color="#8b5cf6" />
-                <stop offset="100%" stop-color="#fbbf24" />
+            <linearGradient id="chanceGradientCircle" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ef4444" />
+                <stop offset="30%" stop-color="#f59e0b" />
+                <stop offset="50%" stop-color="#fbbf24" />
+                <stop offset="70%" stop-color="#84cc16" />
+                <stop offset="100%" stop-color="#22c55e" />
             </linearGradient>
         </defs>
     </svg>
 
-    <!-- ФОНОВЫЕ ПЯТНА -->
-    <div class="bg-blobs">
-        <div class="bg-blob b1"></div>
-        <div class="bg-blob b2"></div>
-        <div class="bg-blob b3"></div>
-    </div>
-
-    <!-- ПРИЛИПАЮЩАЯ ШАПКА -->
+    <!-- ШАПКА -->
     <div class="sticky-header">
         <div class="top-panel">
             <div class="logo-block">
@@ -1958,7 +1496,7 @@
             <button class="avatar-btn" id="avatarBtn" title="Профиль">👤</button>
             <div class="balance">
                 <span class="coin">🪙</span>
-                <span class="amount" id="balanceAmount">50</span>
+                <span class="amount" id="balanceAmount">500</span>
             </div>
             <button class="sound-toggle" id="soundToggle" title="Звук">🔊</button>
         </div>
@@ -2000,9 +1538,12 @@
             <button class="back-btn" id="backBtn">← Назад</button>
 
             <h1 id="caseTitle" style="font-size:26px; font-weight:900; color:#fff; margin-bottom:6px; letter-spacing:-0.02em;">Кейс</h1>
-            <p style="color:var(--text-dim); font-size:13px; margin-bottom:20px;">Нажми «Крутить», чтобы открыть</p>
+            <p id="caseSubtitle" style="color:var(--text-dim); font-size:13px; margin-bottom:20px;">Нажми «Открыть», чтобы запустить рулетку</p>
 
-            <button class="start-btn" id="startBtn">Крутить 🎲</button>
+            <!-- Превью кейса -->
+            <div id="casePreview" style="width: 100%; display: flex; justify-content: center; margin-bottom: 8px;">
+                <img id="casePreviewImg" src="" alt="" style="max-width: 240px; max-height: 180px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7)); transition: transform 0.3s;">
+            </div>
 
             <div class="strip-wrapper" id="stripWrapper">
                 <div class="pointer"></div>
@@ -2011,18 +1552,18 @@
 
             <div class="result" id="result"></div>
 
-            <div class="result-actions" id="resultActions">
-                <button class="btn-keep" id="keepBtn">Забрать</button>
-                <button class="btn-sell" id="sellBtn">Продать</button>
-            </div>
+            <!-- Кнопка ОТКРЫТЬ -->
+            <button class="open-btn active" id="startBtn">ОТКРЫТЬ 🎲</button>
+
+            <!-- Кнопка ПРОДАТЬ -->
+            <button class="sell-only-btn" id="sellBtn">💰 ПРОДАТЬ</button>
         </div>
 
-        <!-- ЭКРАН 3: АПГРЕЙД — НОВЫЙ ДИЗАЙН -->
+        <!-- ЭКРАН 3: АПГРЕЙД -->
         <div class="screen" id="screenUpgrade">
             <button class="back-btn" id="upgradeBackBtn">← Назад</button>
 
             <div class="upgrade-screen">
-                <!-- Главный блок: слоты + шанс -->
                 <div class="upgrade-main-block">
                     <div class="swap-card">
                         <div class="swap-label-top">Отдаёшь</div>
@@ -2033,13 +1574,14 @@
 
                     <div class="chance-circle-wrap">
                         <svg class="chance-circle-svg" viewBox="0 0 120 120">
-                            <circle class="chance-circle-bg" cx="60" cy="60" r="54" />
-                            <circle class="chance-circle-progress" id="chanceCircleProgress" cx="60" cy="60" r="54" />
+                            <circle class="chance-circle-track" cx="60" cy="60" r="54" />
+                            <circle class="chance-circle-gradient" cx="60" cy="60" r="54" />
                         </svg>
                         <div class="chance-circle-content">
                             <div class="chance-circle-label">Шанс</div>
                             <div class="chance-circle-value" id="chanceCircleValue">—</div>
                         </div>
+                        <div class="outer-arrow" id="outerArrow"></div>
                     </div>
 
                     <div class="swap-card">
@@ -2050,7 +1592,6 @@
                     </div>
                 </div>
 
-                <!-- Пресеты шансов -->
                 <div class="mode-row" id="chanceRow">
                     <button class="mode-btn" data-chance="0.1">10%</button>
                     <button class="mode-btn" data-chance="0.25">25%</button>
@@ -2058,10 +1599,8 @@
                     <button class="mode-btn" data-chance="0.75">75%</button>
                 </div>
 
-                <!-- Кнопка улучшить -->
                 <button class="upgrade-main-btn" id="upgradeMainBtn" disabled>УЛУЧШИТЬ ⬆️</button>
 
-                <!-- Инвентарь внизу -->
                 <div class="upgrade-inventory-block">
                     <div class="upgrade-inventory-header">
                         <h3>📦 Инвентарь</h3>
@@ -2073,11 +1612,10 @@
             </div>
         </div>
 
-        <!-- ЭКРАН 4: ПРОФИЛЬ — НОВЫЙ ДИЗАЙН -->
+        <!-- ЭКРАН 4: ПРОФИЛЬ -->
         <div class="screen" id="screenProfile">
             <button class="back-btn" id="profileBackBtn">← Назад</button>
 
-            <!-- Карточка профиля -->
             <div class="profile-header-card">
                 <div class="profile-main">
                     <div class="profile-avatar" id="profileAvatar">👤</div>
@@ -2088,7 +1626,6 @@
                 </div>
             </div>
 
-            <!-- Статистика 2×3 -->
             <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
                     <div class="stat-icon">🎁</div>
@@ -2134,7 +1671,6 @@
                 </div>
             </div>
 
-            <!-- Коллекция -->
             <div class="collection-block">
                 <div class="collection-header">
                     <h2>📚 Коллекция</h2>
@@ -2227,11 +1763,9 @@
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         const filter = ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 1800;
+        filter.type = 'lowpass'; filter.frequency.value = 1800;
         osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-        osc.type = 'triangle';
-        osc.frequency.value = 550 + Math.random() * 200;
+        osc.type = 'triangle'; osc.frequency.value = 550 + Math.random() * 200;
         gain.gain.setValueAtTime(0.035, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
         osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.09);
@@ -2244,8 +1778,7 @@
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
+            osc.type = 'triangle'; osc.frequency.value = freq;
             const start = ctx.currentTime + i * 0.12;
             gain.gain.setValueAtTime(0, start);
             gain.gain.linearRampToValueAtTime(0.13, start + 0.02);
@@ -2316,11 +1849,9 @@
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         const filter = ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 900;
+        filter.type = 'lowpass'; filter.frequency.value = 900;
         osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.value = 400 + Math.random() * 100;
+        osc.type = 'sine'; osc.frequency.value = 400 + Math.random() * 100;
         gain.gain.setValueAtTime(0.05, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
         osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.07);
@@ -2330,95 +1861,36 @@
     // РЕДКОСТИ
     // ============================================
     const rarityNames = {
-        common: 'Обычная',
-        uncommon: 'Необычная',
-        epic: 'Эпическая',
-        mythic: 'Мифическая',
-        legendary: 'Легендарная',
-        pink: 'Розовая',
-        golden: 'Золотая'
+        common: 'Обычная', uncommon: 'Необычная', epic: 'Эпическая',
+        mythic: 'Мифическая', legendary: 'Легендарная', pink: 'Розовая', golden: 'Золотая'
     };
 
     const rarityColors = {
-        common: '#94a3b8',
-        uncommon: '#22c55e',
-        epic: '#a855f7',
-        mythic: '#ef4444',
-        legendary: '#f59e0b',
-        pink: '#ec4899',
-        golden: '#facc15'
+        common: '#94a3b8', uncommon: '#22c55e', epic: '#a855f7',
+        mythic: '#ef4444', legendary: '#f59e0b', pink: '#ec4899', golden: '#facc15'
     };
 
     const rarityOrder = ['common', 'uncommon', 'epic', 'mythic', 'legendary', 'pink', 'golden'];
 
-    // ============================================
-    // ДИАПАЗОНЫ ЦЕН
-    // ============================================
     const priceRanges = {
-        common: [10, 50],
-        uncommon: [50, 150],
-        epic: [150, 300],
-        mythic: [300, 700],
-        legendary: [700, 1800],
-        pink: [1800, 3000],
-        golden: [2500, 5000]
+        common: [10, 50], uncommon: [50, 150], epic: [150, 300],
+        mythic: [300, 700], legendary: [700, 1800], pink: [1800, 3000], golden: [2500, 5000]
     };
 
     // ============================================
-    // КЕЙСЫ — 6 штук
+    // КЕЙСЫ
     // ============================================
     const casePrices = {
-        silver: 75,
-        zeus: 200,
-        dustin: 500,
-        mirage: 1000,
-        kalash: 2000,
-        chingis: 3500
+        silver: 75, zeus: 200, dustin: 500, mirage: 1000, kalash: 2000, chingis: 3500
     };
 
     const caseConfig = {
-        silver: {
-            title: 'Сильвер',
-            emoji: '🥈',
-            desc: 'Базовый',
-            img: 'images/silver.png',
-            distribution: { common: 5, uncommon: 10, epic: 5 }
-        },
-        zeus: {
-            title: 'Зевс',
-            emoji: '⚡',
-            desc: 'Грозовой',
-            img: 'images/zeus.png',
-            distribution: { uncommon: 5, epic: 11, mythic: 4 }
-        },
-        dustin: {
-            title: 'Дастин',
-            emoji: '🏆',
-            desc: 'Золотой',
-            img: 'images/dustin.png',
-            distribution: { epic: 4, mythic: 12, legendary: 4 }
-        },
-        mirage: {
-            title: 'Мираж',
-            emoji: '🏜',
-            desc: 'Топовый',
-            img: 'images/mirage.png',
-            distribution: { mythic: 6, legendary: 12, golden: 2 }
-        },
-        kalash: {
-            title: 'Калаш',
-            emoji: '🔫',
-            desc: 'Розовый эксклюзив',
-            img: 'images/kalash.png',
-            distribution: { pink: 20 }
-        },
-        chingis: {
-            title: 'Чингисхан',
-            emoji: '⚔️',
-            desc: 'Легендарный',
-            img: 'images/chingis.png',
-            distribution: { legendary: 2, golden: 18 }
-        }
+        silver: { title: 'Сильвер', emoji: '🥈', desc: 'Базовый', img: 'images/silver.png', distribution: { common: 5, uncommon: 10, epic: 5 } },
+        zeus: { title: 'Зевс', emoji: '⚡', desc: 'Грозовой', img: 'images/zeus.png', distribution: { uncommon: 5, epic: 11, mythic: 4 } },
+        dustin: { title: 'Дастин', emoji: '🏆', desc: 'Золотой', img: 'images/dustin.png', distribution: { epic: 4, mythic: 12, legendary: 4 } },
+        mirage: { title: 'Мираж', emoji: '🏜', desc: 'Топовый', img: 'images/mirage.png', distribution: { mythic: 6, legendary: 12, golden: 2 } },
+        kalash: { title: 'Калаш', emoji: '🔫', desc: 'Розовый эксклюзив', img: 'images/kalash.png', distribution: { pink: 20 } },
+        chingis: { title: 'Чингисхан', emoji: '⚔️', desc: 'Легендарный', img: 'images/chingis.png', distribution: { legendary: 2, golden: 18 } }
     };
 
     // ============================================
@@ -2440,13 +1912,9 @@
             const base = min + (range / (count + 1)) * (i + 1);
             const variation = (Math.random() - 0.5) * (range / count) * 0.5;
             let price = Math.round(base + variation);
-            if (rarity === 'common' || rarity === 'uncommon' || rarity === 'epic') {
-                price = Math.round(price / 5) * 5;
-            } else if (rarity === 'mythic' || rarity === 'legendary') {
-                price = Math.round(price / 10) * 10;
-            } else {
-                price = Math.round(price / 50) * 50;
-            }
+            if (rarity === 'common' || rarity === 'uncommon' || rarity === 'epic') price = Math.round(price / 5) * 5;
+            else if (rarity === 'mythic' || rarity === 'legendary') price = Math.round(price / 10) * 10;
+            else price = Math.round(price / 50) * 50;
             price = Math.max(min, Math.min(max, price));
             prices.push(price);
         }
@@ -2457,9 +1925,7 @@
             }
         }
         for (let i = prices.length - 1; i >= 0; i--) {
-            if (prices[i] > max) {
-                prices[i] = max - (prices.length - 1 - i) * (rarity === 'golden' || rarity === 'pink' ? 50 : 5);
-            }
+            if (prices[i] > max) prices[i] = max - (prices.length - 1 - i) * (rarity === 'golden' || rarity === 'pink' ? 50 : 5);
         }
         return prices;
     }
@@ -2491,35 +1957,25 @@
 
                 const num = cardIdCounter++;
                 photos.push({
-                    id: caseKey + '_' + num,
-                    num: num,
+                    id: caseKey + '_' + num, num: num,
                     name: 'Карточка #' + num,
-                    price: price,
-                    rarity: rarity,
-                    src: null
+                    price: price, rarity: rarity, src: null
                 });
             }
         });
 
-        cases[caseKey] = {
-            title: cfg.title,
-            emoji: cfg.emoji,
-            photos: photos
-        };
+        cases[caseKey] = { title: cfg.title, emoji: cfg.emoji, photos: photos };
     });
 
     const allPhotos = {};
     Object.values(cases).forEach(c => c.photos.forEach(p => { allPhotos[p.id] = p; }));
-
     const ALL_CARD_IDS = Object.keys(allPhotos);
 
     const totalByRarity = {};
     rarityOrder.forEach(r => { totalByRarity[r] = 0; });
     Object.values(allPhotos).forEach(p => { totalByRarity[p.rarity]++; });
 
-    // ============================================
-    // SVG-ГЕНЕРАТОР КАРТОЧКИ
-    // ============================================
+    // SVG-заглушка карточки
     function makeCardSVG(photo) {
         const color = rarityColors[photo.rarity];
         const colorDark = color + '55';
@@ -2553,6 +2009,8 @@
 
     const caseGrid = document.getElementById('caseGrid');
     const caseTitle = document.getElementById('caseTitle');
+    const casePreview = document.getElementById('casePreview');
+    const casePreviewImg = document.getElementById('casePreviewImg');
     const backBtn = document.getElementById('backBtn');
     const upgradeBackBtn = document.getElementById('upgradeBackBtn');
     const profileBackBtn = document.getElementById('profileBackBtn');
@@ -2560,8 +2018,6 @@
     const stripWrapper = document.getElementById('stripWrapper');
     const startBtn = document.getElementById('startBtn');
     const resultEl = document.getElementById('result');
-    const resultActions = document.getElementById('resultActions');
-    const keepBtn = document.getElementById('keepBtn');
     const sellBtn = document.getElementById('sellBtn');
 
     const tabCases = document.getElementById('tabCases');
@@ -2588,8 +2044,8 @@
     const modalClose = document.getElementById('modalClose');
     const modalSell = document.getElementById('modalSell');
 
-    const chanceCircleProgress = document.getElementById('chanceCircleProgress');
     const chanceCircleValue = document.getElementById('chanceCircleValue');
+    const outerArrow = document.getElementById('outerArrow');
     const chanceText = document.getElementById('chanceText');
     const upgradeMainBtn = document.getElementById('upgradeMainBtn');
     const srcSwap = document.getElementById('srcSwap');
@@ -2651,58 +2107,37 @@
     let tickInterval = null;
 
     let profile = {
-        name: 'Игрок',
-        avatar: '👤',
-        since: null,
-        stats: {
-            casesOpened: 0, spent: 0, earned: 0,
-            bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0
-        }
+        name: 'Игрок', avatar: '👤', since: null,
+        stats: { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 }
     };
 
     let collectionFilter = 'all';
 
-    // ============================================
     // ХРАНИЛИЩЕ
-    // ============================================
-    const STORAGE_BALANCE = 'pashadrop_balance_v5';
-    const STORAGE_INVENTORY = 'pashadrop_inventory_v5';
-    const STORAGE_STUDIED = 'pashadrop_studied_v5';
-    const STORAGE_SOUND = 'pashadrop_sound_v5';
-    const STORAGE_PROFILE = 'pashadrop_profile_v5';
+    const STORAGE_BALANCE = 'pashadrop_balance_v51';
+    const STORAGE_INVENTORY = 'pashadrop_inventory_v51';
+    const STORAGE_STUDIED = 'pashadrop_studied_v51';
+    const STORAGE_SOUND = 'pashadrop_sound_v51';
+    const STORAGE_PROFILE = 'pashadrop_profile_v51';
 
     let balance = parseInt(localStorage.getItem(STORAGE_BALANCE));
     if (isNaN(balance)) balance = 500;
 
+    try { const s = JSON.parse(localStorage.getItem(STORAGE_INVENTORY)); if (s && typeof s === 'object') inventory = s; } catch(e) {}
+    try { const s = JSON.parse(localStorage.getItem(STORAGE_STUDIED)); if (s && typeof s === 'object') studied = s; } catch(e) {}
     try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_INVENTORY));
-        if (saved && typeof saved === 'object') inventory = saved;
-    } catch(e) {}
-
-    try {
-        const savedStudied = JSON.parse(localStorage.getItem(STORAGE_STUDIED));
-        if (savedStudied && typeof savedStudied === 'object') studied = savedStudied;
-    } catch(e) {}
-
-    try {
-        const savedProfile = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
-        if (savedProfile && typeof savedProfile === 'object') {
-            profile = Object.assign(profile, savedProfile);
+        const sp = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
+        if (sp && typeof sp === 'object') {
+            profile = Object.assign(profile, sp);
             if (!profile.stats) profile.stats = { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 };
         }
     } catch(e) {}
 
     if (localStorage.getItem(STORAGE_SOUND) === '0') soundEnabled = false;
 
-    function saveInventory() {
-        try { localStorage.setItem(STORAGE_INVENTORY, JSON.stringify(inventory)); } catch(e) {}
-    }
-    function saveStudied() {
-        try { localStorage.setItem(STORAGE_STUDIED, JSON.stringify(studied)); } catch(e) {}
-    }
-    function saveProfile() {
-        try { localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile)); } catch(e) {}
-    }
+    function saveInventory() { try { localStorage.setItem(STORAGE_INVENTORY, JSON.stringify(inventory)); } catch(e) {} }
+    function saveStudied() { try { localStorage.setItem(STORAGE_STUDIED, JSON.stringify(studied)); } catch(e) {} }
+    function saveProfile() { try { localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile)); } catch(e) {} }
     function updateBalance() {
         localStorage.setItem(STORAGE_BALANCE, balance);
         balanceEls.forEach(el => { if (el) el.textContent = balance; });
@@ -2718,11 +2153,9 @@
     function updateStartBtn() {
         if (!currentCaseKey) return;
         const price = casePrices[currentCaseKey];
-        startBtn.textContent = `Крутить — ${price} 🪙`;
+        startBtn.textContent = `ОТКРЫТЬ 🎲 — ${price} 🪙`;
     }
-    function updateSoundIcon() {
-        soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
-    }
+    function updateSoundIcon() { soundToggle.textContent = soundEnabled ? '🔊' : '🔇'; }
 
     soundToggle.addEventListener('click', () => {
         soundEnabled = !soundEnabled;
@@ -2731,9 +2164,7 @@
         if (soundEnabled) playStart();
     });
 
-    // ============================================
-    // ПРОФИЛЬ — аватарки
-    // ============================================
+    // АВАТАРКИ
     const AVATARS = ['🐱', '🐶', '🦊', '🐼', '🐸', '🐷', '🐯', '🦁', '🐺', '🐵', '🐰', '🐭', '🐹', '🐻', '🐨', '🐮', '🐔', '🐧', '🦅', '🦉', '🐴', '🦄'];
 
     function initWelcomeAvatarGrid() {
@@ -2807,593 +2238,517 @@
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    // ============================================
-// ПРОФИЛЬ — рендер
-// ============================================
-function renderProfile() {
-    profileAvatar.textContent = profile.avatar;
-    profileName.innerHTML = `${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
 
-    if (profile.since) {
-        const d = new Date(profile.since);
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const yyyy = d.getFullYear();
-        profileSince.textContent = `Играешь с: ${dd}.${mm}.${yyyy}`;
-    } else {
-        profileSince.textContent = 'Играешь с: —';
-    }
+    // ПРОФИЛЬ
+    function renderProfile() {
+        profileAvatar.textContent = profile.avatar;
+        profileName.innerHTML = `${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
 
-    statCases.textContent = profile.stats.casesOpened;
-    statSpent.textContent = profile.stats.spent.toLocaleString('ru-RU');
-    statEarned.textContent = profile.stats.earned.toLocaleString('ru-RU');
-    statUpgrades.textContent = profile.stats.upgrades;
+        if (profile.since) {
+            const d = new Date(profile.since);
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            profileSince.textContent = `Играешь с: ${dd}.${mm}.${yyyy}`;
+        } else {
+            profileSince.textContent = 'Играешь с: —';
+        }
 
-    statCollected.textContent = getCollectedCount() + '/120';
+        statCases.textContent = profile.stats.casesOpened;
+        statSpent.textContent = profile.stats.spent.toLocaleString('ru-RU');
+        statEarned.textContent = profile.stats.earned.toLocaleString('ru-RU');
+        statUpgrades.textContent = profile.stats.upgrades;
+        statCollected.textContent = getCollectedCount() + '/120';
 
-    if (profile.stats.bestDrop) {
-        const b = profile.stats.bestDrop;
-        statBest.innerHTML = `<span style="color:${rarityColors[b.rarity]}; font-size: 12px;">#${b.num || '?'}</span>`;
-    } else {
-        statBest.textContent = '—';
-    }
+        if (profile.stats.bestDrop) {
+            const b = profile.stats.bestDrop;
+            statBest.innerHTML = `<span style="color:${rarityColors[b.rarity]}; font-size: 12px;">#${b.num || '?'}</span>`;
+        } else {
+            statBest.textContent = '—';
+        }
 
-    renderCollection();
-}
-
-// ============================================
-// КОЛЛЕКЦИЯ
-// ============================================
-function isStudied(id) {
-    return studied[id] === true || (inventory[id] && inventory[id].count > 0);
-}
-
-function getCollectedCount() {
-    return ALL_CARD_IDS.filter(id => isStudied(id)).length;
-}
-
-function getCollectedByRarity(rarity) {
-    return ALL_CARD_IDS.filter(id => allPhotos[id].rarity === rarity && isStudied(id)).length;
-}
-
-function renderRarityProgress() {
-    rarityProgress.innerHTML = '';
-
-    const allChip = document.createElement('div');
-    allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
-    allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
-    allChip.addEventListener('click', () => {
-        collectionFilter = 'all';
         renderCollection();
-    });
-    rarityProgress.appendChild(allChip);
-
-    rarityOrder.forEach(rarity => {
-        const total = totalByRarity[rarity];
-        if (total === 0) return;
-        const collected = getCollectedByRarity(rarity);
-        const chip = document.createElement('div');
-        chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
-        chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
-        chip.addEventListener('click', () => {
-            collectionFilter = rarity;
-            renderCollection();
-        });
-        rarityProgress.appendChild(chip);
-    });
-}
-
-function renderCollection() {
-    collectionGrid.innerHTML = '';
-    renderRarityProgress();
-
-    const owned = getCollectedCount();
-    collectCount.textContent = owned;
-    const percent = (owned / 120) * 100;
-    collectBar.style.width = percent + '%';
-
-    let ids = [...ALL_CARD_IDS].sort((a, b) => {
-        const pa = allPhotos[a], pb = allPhotos[b];
-        const ia = rarityOrder.indexOf(pa.rarity);
-        const ib = rarityOrder.indexOf(pb.rarity);
-        if (ia !== ib) return ia - ib;
-        return pa.num - pb.num;
-    });
-
-    if (collectionFilter !== 'all') {
-        ids = ids.filter(id => allPhotos[id].rarity === collectionFilter);
     }
 
-    ids.forEach(id => {
-        const photo = allPhotos[id];
-        const hasIt = inventory[id] && inventory[id].count > 0;
-        const wasStudied = isStudied(id);
+    // КОЛЛЕКЦИЯ
+    function isStudied(id) { return studied[id] === true || (inventory[id] && inventory[id].count > 0); }
+    function getCollectedCount() { return ALL_CARD_IDS.filter(id => isStudied(id)).length; }
+    function getCollectedByRarity(rarity) {
+        return ALL_CARD_IDS.filter(id => allPhotos[id].rarity === rarity && isStudied(id)).length;
+    }
 
-        const el = document.createElement('div');
-        el.className = `inv-item rarity-${photo.rarity}`;
-        if (!wasStudied) {
-            el.style.filter = 'grayscale(1) brightness(0.35)';
-            el.style.opacity = '0.5';
-        } else if (!hasIt) {
-            el.classList.add('studied');
-        }
+    function renderRarityProgress() {
+        rarityProgress.innerHTML = '';
+        const allChip = document.createElement('div');
+        allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
+        allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
+        allChip.addEventListener('click', () => { collectionFilter = 'all'; renderCollection(); });
+        rarityProgress.appendChild(allChip);
 
-        el.innerHTML = `
-            ${makeCardSVG(photo)}
-            <div class="inv-name">${photo.name}</div>
-            <div class="inv-rarity">${rarityNames[photo.rarity]}</div>
-        `;
+        rarityOrder.forEach(rarity => {
+            const total = totalByRarity[rarity];
+            if (total === 0) return;
+            const collected = getCollectedByRarity(rarity);
+            const chip = document.createElement('div');
+            chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
+            chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
+            chip.addEventListener('click', () => { collectionFilter = rarity; renderCollection(); });
+            rarityProgress.appendChild(chip);
+        });
+    }
 
-        collectionGrid.appendChild(el);
-    });
-}
+    function renderCollection() {
+        collectionGrid.innerHTML = '';
+        renderRarityProgress();
+        const owned = getCollectedCount();
+        collectCount.textContent = owned;
+        collectBar.style.width = (owned / 120) * 100 + '%';
 
-// ============================================
-// КНОПКИ ПРОФИЛЯ
-// ============================================
-avatarBtn.addEventListener('click', () => {
-    renderProfile();
-    switchScreen('profile');
-});
+        let ids = [...ALL_CARD_IDS].sort((a, b) => {
+            const pa = allPhotos[a], pb = allPhotos[b];
+            const ia = rarityOrder.indexOf(pa.rarity);
+            const ib = rarityOrder.indexOf(pb.rarity);
+            if (ia !== ib) return ia - ib;
+            return pa.num - pb.num;
+        });
 
-profileBackBtn.addEventListener('click', () => {
-    switchScreen('choose');
-});
+        if (collectionFilter !== 'all') ids = ids.filter(id => allPhotos[id].rarity === collectionFilter);
 
-profileAvatar.addEventListener('click', () => {
-    initEditAvatarGrid();
-    editAvatarModal.classList.add('active');
-});
-
-profileName.addEventListener('click', () => {
-    editNameInput.value = profile.name;
-    editNameModal.classList.add('active');
-});
-
-editNameCancel.addEventListener('click', () => {
-    editNameModal.classList.remove('active');
-});
-
-editNameSave.addEventListener('click', () => {
-    const name = editNameInput.value.trim() || 'Игрок';
-    profile.name = name.slice(0, 16);
-    saveProfile();
-    editNameModal.classList.remove('active');
-    renderProfile();
-});
-
-editAvatarClose.addEventListener('click', () => {
-    editAvatarModal.classList.remove('active');
-});
-
-// ============================================
-// РЕНДЕР КЕЙСОВ
-// ============================================
-function renderCaseGrid() {
-    caseGrid.innerHTML = '';
-    Object.keys(caseConfig).forEach(key => {
-        const cfg = caseConfig[key];
-        const price = casePrices[key];
-        const card = document.createElement('div');
-        card.className = 'case-card ' + key;
-        card.dataset.case = key;
-        card.innerHTML = `
-            <div class="case-art">
-                <div class="case-glow"></div>
-                <span class="case-emoji">${cfg.emoji}</span>
-                <img src="${cfg.img}" alt="${cfg.title}" loading="lazy">
-            </div>
-            <div class="case-name">${cfg.title}</div>
-            <div class="case-desc">${cfg.desc}</div>
-            <div class="case-price">🪙 ${price}</div>
-        `;
-        caseGrid.appendChild(card);
-    });
-
-    document.querySelectorAll('.case-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const key = card.dataset.case;
-            const price = casePrices[key];
-
-            if (balance < price) {
-                card.animate([
-                    { transform: 'translateX(0)' },
-                    { transform: 'translateX(-6px)' },
-                    { transform: 'translateX(6px)' },
-                    { transform: 'translateX(0)' }
-                ], { duration: 250 });
-                return;
+        ids.forEach(id => {
+            const photo = allPhotos[id];
+            const hasIt = inventory[id] && inventory[id].count > 0;
+            const wasStudied = isStudied(id);
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${photo.rarity}`;
+            if (!wasStudied) {
+                el.style.filter = 'grayscale(1) brightness(0.35)';
+                el.style.opacity = '0.5';
+            } else if (!hasIt) {
+                el.classList.add('studied');
             }
-
-            currentCase = cases[key];
-            currentCaseKey = key;
-            caseTitle.textContent = caseConfig[key].title;
-            updateStartBtn();
-
-            strip.innerHTML = '';
-            strip.style.transition = 'none';
-            strip.style.transform = 'translateX(0)';
-            stripWrapper.classList.remove('active');
-            startBtn.classList.remove('hidden');
-            resultActions.classList.remove('active');
-            resultEl.classList.remove('show');
-            resultEl.textContent = '';
-            pendingPhoto = null;
-
-            switchScreen('spin');
+            el.innerHTML = `
+                ${makeCardSVG(photo)}
+                <div class="inv-name">${photo.name}</div>
+                <div class="inv-rarity">${rarityNames[photo.rarity]}</div>
+            `;
+            collectionGrid.appendChild(el);
         });
-    });
-
-    updateCaseAvailability();
-}
-
-// ============================================
-// ИНВЕНТАРЬ
-// ============================================
-function addToInventory(photo, count = 1) {
-    if (!inventory[photo.id]) {
-        inventory[photo.id] = {
-            count: 0, num: photo.num, name: photo.name,
-            rarity: photo.rarity, price: photo.price
-        };
-    }
-    inventory[photo.id].count += count;
-    studied[photo.id] = true;
-    saveInventory();
-    saveStudied();
-}
-
-function removeFromInventory(photoId, count = 1) {
-    if (!inventory[photoId]) return false;
-    inventory[photoId].count -= count;
-    if (inventory[photoId].count <= 0) delete inventory[photoId];
-    saveInventory();
-    return true;
-}
-
-function renderInventory() {
-    inventoryGrid.innerHTML = '';
-    const ids = Object.keys(inventory);
-    if (ids.length === 0) {
-        inventoryEmpty.style.display = 'block';
-        return;
-    }
-    inventoryEmpty.style.display = 'none';
-
-    ids.forEach(id => {
-        const item = inventory[id];
-        const el = document.createElement('div');
-        el.className = `inv-item rarity-${item.rarity}`;
-        el.innerHTML = `
-            ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
-            <div class="inv-name">${item.name || 'Карточка'}</div>
-            <div class="inv-count">×${item.count}</div>
-            <div class="inv-rarity">${rarityNames[item.rarity]}</div>
-        `;
-        el.addEventListener('click', () => openItemModal(id));
-        inventoryGrid.appendChild(el);
-    });
-}
-
-// ============================================
-// МОДАЛКА ПРЕДМЕТА
-// ============================================
-let modalPhotoId = null;
-
-function openItemModal(id) {
-    const item = inventory[id];
-    if (!item) return;
-    modalPhotoId = id;
-    modalImgWrap.innerHTML = makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity });
-    modalName.textContent = item.name || 'Карточка';
-    modalRarity.textContent = rarityNames[item.rarity];
-    modalRarity.style.color = rarityColors[item.rarity];
-    modalCount.textContent = `В инвентаре: ${item.count}`;
-    modalPrice.textContent = `Цена продажи: 🪙 ${item.price}`;
-    itemModal.classList.add('active');
-}
-
-modalClose.addEventListener('click', () => {
-    itemModal.classList.remove('active');
-    modalPhotoId = null;
-});
-
-modalSell.addEventListener('click', () => {
-    if (!modalPhotoId || !inventory[modalPhotoId]) return;
-    const item = inventory[modalPhotoId];
-    const price = item.price;
-    removeFromInventory(modalPhotoId, 1);
-    balance += price;
-    profile.stats.sold++;
-    profile.stats.earned += price;
-    if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
-    saveProfile();
-    updateBalance();
-    playCoin();
-    itemModal.classList.remove('active');
-    modalPhotoId = null;
-    renderInventory();
-    renderCollection();
-    renderUpgradeInventory();
-});
-
-// ============================================
-// АПГРЕЙД
-// ============================================
-function pickAutoTarget(srcRarity, chance) {
-    const srcItem = inventory[selectedSrcId];
-    if (!srcItem) return null;
-    const srcPrice = srcItem.price;
-    const srcIdx = rarityOrder.indexOf(srcRarity);
-
-    const candidates = [];
-    for (const id in allPhotos) {
-        const p = allPhotos[id];
-        const dstIdx = rarityOrder.indexOf(p.rarity);
-        if (dstIdx <= srcIdx) continue;
-
-        const actualChance = srcPrice / p.price;
-        const dist = Math.abs(actualChance - chance);
-        candidates.push({ photo: p, actualChance, dist });
     }
 
-    if (candidates.length === 0) return null;
-    candidates.sort((a, b) => a.dist - b.dist);
-    return candidates[0].photo.id;
-}
-
-function recalcUpgrade() {
-    if (!selectedSrcId || !inventory[selectedSrcId]) {
-        autoDstId = null;
-        updateUpgradeUI();
-        return;
-    }
-    const srcItem = inventory[selectedSrcId];
-    const srcIdx = rarityOrder.indexOf(srcItem.rarity);
-    if (srcIdx >= rarityOrder.length - 1) {
-        autoDstId = null;
-        updateUpgradeUI();
-        return;
-    }
-    autoDstId = pickAutoTarget(srcItem.rarity, upgradeChance);
-    updateUpgradeUI();
-}
-
-function getRealChance() {
-    if (!selectedSrcId || !autoDstId) return 0;
-    const src = inventory[selectedSrcId];
-    const dst = allPhotos[autoDstId];
-    if (!src || !dst) return 0;
-    return Math.min(0.95, Math.max(0.01, src.price / dst.price));
-}
-
-function getTargetPhoto() {
-    if (!autoDstId) return null;
-    return allPhotos[autoDstId] || null;
-}
-
-// ============================================
-// КРУГЛЫЙ ИНДИКАТОР ШАНСА
-// ============================================
-const CIRCUMFERENCE = 2 * Math.PI * 54;
-
-function updateChanceCircle(chance) {
-    const offset = CIRCUMFERENCE * (1 - chance);
-    chanceCircleProgress.style.strokeDasharray = CIRCUMFERENCE;
-    chanceCircleProgress.style.strokeDashoffset = offset;
-
-    if (chance > 0) {
-        chanceCircleValue.textContent = Math.round(chance * 100) + '%';
-    } else {
-        chanceCircleValue.textContent = '—';
-    }
-}
-
-function updateUpgradeUI() {
-    const chance = getRealChance();
-    const armed = selectedSrcId && autoDstId;
-
-    updateChanceCircle(chance);
-
-    // Слот "Отдаёшь"
-    if (selectedSrcId && inventory[selectedSrcId]) {
-        const item = inventory[selectedSrcId];
-        srcSwap.classList.add('filled');
-        srcSwap.innerHTML = `
-            ${makeCardSVG({ id: selectedSrcId, num: item.num || '?', price: item.price, rarity: item.rarity })}
-            <div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name || 'Карточка'}</div>
-        `;
-    } else {
-        srcSwap.classList.remove('filled');
-        srcSwap.innerHTML = `<span class="swap-plus">+</span>`;
-    }
-
-    // Слот "Получаешь"
-    if (autoDstId && allPhotos[autoDstId]) {
-        const t = allPhotos[autoDstId];
-        dstSwap.classList.add('filled');
-        dstSwap.innerHTML = `
-            ${makeCardSVG(t)}
-            <div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>
-        `;
-    } else {
-        dstSwap.classList.remove('filled');
-        dstSwap.innerHTML = `<span class="swap-plus">?</span>`;
-    }
-
-    // Текст под всем
-    if (selectedSrcId && autoDstId) {
-        const t = allPhotos[autoDstId];
-        chanceText.innerHTML = `Шанс: <b>${Math.round(chance * 100)}%</b> · ${t.name} (${t.price} 🪙)`;
-    } else if (selectedSrcId) {
-        chanceText.textContent = 'Нет подходящей цели — нужна карточка выше по редкости';
-    } else {
-        chanceText.textContent = 'Выбери карточку из инвентаря ниже';
-    }
-
-    // Кнопка
-    if (armed && !isUpgrading) {
-        upgradeMainBtn.disabled = false;
-        upgradeMainBtn.innerHTML = `УЛУЧШИТЬ ⬆️`;
-    } else {
-        upgradeMainBtn.disabled = true;
-        upgradeMainBtn.innerHTML = 'УЛУЧШИТЬ ⬆️';
-    }
-}
-
-// ============================================
-// ИНВЕНТАРЬ В АПГРЕЙДЕ
-// ============================================
-function renderUpgradeInventory() {
-    upgradeInventoryGrid.innerHTML = '';
-    const ids = Object.keys(inventory);
-
-    if (ids.length === 0) {
-        upgradeInventoryGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-mute); padding: 30px 20px; font-size: 12px;">Инвентарь пуст</div>';
-        return;
-    }
-
-    ids.forEach(id => {
-        const item = inventory[id];
-        const idx = rarityOrder.indexOf(item.rarity);
-
-        const el = document.createElement('div');
-        el.className = `inv-item rarity-${item.rarity}`;
-        el.innerHTML = `
-            ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
-            <div class="inv-name">${item.name || 'Карточка'}</div>
-            <div class="inv-count">×${item.count}</div>
-            <div class="inv-rarity">${rarityNames[item.rarity]}</div>
-        `;
-
-        el.addEventListener('click', () => {
-            if (isUpgrading) return;
-            // Если карточка максимальной редкости — нельзя
-            if (idx >= rarityOrder.length - 1) {
-                el.animate([
-                    { transform: 'translateX(0)' },
-                    { transform: 'translateX(-5px)' },
-                    { transform: 'translateX(5px)' },
-                    { transform: 'translateX(0)' }
-                ], { duration: 200 });
-                return;
-            }
-            selectedSrcId = id;
-            recalcUpgrade();
-            renderUpgradeInventory();
-        });
-        upgradeInventoryGrid.appendChild(el);
-    });
-}
-
-// ============================================
-// КЛИКИ ПО СЛОТАМ
-// ============================================
-srcSwap.addEventListener('click', () => {
-    if (isUpgrading) return;
-    if (selectedSrcId) {
-        selectedSrcId = null;
-        autoDstId = null;
-        updateUpgradeUI();
-        renderUpgradeInventory();
-        return;
-    }
-    // Просто скроллим вниз к инвентарю
-    upgradeInventoryGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
-
-dstSwap.addEventListener('click', () => {
-    if (isUpgrading) return;
-    if (!selectedSrcId) { alert('Сначала выбери карточку из инвентаря'); return; }
-    const t = getTargetPhoto();
-    if (!t) { alert('Нет подходящей цели'); return; }
-    alert(`Цель: ${t.name}\n${rarityNames[t.rarity]}\nЦена: 🪙 ${t.price}\nШанс: ${Math.round(getRealChance()*100)}%`);
-});
-
-// ============================================
-// ПРЕСЕТЫ ШАНСОВ
-// ============================================
-document.querySelectorAll('.mode-btn[data-chance]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (isUpgrading) return;
-        document.querySelectorAll('.mode-btn[data-chance]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        upgradeChance = parseFloat(btn.dataset.chance);
-        if (selectedSrcId) recalcUpgrade();
-    });
-});
-
-// ============================================
-// КНОПКА УЛУЧШИТЬ
-// ============================================
-upgradeMainBtn.addEventListener('click', () => {
-    if (isUpgrading) return;
-    if (!selectedSrcId || !autoDstId) return;
-    if (!inventory[selectedSrcId]) return;
-
-    const srcItem = inventory[selectedSrcId];
-    const dstItem = allPhotos[autoDstId];
-    if (!srcItem || !dstItem) return;
-
-    const chance = getRealChance();
-    const success = Math.random() < chance;
-
-    isUpgrading = true;
-    upgradeMainBtn.disabled = true;
-    playStart();
-
-    clearInterval(tickInterval);
-    let tickCount = 0;
-    tickInterval = setInterval(() => {
-        playUpgradeTick();
-        tickCount++;
-        if (tickCount > 25) {
-            clearInterval(tickInterval);
-            tickInterval = setInterval(() => playUpgradeTick(), 200);
-        }
-    }, 80);
-
-    setTimeout(() => {
-        clearInterval(tickInterval);
-        tickInterval = null;
-        showUpgradeResult(srcItem, dstItem, success, chance);
-    }, 2200);
-});
-
-function showUpgradeResult(srcItem, dstItem, success, chance) {
-    removeFromInventory(selectedSrcId, 1);
-
-    if (success) {
-        addToInventory(dstItem, 1);
-        profile.stats.upgrades++;
+    // КНОПКИ ПРОФИЛЯ
+    avatarBtn.addEventListener('click', () => { renderProfile(); switchScreen('profile'); });
+    profileBackBtn.addEventListener('click', () => switchScreen('choose'));
+    profileAvatar.addEventListener('click', () => { initEditAvatarGrid(); editAvatarModal.classList.add('active'); });
+    profileName.addEventListener('click', () => { editNameInput.value = profile.name; editNameModal.classList.add('active'); });
+    editNameCancel.addEventListener('click', () => editNameModal.classList.remove('active'));
+    editNameSave.addEventListener('click', () => {
+        const name = editNameInput.value.trim() || 'Игрок';
+        profile.name = name.slice(0, 16);
         saveProfile();
-        playSuccess();
-        chanceText.innerHTML = `<span style="color:#4ade80; font-weight:bold;">🎉 УСПЕХ — получено: ${dstItem.name}</span>`;
-    } else {
-        playFail();
-        chanceText.innerHTML = `<span style="color:#f87171; font-weight:bold;">💥 НЕУДАЧА — предмет потерян</span>`;
+        editNameModal.classList.remove('active');
+        renderProfile();
+    });
+    editAvatarClose.addEventListener('click', () => editAvatarModal.classList.remove('active'));
+
+    // РЕНДЕР КЕЙСОВ
+    function renderCaseGrid() {
+        caseGrid.innerHTML = '';
+        Object.keys(caseConfig).forEach(key => {
+            const cfg = caseConfig[key];
+            const price = casePrices[key];
+            const card = document.createElement('div');
+            card.className = 'case-card ' + key;
+            card.dataset.case = key;
+            card.innerHTML = `
+                <div class="case-art">
+                    <div class="case-glow"></div>
+                    <span class="case-emoji">${cfg.emoji}</span>
+                    <img src="${cfg.img}" alt="${cfg.title}" loading="lazy">
+                </div>
+                <div class="case-name">${cfg.title}</div>
+                <div class="case-desc">${cfg.desc}</div>
+                <div class="case-price">🪙 ${price}</div>
+            `;
+            caseGrid.appendChild(card);
+        });
+
+        document.querySelectorAll('.case-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const key = card.dataset.case;
+                const price = casePrices[key];
+                if (balance < price) {
+                    card.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-6px)' },
+                        { transform: 'translateX(6px)' },
+                        { transform: 'translateX(0)' }
+                    ], { duration: 250 });
+                    return;
+                }
+
+                currentCase = cases[key];
+                currentCaseKey = key;
+                caseTitle.textContent = caseConfig[key].title;
+                updateStartBtn();
+
+                // Показываем превью кейса
+                casePreviewImg.src = caseConfig[key].img;
+                casePreview.style.display = 'flex';
+
+                strip.innerHTML = '';
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0)';
+                stripWrapper.classList.remove('active');
+                startBtn.classList.add('active');
+                startBtn.disabled = false;
+                sellBtn.classList.remove('active');
+                resultEl.classList.remove('show');
+                resultEl.textContent = '';
+                pendingPhoto = null;
+
+                switchScreen('spin');
+            });
+        });
+
+        updateCaseAvailability();
     }
 
-    if (!inventory[selectedSrcId]) {
-        selectedSrcId = null;
-        autoDstId = null;
-    } else {
-        recalcUpgrade();
-    }
-
-    renderInventory();
-    renderCollection();
-    renderUpgradeInventory();
-    isUpgrading = false;
-
-    setTimeout(() => {
-        updateUpgradeUI();
-        renderUpgradeInventory();
-    }, 1500);
+    // ИНВЕНТАРЬ
+    function addToInventory(photo, count = 1) {
+        if (!inventory[photo.id]) {
+            inventory[photo.id] = {
+                count: 0, num: photo.num, name: photo.name,
+                rarity: photo.rarity, price: photo.price
+            };
         }
-        // ============================================
+        inventory[photo.id].count += count;
+        studied[photo.id] = true;
+        saveInventory();
+        saveStudied();
+    }
+
+    function removeFromInventory(photoId, count = 1) {
+        if (!inventory[photoId]) return false;
+        inventory[photoId].count -= count;
+        if (inventory[photoId].count <= 0) delete inventory[photoId];
+        saveInventory();
+        return true;
+    }
+
+    function renderInventory() {
+        inventoryGrid.innerHTML = '';
+        const ids = Object.keys(inventory);
+        if (ids.length === 0) {
+            inventoryEmpty.style.display = 'block';
+            return;
+        }
+        inventoryEmpty.style.display = 'none';
+
+        ids.forEach(id => {
+            const item = inventory[id];
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${item.rarity}`;
+            el.innerHTML = `
+                ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="inv-name">${item.name || 'Карточка'}</div>
+                <div class="inv-count">×${item.count}</div>
+                <div class="inv-rarity">${rarityNames[item.rarity]}</div>
+            `;
+            el.addEventListener('click', () => openItemModal(id));
+            inventoryGrid.appendChild(el);
+        });
+    }
+
+    // МОДАЛКА ПРЕДМЕТА
+    let modalPhotoId = null;
+
+    function openItemModal(id) {
+        const item = inventory[id];
+        if (!item) return;
+        modalPhotoId = id;
+        modalImgWrap.innerHTML = makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity });
+        modalName.textContent = item.name || 'Карточка';
+        modalRarity.textContent = rarityNames[item.rarity];
+        modalRarity.style.color = rarityColors[item.rarity];
+        modalCount.textContent = `В инвентаре: ${item.count}`;
+        modalPrice.textContent = `Цена продажи: 🪙 ${item.price}`;
+        itemModal.classList.add('active');
+    }
+
+    modalClose.addEventListener('click', () => { itemModal.classList.remove('active'); modalPhotoId = null; });
+
+    modalSell.addEventListener('click', () => {
+        if (!modalPhotoId || !inventory[modalPhotoId]) return;
+        const item = inventory[modalPhotoId];
+        const price = item.price;
+        removeFromInventory(modalPhotoId, 1);
+        balance += price;
+        profile.stats.sold++;
+        profile.stats.earned += price;
+        if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
+        saveProfile();
+        updateBalance();
+        playCoin();
+        itemModal.classList.remove('active');
+        modalPhotoId = null;
+        renderInventory();
+        renderCollection();
+        renderUpgradeInventory();
+    });
+
+    // АПГРЕЙД
+    function pickAutoTarget(srcRarity, chance) {
+        const srcItem = inventory[selectedSrcId];
+        if (!srcItem) return null;
+        const srcPrice = srcItem.price;
+        const srcIdx = rarityOrder.indexOf(srcRarity);
+
+        const candidates = [];
+        for (const id in allPhotos) {
+            const p = allPhotos[id];
+            const dstIdx = rarityOrder.indexOf(p.rarity);
+            if (dstIdx <= srcIdx) continue;
+            const actualChance = srcPrice / p.price;
+            const dist = Math.abs(actualChance - chance);
+            candidates.push({ photo: p, dist });
+        }
+        if (candidates.length === 0) return null;
+        candidates.sort((a, b) => a.dist - b.dist);
+        return candidates[0].photo.id;
+    }
+
+    function recalcUpgrade() {
+        if (!selectedSrcId || !inventory[selectedSrcId]) { autoDstId = null; updateUpgradeUI(); return; }
+        const srcItem = inventory[selectedSrcId];
+        const srcIdx = rarityOrder.indexOf(srcItem.rarity);
+        if (srcIdx >= rarityOrder.length - 1) { autoDstId = null; updateUpgradeUI(); return; }
+        autoDstId = pickAutoTarget(srcItem.rarity, upgradeChance);
+        updateUpgradeUI();
+    }
+
+    function getRealChance() {
+        if (!selectedSrcId || !autoDstId) return 0;
+        const src = inventory[selectedSrcId];
+        const dst = allPhotos[autoDstId];
+        if (!src || !dst) return 0;
+        return Math.min(0.95, Math.max(0.01, src.price / dst.price));
+    }
+
+    function getTargetPhoto() { return autoDstId ? allPhotos[autoDstId] || null : null; }
+
+    function updateUpgradeUI() {
+        const chance = getRealChance();
+        const armed = selectedSrcId && autoDstId;
+
+        if (chance > 0) chanceCircleValue.textContent = Math.round(chance * 100) + '%';
+        else chanceCircleValue.textContent = '—';
+
+        if (selectedSrcId && inventory[selectedSrcId]) {
+            const item = inventory[selectedSrcId];
+            srcSwap.classList.add('filled');
+            srcSwap.innerHTML = `
+                ${makeCardSVG({ id: selectedSrcId, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name || 'Карточка'}</div>
+            `;
+        } else {
+            srcSwap.classList.remove('filled');
+            srcSwap.innerHTML = `<span class="swap-plus">+</span>`;
+        }
+
+        if (autoDstId && allPhotos[autoDstId]) {
+            const t = allPhotos[autoDstId];
+            dstSwap.classList.add('filled');
+            dstSwap.innerHTML = `
+                ${makeCardSVG(t)}
+                <div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>
+            `;
+        } else {
+            dstSwap.classList.remove('filled');
+            dstSwap.innerHTML = `<span class="swap-plus">?</span>`;
+        }
+
+        if (selectedSrcId && autoDstId) {
+            const t = allPhotos[autoDstId];
+            chanceText.innerHTML = `Шанс: <b>${Math.round(chance * 100)}%</b> · ${t.name} (${t.price} 🪙)`;
+        } else if (selectedSrcId) {
+            chanceText.textContent = 'Нет подходящей цели — нужна карточка выше по редкости';
+        } else {
+            chanceText.textContent = 'Выбери карточку из инвентаря ниже';
+        }
+
+        if (armed && !isUpgrading) {
+            upgradeMainBtn.disabled = false;
+        } else {
+            upgradeMainBtn.disabled = true;
+        }
+    }
+
+    function renderUpgradeInventory() {
+        upgradeInventoryGrid.innerHTML = '';
+        const ids = Object.keys(inventory);
+
+        if (ids.length === 0) {
+            upgradeInventoryGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-mute); padding: 30px 20px; font-size: 12px;">Инвентарь пуст</div>';
+            return;
+        }
+
+        ids.forEach(id => {
+            const item = inventory[id];
+            const idx = rarityOrder.indexOf(item.rarity);
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${item.rarity}`;
+            el.innerHTML = `
+                ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="inv-name">${item.name || 'Карточка'}</div>
+                <div class="inv-count">×${item.count}</div>
+                <div class="inv-rarity">${rarityNames[item.rarity]}</div>
+            `;
+            el.addEventListener('click', () => {
+                if (isUpgrading) return;
+                if (idx >= rarityOrder.length - 1) {
+                    el.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-5px)' },
+                        { transform: 'translateX(5px)' },
+                        { transform: 'translateX(0)' }
+                    ], { duration: 200 });
+                    return;
+                }
+                selectedSrcId = id;
+                recalcUpgrade();
+                renderUpgradeInventory();
+            });
+            upgradeInventoryGrid.appendChild(el);
+        });
+    }
+
+    srcSwap.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (selectedSrcId) {
+            selectedSrcId = null;
+            autoDstId = null;
+            updateUpgradeUI();
+            renderUpgradeInventory();
+            return;
+        }
+        upgradeInventoryGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    dstSwap.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (!selectedSrcId) { alert('Сначала выбери карточку из инвентаря'); return; }
+        const t = getTargetPhoto();
+        if (!t) { alert('Нет подходящей цели'); return; }
+        alert(`Цель: ${t.name}\n${rarityNames[t.rarity]}\nЦена: 🪙 ${t.price}\nШанс: ${Math.round(getRealChance()*100)}%`);
+    });
+
+    document.querySelectorAll('.mode-btn[data-chance]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (isUpgrading) return;
+            document.querySelectorAll('.mode-btn[data-chance]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            upgradeChance = parseFloat(btn.dataset.chance);
+            if (selectedSrcId) recalcUpgrade();
+        });
+    });
+
+    // УЛУЧШИТЬ — крутится стрелка снаружи
+    upgradeMainBtn.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (!selectedSrcId || !autoDstId) return;
+        if (!inventory[selectedSrcId]) return;
+
+        const srcItem = inventory[selectedSrcId];
+        const dstItem = allPhotos[autoDstId];
+        if (!srcItem || !dstItem) return;
+
+        const chance = getRealChance();
+        const success = Math.random() < chance;
+
+        isUpgrading = true;
+        upgradeMainBtn.disabled = true;
+        playStart();
+
+        clearInterval(tickInterval);
+        let tickCount = 0;
+        tickInterval = setInterval(() => {
+            playUpgradeTick();
+            tickCount++;
+            if (tickCount > 25) {
+                clearInterval(tickInterval);
+                tickInterval = setInterval(() => playUpgradeTick(), 200);
+            }
+        }, 80);
+
+        // Стрелка стартует снизу, крутится 5 оборотов, останавливается
+        let finalAngle;
+        const chanceAngle = chance * 360;
+
+        if (success) {
+            // В зелёной зоне (условно — нижняя часть круга ~ 0-180)
+            const inGreen = Math.random() * 0.8 + 0.1;
+            finalAngle = inGreen * 180;
+        } else {
+            // В красной зоне (верхняя часть ~ 180-360)
+            const inRed = Math.random() * 0.8 + 0.1;
+            finalAngle = 180 + inRed * 180;
+        }
+
+        const totalRotation = 360 * 5 + finalAngle;
+        outerArrow.style.transition = 'none';
+        outerArrow.style.transform = 'rotate(0deg)';
+        void outerArrow.offsetWidth;
+        outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
+        outerArrow.style.transform = `rotate(${totalRotation}deg)`;
+
+        setTimeout(() => {
+            clearInterval(tickInterval);
+            tickInterval = null;
+            showUpgradeResult(srcItem, dstItem, success, chance);
+        }, 4200);
+    });
+
+    function showUpgradeResult(srcItem, dstItem, success, chance) {
+        // Сбрасываем стрелку в нормальный угол
+        const curRot = parseFloat((outerArrow.style.transform.match(/rotate\(([\d.\-]+)deg\)/) || [0, 0])[1]);
+        const finalAngle = ((curRot % 360) + 360) % 360;
+        outerArrow.style.transition = 'none';
+        outerArrow.style.transform = `rotate(${finalAngle}deg)`;
+        void outerArrow.offsetWidth;
+        outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
+
+        removeFromInventory(selectedSrcId, 1);
+
+        if (success) {
+            addToInventory(dstItem, 1);
+            profile.stats.upgrades++;
+            saveProfile();
+            playSuccess();
+            chanceText.innerHTML = `<span style="color:#4ade80; font-weight:bold;">🎉 УСПЕХ — получено: ${dstItem.name}</span>`;
+        } else {
+            playFail();
+            chanceText.innerHTML = `<span style="color:#f87171; font-weight:bold;">💥 НЕУДАЧА — предмет потерян</span>`;
+        }
+
+        if (!inventory[selectedSrcId]) {
+            selectedSrcId = null;
+            autoDstId = null;
+        } else {
+            recalcUpgrade();
+        }
+
+        renderInventory();
+        renderCollection();
+        renderUpgradeInventory();
+        isUpgrading = false;
+
+        setTimeout(() => {
+            updateUpgradeUI();
+            renderUpgradeInventory();
+        }, 1500);
+    }
+
     // ВКЛАДКИ
-    // ============================================
     function setActiveTab(activeBtn) {
         [tabCases, tabWork, tabUpgradeNav, tabInventory].forEach(b => b.classList.remove('active'));
         activeBtn.classList.add('active');
@@ -3442,9 +2797,7 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
         renderInventory();
     });
 
-    // ============================================
     // РАБОТА
-    // ============================================
     workBtn.addEventListener('click', (e) => {
         balance += 1;
         profile.stats.earned += 1;
@@ -3473,7 +2826,6 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
 
     backBtn.addEventListener('click', () => {
         if (isSpinning) return;
-        if (pendingPhoto) { alert('Сначала реши: забрать или продать фото!'); return; }
         setActiveTab(tabCases);
         viewCases.style.display = 'block';
         viewInventory.style.display = 'none';
@@ -3482,9 +2834,7 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
         renderInventory();
     });
 
-    // ============================================
-    // ЛЕНТА КЕЙСА
-    // ============================================
+    // ЛЕНТА
     function shuffle(array) {
         const arr = [...array];
         for (let i = arr.length - 1; i > 0; i--) {
@@ -3515,6 +2865,7 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
         }
     }
 
+    // КРУТКА
     function spin() {
         if (isSpinning) return;
         const price = casePrices[currentCaseKey];
@@ -3531,12 +2882,15 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
         updateBalance();
 
         isSpinning = true;
-        startBtn.classList.add('hidden');
-        resultActions.classList.remove('active');
+        startBtn.classList.remove('active');
+        startBtn.disabled = true;
+        sellBtn.classList.remove('active');
         resultEl.classList.remove('show');
         resultEl.textContent = '';
         pendingPhoto = null;
 
+        // Скрываем превью кейса, показываем ленту
+        casePreview.style.display = 'none';
         stripWrapper.classList.add('active');
         buildStrip();
 
@@ -3588,60 +2942,56 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
             const color = rarityColors[rarity];
             const cardPrice = wonPhoto.price;
 
+            // АВТОМАТИЧЕСКИ в инвентарь
+            addToInventory(wonPhoto);
+            updateBestDrop(wonPhoto);
             playReveal();
-            pendingPhoto = wonPhoto;
 
+            pendingPhoto = wonPhoto;
             resultEl.innerHTML =
                 `Выпало: <b style="color:${color}">${wonPhoto.name}</b><br>` +
                 `<span style="color:${color}; font-size:13px;">${rarityNames[rarity]}</span><br>` +
-                `<span style="color:#888;font-size:13px;">Забрать или продать за 🪙 ${cardPrice}?</span>`;
+                `<span style="color:#888;font-size:12px;">Уже в инвентаре. Продать за 🪙 ${cardPrice}?</span>`;
             resultEl.classList.add('show');
 
-            sellBtn.textContent = `Продать — ${cardPrice} 🪙`;
-            resultActions.classList.add('active');
+            sellBtn.textContent = `💰 ПРОДАТЬ за ${cardPrice} 🪙`;
+            sellBtn.classList.add('active');
             isSpinning = false;
         }, duration + 50);
     }
 
-    keepBtn.addEventListener('click', () => {
-        if (!pendingPhoto) return;
-        addToInventory(pendingPhoto);
-        updateBestDrop(pendingPhoto);
-        playCoin();
-        resultEl.innerHTML =
-            `Забрал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br>` +
-            `<span style="color:#888;font-size:13px;">Карточка в инвентаре</span>`;
-        resultEl.classList.add('show');
-        resultActions.classList.remove('active');
-        pendingPhoto = null;
-        startBtn.classList.remove('hidden');
-    });
-
+    // ПРОДАТЬ
     sellBtn.addEventListener('click', () => {
         if (!pendingPhoto) return;
         const price = pendingPhoto.price;
+        // Удаляем из инвентаря
+        removeFromInventory(pendingPhoto.id, 1);
         balance += price;
         profile.stats.sold++;
         profile.stats.earned += price;
         if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
-        studied[pendingPhoto.id] = true;
-        saveStudied();
         saveProfile();
         updateBalance();
         playCoin();
+
         resultEl.innerHTML =
             `Продал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br>` +
             `<span style="color:#fbbf24;">+ ${price} 🪙</span>`;
         resultEl.classList.add('show');
-        resultActions.classList.remove('active');
+        sellBtn.classList.remove('active');
         pendingPhoto = null;
-        startBtn.classList.remove('hidden');
+
+        // Показываем кнопку ОТКРЫТЬ снова
+        casePreview.style.display = 'flex';
+        startBtn.classList.add('active');
+        startBtn.disabled = false;
+        stripWrapper.classList.remove('active');
+        updateStartBtn();
     });
 
     function updateBestDrop(photo) {
         const oldBest = profile.stats.bestDrop;
         const newIdx = rarityOrder.indexOf(photo.rarity);
-
         if (!oldBest) {
             profile.stats.bestDrop = { name: photo.name, num: photo.num, rarity: photo.rarity, price: photo.price };
         } else {
@@ -3653,9 +3003,7 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
         saveProfile();
     }
 
-    // ============================================
-    // СТАРТ
-    // ============================================
+    // ЗАПУСК
     startBtn.addEventListener('click', spin);
 
     updateSoundIcon();
@@ -3674,7 +3022,7 @@ function showUpgradeResult(srcItem, dstItem, success, chance) {
     document.addEventListener('click', () => {
         if (soundEnabled) getAudioCtx();
     }, { once: true });
-</script>
+    </script>
 
 </body>
     </html>
