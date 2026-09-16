@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PashaDrop v5.0 Beta</title>
+    <title>PashaDrop v4.5 Beta</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -123,7 +123,6 @@
 
         .sound-toggle:hover { border-color: rgba(225, 29, 72, 0.4); }
 
-        /* Меню (тоже прилипает) */
         .top-bar {
             width: 100%;
             max-width: 720px;
@@ -207,10 +206,12 @@
             align-items: center;
         }
 
-        .case-card.silver { background: radial-gradient(ellipse at 50% 100%, rgba(192, 192, 192, 0.15), transparent 70%), var(--bg-card); }
-        .case-card.zeus { background: radial-gradient(ellipse at 50% 100%, rgba(59, 130, 246, 0.2), transparent 70%), var(--bg-card); }
-        .case-card.dustin { background: radial-gradient(ellipse at 50% 100%, rgba(251, 191, 36, 0.2), transparent 70%), var(--bg-card); }
-        .case-card.mirage { background: radial-gradient(ellipse at 50% 100%, rgba(168, 85, 247, 0.2), transparent 70%), var(--bg-card); }
+        .case-card.silver { background: radial-gradient(ellipse at 50% 100%, rgba(230, 130, 40, 0.25), transparent 70%), var(--bg-card); }
+        .case-card.zeus { background: radial-gradient(ellipse at 50% 100%, rgba(150, 100, 180, 0.25), transparent 70%), var(--bg-card); }
+        .case-card.dustin { background: radial-gradient(ellipse at 50% 100%, rgba(59, 100, 200, 0.25), transparent 70%), var(--bg-card); }
+        .case-card.mirage { background: radial-gradient(ellipse at 50% 100%, rgba(230, 180, 40, 0.25), transparent 70%), var(--bg-card); }
+        .case-card.kalash { background: radial-gradient(ellipse at 50% 100%, rgba(200, 40, 100, 0.25), transparent 70%), var(--bg-card); }
+        .case-card.chingis { background: radial-gradient(ellipse at 50% 100%, rgba(230, 180, 60, 0.25), transparent 70%), var(--bg-card); }
 
         .case-card::before {
             content: '';
@@ -235,21 +236,26 @@
         .case-art {
             position: relative;
             width: 100%;
-            height: 110px;
+            height: 130px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 10px;
         }
 
-        .case-art svg {
-            width: 120px;
+        .case-art img {
+            max-width: 100%;
+            max-height: 130px;
+            width: auto;
             height: auto;
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+            object-fit: contain;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
             transition: transform 0.3s;
         }
 
-        .case-card:hover .case-art svg { transform: translateY(-3px) scale(1.05); }
+        .case-card:hover .case-art img {
+            transform: translateY(-4px) scale(1.05);
+        }
 
         .case-art .case-glow {
             position: absolute;
@@ -259,15 +265,18 @@
             width: 90px;
             height: 16px;
             border-radius: 50%;
-            filter: blur(10px);
+            filter: blur(12px);
             opacity: 0.5;
             z-index: -1;
+            pointer-events: none;
         }
 
-        .case-card.silver .case-glow { background: rgba(192, 192, 192, 0.7); }
-        .case-card.zeus .case-glow { background: rgba(59, 130, 246, 0.7); }
-        .case-card.dustin .case-glow { background: rgba(251, 191, 36, 0.7); }
-        .case-card.mirage .case-glow { background: rgba(168, 85, 247, 0.7); }
+        .case-card.silver .case-glow { background: rgba(240, 140, 40, 0.8); }
+        .case-card.zeus .case-glow { background: rgba(170, 120, 200, 0.8); }
+        .case-card.dustin .case-glow { background: rgba(60, 120, 220, 0.8); }
+        .case-card.mirage .case-glow { background: rgba(240, 190, 40, 0.8); }
+        .case-card.kalash .case-glow { background: rgba(220, 50, 110, 0.8); }
+        .case-card.chingis .case-glow { background: rgba(240, 190, 60, 0.8); }
 
         .case-emoji {
             position: absolute;
@@ -278,7 +287,7 @@
         }
 
         .case-name { font-size: 14px; font-weight: 800; margin-bottom: 3px; color: #fff; }
-        .case-desc { font-size: 10px; color: var(--text-mute); margin-bottom: 10px; }
+        .case-desc { font-size: 10px; color: var(--text-mute); margin-bottom: 10px; letter-spacing: 0.2px; }
 
         .case-price {
             display: inline-block;
@@ -420,7 +429,7 @@
             background: rgba(0, 0, 0, 0.85);
         }
 
-        /* РЕДКОСТИ */
+        /* ============ РЕДКОСТИ ============ */
         .rarity-common    { border-color: #94a3b8; }
         .rarity-common .rarity-badge    { color: #94a3b8; }
         .rarity-uncommon  { border-color: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.3); }
@@ -431,7 +440,9 @@
         .rarity-mythic .rarity-badge    { color: #ef4444; }
         .rarity-legendary { border-color: #f59e0b; box-shadow: 0 0 16px rgba(245, 158, 11, 0.6); }
         .rarity-legendary .rarity-badge { color: #f59e0b; }
-        .rarity-golden    { border-color: #facc15; box-shadow: 0 0 20px rgba(250, 204, 21, 0.7); }
+        .rarity-pink      { border-color: #ec4899; box-shadow: 0 0 20px rgba(236, 72, 153, 0.7); }
+        .rarity-pink .rarity-badge      { color: #ec4899; }
+        .rarity-golden    { border-color: #facc15; box-shadow: 0 0 22px rgba(250, 204, 21, 0.8); }
         .rarity-golden .rarity-badge    { color: #facc15; }
 
         .pointer {
@@ -549,10 +560,11 @@
         .inv-item.rarity-mythic .inv-rarity    { color: #ef4444; }
         .inv-item.rarity-legendary { border-color: #f59e0b; }
         .inv-item.rarity-legendary .inv-rarity { color: #f59e0b; }
+        .inv-item.rarity-pink      { border-color: #ec4899; }
+        .inv-item.rarity-pink .inv-rarity      { color: #ec4899; }
         .inv-item.rarity-golden    { border-color: #facc15; }
         .inv-item.rarity-golden .inv-rarity    { color: #facc15; }
 
-        /* Изученные (продал, но в коллекции — серая с меткой) */
         .inv-item.studied {
             filter: grayscale(0.85) brightness(0.55);
             opacity: 0.65;
@@ -690,7 +702,6 @@
             box-shadow: 0 0 12px rgba(225, 29, 72, 0.5);
         }
 
-        /* Прогресс по редкостям */
         .rarity-progress {
             display: flex;
             flex-wrap: wrap;
@@ -1140,8 +1151,8 @@
             .swap-areas { grid-template-columns: 1fr; }
             .swap-arrow { transform: rotate(90deg); }
             .swap-box { min-height: 180px; }
-            .case-art { height: 90px; }
-            .case-art svg { width: 100px; }
+            .case-art { height: 110px; }
+            .case-art img { max-height: 110px; }
             .profile-avatar { width: 76px; height: 76px; font-size: 40px; }
             .profile-name { font-size: 19px; }
             .avatar-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
@@ -1316,7 +1327,7 @@
                 <div class="collection-header">
                     <h2 style="margin: 0; padding: 0; border: none;">📚 Коллекция</h2>
                     <span style="font-size:13px; font-weight:800; color:#fff;">
-                        <span id="collectCount">0</span> / 60
+                        <span id="collectCount">0</span> / 120
                     </span>
                 </div>
                 <div class="collection-progress" style="margin-top:12px;">
@@ -1514,6 +1525,7 @@
         epic: 'Эпическая',
         mythic: 'Мифическая',
         legendary: 'Легендарная',
+        pink: 'Розовая',
         golden: 'Золотая'
     };
 
@@ -1523,48 +1535,160 @@
         epic: '#a855f7',
         mythic: '#ef4444',
         legendary: '#f59e0b',
+        pink: '#ec4899',
         golden: '#facc15'
     };
 
-    const rarityOrder = ['common', 'uncommon', 'epic', 'mythic', 'legendary', 'golden'];
+    const rarityOrder = ['common', 'uncommon', 'epic', 'mythic', 'legendary', 'pink', 'golden'];
 
-    const pricesByRarity = {
-        common: [12, 15, 17, 19, 22, 25, 29],
-        uncommon: [42, 47, 52, 58, 63, 68, 72, 76, 80, 84, 87, 90, 93, 96, 98, 99, 100],
-        epic: [105, 112, 120, 128, 135, 142, 150, 158, 165, 172, 178, 184, 190, 194, 197, 199, 200],
-        mythic: [220, 250, 280, 310, 340, 370, 400, 430, 460, 480, 500],
-        legendary: [560, 650, 750, 880, 999],
-        golden: [1100, 1500, 1999]
+    // ============================================
+    // ДИАПАЗОНЫ ЦЕН
+    // ============================================
+    const priceRanges = {
+        common: [10, 50],
+        uncommon: [50, 150],
+        epic: [150, 300],
+        mythic: [300, 700],
+        legendary: [700, 1800],
+        pink: [1800, 3000],
+        golden: [2500, 5000]
     };
 
+    // ============================================
+    // КЕЙСЫ — 6 штук
+    // ============================================
     const casePrices = {
-        silver: 50, zeus: 200, dustin: 500, mirage: 1000
+        silver: 75,
+        zeus: 200,
+        dustin: 500,
+        mirage: 1000,
+        kalash: 2000,
+        chingis: 3500
     };
 
     const caseConfig = {
-        silver: { title: 'Сильвер', emoji: '🥈', desc: 'Базовый', distribution: { common: 4, uncommon: 6, epic: 5 } },
-        zeus: { title: 'Зевс', emoji: '⚡', desc: 'Грозовой', distribution: { common: 3, uncommon: 5, epic: 5, mythic: 2 } },
-        dustin: { title: 'Дастин', emoji: '🏆', desc: 'Золотой', distribution: { uncommon: 4, epic: 5, mythic: 4, legendary: 2 } },
-        mirage: { title: 'Мираж', emoji: '🏜', desc: 'Топовый', distribution: { uncommon: 2, epic: 2, mythic: 5, legendary: 3, golden: 3 } }
+        silver: {
+            title: 'Сильвер',
+            emoji: '🥈',
+            desc: 'Базовый',
+            img: 'images/silver.png',
+            distribution: { common: 5, uncommon: 10, epic: 5 }
+        },
+        zeus: {
+            title: 'Зевс',
+            emoji: '⚡',
+            desc: 'Грозовой',
+            img: 'images/zeus.png',
+            distribution: { uncommon: 5, epic: 11, mythic: 4 }
+        },
+        dustin: {
+            title: 'Дастин',
+            emoji: '🏆',
+            desc: 'Золотой',
+            img: 'images/dustin.png',
+            distribution: { epic: 4, mythic: 12, legendary: 4 }
+        },
+        mirage: {
+            title: 'Мираж',
+            emoji: '🏜',
+            desc: 'Топовый',
+            img: 'images/mirage.png',
+            distribution: { mythic: 6, legendary: 12, golden: 2 }
+        },
+        kalash: {
+            title: 'Калаш',
+            emoji: '🔫',
+            desc: 'Розовый эксклюзив',
+            img: 'images/kalash.png',
+            distribution: { pink: 20 }
+        },
+        chingis: {
+            title: 'Чингисхан',
+            emoji: '⚔️',
+            desc: 'Легендарный',
+            img: 'images/chingis.png',
+            distribution: { legendary: 2, golden: 18 }
+        }
     };
 
     // ============================================
-    // ГЕНЕРАЦИЯ 60 КАРТОЧЕК
+    // ГЕНЕРАЦИЯ 120 КАРТОЧЕК
     // ============================================
-    const priceIndex = { common: 0, uncommon: 0, epic: 0, mythic: 0, legendary: 0, golden: 0 };
+    // Для каждой редкости считаем, сколько всего карточек будет
+    const totalByRarityCount = {};
+    rarityOrder.forEach(r => { totalByRarityCount[r] = 0; });
+    Object.values(caseConfig).forEach(cfg => {
+        Object.entries(cfg.distribution).forEach(([rar, cnt]) => {
+            totalByRarityCount[rar] += cnt;
+        });
+    });
+
+    // Генерируем уникальные цены внутри диапазона
+    function generatePrices(rarity, count) {
+        const [min, max] = priceRanges[rarity];
+        const prices = [];
+        const range = max - min;
+        for (let i = 0; i < count; i++) {
+            // Равномерно распределяем по диапазону + небольшое смещение
+            const base = min + (range / (count + 1)) * (i + 1);
+            const variation = (Math.random() - 0.5) * (range / count) * 0.5;
+            let price = Math.round(base + variation);
+            // Округляем до 5 монет (кроме дорогих редкостей)
+            if (rarity === 'common' || rarity === 'uncommon' || rarity === 'epic') {
+                price = Math.round(price / 5) * 5;
+            } else if (rarity === 'mythic' || rarity === 'legendary') {
+                price = Math.round(price / 10) * 10;
+            } else {
+                price = Math.round(price / 50) * 50;
+            }
+            // Гарантируем, что в диапазоне
+            price = Math.max(min, Math.min(max, price));
+            prices.push(price);
+        }
+        // Сортируем по возрастанию и делаем уникальными
+        prices.sort((a, b) => a - b);
+        for (let i = 1; i < prices.length; i++) {
+            if (prices[i] <= prices[i - 1]) {
+                prices[i] = prices[i - 1] + (rarity === 'golden' || rarity === 'pink' ? 50 : rarity === 'common' ? 1 : 5);
+            }
+        }
+        // Проверяем, что не вылезли за max
+        for (let i = prices.length - 1; i >= 0; i--) {
+            if (prices[i] > max) {
+                prices[i] = max - (prices.length - 1 - i) * (rarity === 'golden' || rarity === 'pink' ? 50 : 5);
+            }
+        }
+        return prices;
+    }
+
+    // Генерируем все цены по редкостям
+    const allPricesByRarity = {};
+    rarityOrder.forEach(rarity => {
+        const count = totalByRarityCount[rarity];
+        allPricesByRarity[rarity] = count > 0 ? generatePrices(rarity, count) : [];
+    });
+
+    // Индексы для взятия цен
+    const priceIndex = {};
+    rarityOrder.forEach(r => { priceIndex[r] = 0; });
+
     let cardIdCounter = 1;
     const cases = {};
 
+    // Собираем все карточки по кейсам
     Object.keys(caseConfig).forEach(caseKey => {
         const cfg = caseConfig[caseKey];
         const photos = [];
+
         rarityOrder.forEach(rarity => {
             const count = cfg.distribution[rarity] || 0;
             for (let i = 0; i < count; i++) {
-                const priceList = pricesByRarity[rarity];
                 const idx = priceIndex[rarity];
-                const price = priceList[idx] !== undefined ? priceList[idx] : priceList[priceList.length - 1];
+                const price = allPricesByRarity[rarity][idx] !== undefined
+                    ? allPricesByRarity[rarity][idx]
+                    : priceRanges[rarity][0];
                 priceIndex[rarity]++;
+
                 const num = cardIdCounter++;
                 photos.push({
                     id: caseKey + '_' + num,
@@ -1576,21 +1700,27 @@
                 });
             }
         });
-        cases[caseKey] = { title: cfg.title, emoji: cfg.emoji, photos: photos };
+
+        cases[caseKey] = {
+            title: cfg.title,
+            emoji: cfg.emoji,
+            photos: photos
+        };
     });
 
+    // Все карточки по id
     const allPhotos = {};
     Object.values(cases).forEach(c => c.photos.forEach(p => { allPhotos[p.id] = p; }));
 
     const ALL_CARD_IDS = Object.keys(allPhotos);
 
-    // Всего карточек по редкости (для прогресса)
+    // Всего карточек по каждой редкости (для коллекции)
     const totalByRarity = {};
     rarityOrder.forEach(r => { totalByRarity[r] = 0; });
     Object.values(allPhotos).forEach(p => { totalByRarity[p.rarity]++; });
 
     // ============================================
-    // SVG-ГЕНЕРАТОРЫ
+    // SVG-ЗАГЛУШКА ДЛЯ КАРТОЧКИ
     // ============================================
     function makeCardSVG(photo) {
         const color = rarityColors[photo.rarity];
@@ -1608,45 +1738,6 @@
                 <rect width="${w}" height="${h}" fill="url(#bg${photo.id})"/>
                 <text x="${w/2}" y="${h/2 + 15}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="42" fill="${color}" opacity="0.85">#${num}</text>
                 <text x="${w/2}" y="${h - 30}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="${color}" opacity="0.6">${photo.price} 🪙</text>
-            </svg>
-        `;
-    }
-
-    function makeCaseSVG(caseKey) {
-        const configs = {
-            silver: { body: '#a8a8b0', lid: '#c0c0c8', stroke: '#5a5a62', emblem: '🥈', emblemColor: '#fff' },
-            zeus: { body: '#3b5bbf', lid: '#4a6ce0', stroke: '#1a2a5a', emblem: '⚡', emblemColor: '#fbbf24' },
-            dustin: { body: '#d49a2a', lid: '#e8b040', stroke: '#7a5210', emblem: '🏆', emblemColor: '#fff' },
-            mirage: { body: '#7a3a9e', lid: '#9250b8', stroke: '#3a1a5a', emblem: '🏜', emblemColor: '#fbbf24' }
-        };
-        const c = configs[caseKey];
-        return `
-            <svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="lidGrad${caseKey}" x1="0" y1="0" x2="1" y2="0">
-                        <stop offset="0%" stop-color="${c.lid}"/>
-                        <stop offset="100%" stop-color="${c.body}"/>
-                    </linearGradient>
-                </defs>
-                <ellipse cx="100" cy="122" rx="78" ry="6" fill="rgba(0,0,0,0.5)"/>
-                <path d="M 25 45 L 25 105 Q 25 115 35 115 L 165 115 Q 175 115 175 105 L 175 45 Z" fill="${c.body}" stroke="${c.stroke}" stroke-width="2"/>
-                <path d="M 25 45 L 45 20 L 155 20 L 175 45 Z" fill="url(#lidGrad${caseKey})" stroke="${c.stroke}" stroke-width="2"/>
-                <line x1="50" y1="22" x2="42" y2="43" stroke="${c.stroke}" stroke-width="1.5" opacity="0.5"/>
-                <line x1="75" y1="22" x2="67" y2="43" stroke="${c.stroke}" stroke-width="1.5" opacity="0.5"/>
-                <line x1="100" y1="22" x2="100" y2="43" stroke="${c.stroke}" stroke-width="1.5" opacity="0.5"/>
-                <line x1="125" y1="22" x2="133" y2="43" stroke="${c.stroke}" stroke-width="1.5" opacity="0.5"/>
-                <line x1="150" y1="22" x2="158" y2="43" stroke="${c.stroke}" stroke-width="1.5" opacity="0.5"/>
-                <rect x="80" y="10" width="40" height="12" rx="2" fill="#0a0a10" stroke="#333" stroke-width="1"/>
-                <rect x="88" y="12" width="24" height="4" fill="#2a2a3a"/>
-                <rect x="30" y="45" width="8" height="20" rx="1" fill="#0a0a10"/>
-                <rect x="95" y="45" width="10" height="22" rx="1" fill="#0a0a10"/>
-                <rect x="160" y="50" width="12" height="18" rx="2" fill="#0a0a10"/>
-                <rect x="162" y="44" width="8" height="8" rx="4" fill="none" stroke="#666" stroke-width="1.5"/>
-                <circle cx="100" cy="78" r="18" fill="#0a0a10" opacity="0.85"/>
-                <text x="100" y="86" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="${c.emblemColor}">${c.emblem}</text>
-                <line x1="25" y1="45" x2="175" y2="45" stroke="${c.stroke}" stroke-width="2"/>
-                <line x1="25" y1="70" x2="175" y2="70" stroke="${c.stroke}" stroke-width="1" opacity="0.4"/>
-                <line x1="25" y1="95" x2="175" y2="95" stroke="${c.stroke}" stroke-width="1" opacity="0.4"/>
             </svg>
         `;
     }
@@ -1754,7 +1845,7 @@
     let currentCaseKey = null;
     let isSpinning = false;
     let inventory = {};
-    let studied = {}; // Изученные карточки (были в инвентаре когда-либо)
+    let studied = {};
     let pendingPhoto = null;
 
     let upgradeChance = 0.5;
@@ -1773,17 +1864,16 @@
         }
     };
 
-    // Коллекция — фильтр
     let collectionFilter = 'all';
 
     // ============================================
     // ХРАНИЛИЩЕ
     // ============================================
-    const STORAGE_BALANCE = 'pashadrop_balance_v5';
-    const STORAGE_INVENTORY = 'pashadrop_inventory_v5';
-    const STORAGE_STUDIED = 'pashadrop_studied_v5';
-    const STORAGE_SOUND = 'pashadrop_sound_v5';
-    const STORAGE_PROFILE = 'pashadrop_profile_v5';
+    const STORAGE_BALANCE = 'pashadrop_balance_v45';
+    const STORAGE_INVENTORY = 'pashadrop_inventory_v45';
+    const STORAGE_STUDIED = 'pashadrop_studied_v45';
+    const STORAGE_SOUND = 'pashadrop_sound_v45';
+    const STORAGE_PROFILE = 'pashadrop_profile_v45';
 
     let balance = parseInt(localStorage.getItem(STORAGE_BALANCE));
     if (isNaN(balance)) balance = 50;
@@ -1807,7 +1897,6 @@
     } catch(e) {}
 
     if (localStorage.getItem(STORAGE_SOUND) === '0') soundEnabled = false;
-    updateSoundIcon();
 
     function saveInventory() {
         try { localStorage.setItem(STORAGE_INVENTORY, JSON.stringify(inventory)); } catch(e) {}
@@ -1847,7 +1936,7 @@
     });
 
     // ============================================
-    // ПРОФИЛЬ
+    // ПРОФИЛЬ — аватарки
     // ============================================
     const AVATARS = ['🐱', '🐶', '🦊', '🐼', '🐸', '🐷', '🐯', '🦁', '🐺', '🐵', '🐰', '🐭', '🐹', '🐻', '🐨', '🐮', '🐔', '🐧', '🦅', '🦉', '🐴', '🦄'];
 
@@ -1903,6 +1992,28 @@
         welcomeModal.classList.add('active');
     }
 
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function switchScreen(name) {
+        screenChoose.classList.remove('active');
+        screenSpin.classList.remove('active');
+        screenUpgrade.classList.remove('active');
+        screenProfile.classList.remove('active');
+
+        if (name === 'choose') screenChoose.classList.add('active');
+        else if (name === 'spin') screenSpin.classList.add('active');
+        else if (name === 'upgrade') screenUpgrade.classList.add('active');
+        else if (name === 'profile') screenProfile.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+        // ============================================
+    // ПРОФИЛЬ — рендер
+    // ============================================
     function renderProfile() {
         profileAvatar.textContent = profile.avatar;
         profileName.innerHTML = `${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
@@ -1934,44 +2045,9 @@
         renderCollection();
     }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
     // ============================================
     // КОЛЛЕКЦИЯ
     // ============================================
-    function renderRarityProgress() {
-        rarityProgress.innerHTML = '';
-
-        // Чип "Все"
-        const allChip = document.createElement('div');
-        allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
-        allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/60</span>`;
-        allChip.addEventListener('click', () => {
-            collectionFilter = 'all';
-            renderCollection();
-        });
-        rarityProgress.appendChild(allChip);
-
-        // Чипы по редкостям
-        rarityOrder.forEach(rarity => {
-            const total = totalByRarity[rarity];
-            const collected = getCollectedByRarity(rarity);
-            const chip = document.createElement('div');
-            chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
-            chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
-            chip.addEventListener('click', () => {
-                collectionFilter = rarity;
-                renderCollection();
-            });
-            rarityProgress.appendChild(chip);
-        });
-    }
-
-    // Считаем "изученные" — из inventory + studied
     function isStudied(id) {
         return studied[id] === true || (inventory[id] && inventory[id].count > 0);
     }
@@ -1984,16 +2060,42 @@
         return ALL_CARD_IDS.filter(id => allPhotos[id].rarity === rarity && isStudied(id)).length;
     }
 
+    function renderRarityProgress() {
+        rarityProgress.innerHTML = '';
+
+        const allChip = document.createElement('div');
+        allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
+        allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
+        allChip.addEventListener('click', () => {
+            collectionFilter = 'all';
+            renderCollection();
+        });
+        rarityProgress.appendChild(allChip);
+
+        rarityOrder.forEach(rarity => {
+            const total = totalByRarity[rarity];
+            if (total === 0) return;
+            const collected = getCollectedByRarity(rarity);
+            const chip = document.createElement('div');
+            chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
+            chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
+            chip.addEventListener('click', () => {
+                collectionFilter = rarity;
+                renderCollection();
+            });
+            rarityProgress.appendChild(chip);
+        });
+    }
+
     function renderCollection() {
         collectionGrid.innerHTML = '';
         renderRarityProgress();
 
         const owned = getCollectedCount();
         collectCount.textContent = owned;
-        const percent = (owned / 60) * 100;
+        const percent = (owned / 120) * 100;
         collectBar.style.width = percent + '%';
 
-        // Сортировка по редкости
         let ids = [...ALL_CARD_IDS].sort((a, b) => {
             const pa = allPhotos[a], pb = allPhotos[b];
             const ia = rarityOrder.indexOf(pa.rarity);
@@ -2002,7 +2104,6 @@
             return pa.num - pb.num;
         });
 
-        // Фильтр
         if (collectionFilter !== 'all') {
             ids = ids.filter(id => allPhotos[id].rarity === collectionFilter);
         }
@@ -2015,12 +2116,9 @@
             const el = document.createElement('div');
             el.className = `inv-item rarity-${photo.rarity}`;
             if (!wasStudied) {
-                // Совсем не видел — серое
-                el.classList.add('not-owned');
                 el.style.filter = 'grayscale(1) brightness(0.35)';
                 el.style.opacity = '0.5';
             } else if (!hasIt) {
-                // Изучена, но продана — тоже серое с галочкой
                 el.classList.add('studied');
             }
 
@@ -2073,24 +2171,7 @@
     });
 
     // ============================================
-    // ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ
-    // ============================================
-    function switchScreen(name) {
-        screenChoose.classList.remove('active');
-        screenSpin.classList.remove('active');
-        screenUpgrade.classList.remove('active');
-        screenProfile.classList.remove('active');
-
-        if (name === 'choose') screenChoose.classList.add('active');
-        else if (name === 'spin') screenSpin.classList.add('active');
-        else if (name === 'upgrade') screenUpgrade.classList.add('active');
-        else if (name === 'profile') screenProfile.classList.add('active');
-
-        // Скроллим наверх
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-        // ============================================
-    // РЕНДЕР КЕЙСОВ
+    // РЕНДЕР КЕЙСОВ — теперь с картинками
     // ============================================
     function renderCaseGrid() {
         caseGrid.innerHTML = '';
@@ -2104,7 +2185,7 @@
                 <div class="case-art">
                     <div class="case-glow"></div>
                     <span class="case-emoji">${cfg.emoji}</span>
-                    ${makeCaseSVG(key)}
+                    <img src="${cfg.img}" alt="${cfg.title}" loading="lazy">
                 </div>
                 <div class="case-name">${cfg.title}</div>
                 <div class="case-desc">${cfg.desc}</div>
@@ -2161,7 +2242,6 @@
             };
         }
         inventory[photo.id].count += count;
-        // Помечаем как изученную
         studied[photo.id] = true;
         saveInventory();
         saveStudied();
@@ -2241,7 +2321,7 @@
     });
 
     // ============================================
-    // АПГРЕЙД — ПОДБОР ЦЕЛИ
+    // АПГРЕЙД
     // ============================================
     function pickAutoTarget(srcRarity, chance) {
         const srcItem = inventory[selectedSrcId];
@@ -2271,16 +2351,13 @@
             updateUpgradeUI();
             return;
         }
-
         const srcItem = inventory[selectedSrcId];
         const srcIdx = rarityOrder.indexOf(srcItem.rarity);
-
         if (srcIdx >= rarityOrder.length - 1) {
             autoDstId = null;
             updateUpgradeUI();
             return;
         }
-
         autoDstId = pickAutoTarget(srcItem.rarity, upgradeChance);
         updateUpgradeUI();
     }
@@ -2313,20 +2390,17 @@
             chanceSector.setAttribute('d', d);
             return;
         }
-
         const endAngleDeg = (startAngle + angleDeg) % 360;
         const endRad = (endAngleDeg - 90) * Math.PI / 180;
         const xOuter = cx + rOuter * Math.cos(endRad);
         const yOuter = cy + rOuter * Math.sin(endRad);
         const xInner = cx + rInner * Math.cos(endRad);
         const yInner = cy + rInner * Math.sin(endRad);
-
         const startRad = (startAngle - 90) * Math.PI / 180;
         const sxOuter = cx + rOuter * Math.cos(startRad);
         const syOuter = cy + rOuter * Math.sin(startRad);
         const sxInner = cx + rInner * Math.cos(startRad);
         const syInner = cy + rInner * Math.sin(startRad);
-
         const largeArc = angleDeg > 180 ? 1 : 0;
         const d = `M ${sxOuter} ${syOuter} A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${xOuter} ${yOuter} L ${xInner} ${yInner} A ${rInner} ${rInner} 0 ${largeArc} 0 ${sxInner} ${syInner} Z`;
         chanceSector.setAttribute('d', d);
@@ -2643,7 +2717,7 @@
     });
 
     // ============================================
-    // ЛЕНТА
+    // ЛЕНТА КЕЙСА
     // ============================================
     function shuffle(array) {
         const arr = [...array];
@@ -2675,9 +2749,6 @@
         }
     }
 
-    // ============================================
-    // КРУТКА
-    // ============================================
     function spin() {
         if (isSpinning) return;
         const price = casePrices[currentCaseKey];
@@ -2787,7 +2858,6 @@
         profile.stats.sold++;
         profile.stats.earned += price;
         if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
-        // Помечаем как изученную
         studied[pendingPhoto.id] = true;
         saveStudied();
         saveProfile();
@@ -2822,12 +2892,12 @@
     // ============================================
     startBtn.addEventListener('click', spin);
 
+    updateSoundIcon();
     renderCaseGrid();
     updateBalance();
     renderInventory();
     updateUpgradeUI();
 
-    // Проверка первого запуска
     if (!profile.since) {
         setTimeout(() => showWelcome(), 300);
     } else {
