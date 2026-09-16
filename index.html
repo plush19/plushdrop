@@ -2160,7 +2160,7 @@
     let rouletteBetCard = null;    // id карточки
     let rouletteChance = 0.5;      // 0.25 | 0.5 | 0.75
     let rouletteColor = null;      // 'red' | 'black'
-    let rouletteHistory = [];      // [{ win: bool }]
+    var rouletteHistory = window.rouletteHistory || [];      // [{ win: bool }]
     let isRouletteSpinning = false;
 
     const STORAGE_BALANCE = 'pashadrop_balance_v53';
