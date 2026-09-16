@@ -905,7 +905,7 @@
         .modal-close { border-color: var(--border); color: var(--text-dim); background: var(--bg-mid); }
 
         /* ============================================
-           АПГРЕЙД — ИСПРАВЛЕННЫЙ
+           АПГРЕЙД — ИСПРАВЛЕННАЯ СТРЕЛКА
         ============================================ */
         .upgrade-screen { width: 100%; max-width: 640px; }
 
@@ -965,7 +965,7 @@
             line-height: 1.2;
         }
 
-        /* Круглый индикатор + стрелка */
+        /* Круглый индикатор */
         .chance-circle-wrap {
             position: relative;
             width: 150px;
@@ -976,10 +976,9 @@
         .chance-circle-svg {
             width: 100%;
             height: 100%;
-            /* Без поворота — рисуем с "12 часов" вниз */
+            display: block;
         }
 
-        /* Красный круг (весь) */
         .chance-circle-track {
             fill: none;
             stroke: #dc2626;
@@ -988,7 +987,6 @@
             filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.5));
         }
 
-        /* Зелёный сектор (шанс) — начинается снизу */
         .chance-circle-chance {
             fill: none;
             stroke: #16a34a;
@@ -1004,6 +1002,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center;
             padding: 20px;
+            pointer-events: none;
         }
 
         .chance-circle-label {
@@ -1022,41 +1021,44 @@
             text-shadow: 0 0 25px rgba(225, 29, 72, 0.5);
         }
 
-        /* ============ СТРЕЛКА СНАРУЖИ ============ */
+        /* ============ СТРЕЛКА СНАРУЖИ (исправленная) ============ */
         .outer-arrow {
             position: absolute;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             width: 4px;
-            height: 78px;
+            height: 32px;
             margin-left: -2px;
-            margin-top: 0;
-            transform-origin: 50% 0%;
+            margin-top: -97px;
+            transform-origin: 50% 97px;
             z-index: 10;
             pointer-events: none;
             transition: transform 4s cubic-bezier(0.15, 0.85, 0.3, 1);
-            filter: drop-shadow(0 0 12px rgba(244, 63, 94, 0.9));
         }
 
         /* Тело стрелки — яркая красная */
         .outer-arrow::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(180deg, #f43f5e, #e11d48);
             border-radius: 2px;
-            box-shadow: 0 0 10px rgba(244, 63, 94, 0.8);
+            box-shadow: 0 0 8px rgba(244, 63, 94, 0.8);
         }
 
-        /* Наконечник — треугольник */
+        /* Наконечник СВЕРХУ (наружу от круга) */
         .outer-arrow::before {
             content: '';
             position: absolute;
-            bottom: -13px;
+            top: -14px;
             left: 50%;
             transform: translateX(-50%);
-            border: 11px solid transparent;
+            border: 10px solid transparent;
             border-bottom-color: #f43f5e;
-            filter: drop-shadow(0 0 8px rgba(244, 63, 94, 1));
+            filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.9));
             z-index: 2;
         }
 
@@ -1238,7 +1240,7 @@
             .swap-card { padding: 10px; border-radius: 12px; }
             .chance-circle-wrap { width: 120px; height: 120px; }
             .chance-circle-value { font-size: 24px; }
-            .outer-arrow { height: 62px; }
+            .outer-arrow { height: 26px; margin-top: -78px; transform-origin: 50% 78px; }
             .mode-btn { padding: 12px 4px; font-size: 12px; }
 
             .profile-header-card { padding: 18px 16px; }
@@ -1256,16 +1258,6 @@
     </style>
 </head>
 <body>
-
-    <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute; width:0; height:0;">
-        <defs>
-            <linearGradient id="chanceGradientCircle" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ef4444" />
-                <stop offset="50%" stop-color="#fbbf24" />
-                <stop offset="100%" stop-color="#22c55e" />
-            </linearGradient>
-        </defs>
-    </svg>
 
     <div class="sticky-header">
         <div class="top-panel">
@@ -1342,9 +1334,7 @@
 
                     <div class="chance-circle-wrap">
                         <svg class="chance-circle-svg" viewBox="0 0 120 120">
-                            <!-- Красный круг (всегда) -->
                             <circle class="chance-circle-track" cx="60" cy="60" r="54" />
-                            <!-- Зелёный сектор (динамический, начинается снизу) -->
                             <circle class="chance-circle-chance" id="chanceCircleChance" cx="60" cy="60" r="54"
                                     stroke-dasharray="0 339.29"
                                     transform="rotate(90 60 60)" />
@@ -1484,1178 +1474,1163 @@
     </div>
 
     <script>
-        // ЗВУКИ
-        let audioCtx = null;
-        let soundEnabled = true;
+    // ЗВУКИ
+    let audioCtx = null;
+    let soundEnabled = true;
 
-        function getAudioCtx() {
-            if (!audioCtx) {
-                try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { soundEnabled = false; }
-            }
-            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-            return audioCtx;
+    function getAudioCtx() {
+        if (!audioCtx) {
+            try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { soundEnabled = false; }
         }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
+    }
 
-        function playTick() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(), gain = ctx.createGain(), filter = ctx.createBiquadFilter();
-            filter.type = 'lowpass'; filter.frequency.value = 1800;
-            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'triangle'; osc.frequency.value = 550 + Math.random() * 200;
-            gain.gain.setValueAtTime(0.035, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.09);
-        }
+    function playTick() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain(), filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass'; filter.frequency.value = 1800;
+        osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'triangle'; osc.frequency.value = 550 + Math.random() * 200;
+        gain.gain.setValueAtTime(0.035, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.09);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.09);
+    }
 
-        function playSuccess() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
-                const osc = ctx.createOscillator(), gain = ctx.createGain();
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.type = 'triangle'; osc.frequency.value = freq;
-                const start = ctx.currentTime + i * 0.12;
-                gain.gain.setValueAtTime(0, start);
-                gain.gain.linearRampToValueAtTime(0.13, start + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.001, start + 0.4);
-                osc.start(start); osc.stop(start + 0.4);
-            });
-        }
-
-        function playFail() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
+    function playSuccess() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
             const osc = ctx.createOscillator(), gain = ctx.createGain();
             osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(240, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(70, ctx.currentTime + 0.6);
-            gain.gain.setValueAtTime(0.08, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
-        }
-
-        function playCoin() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(1100, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.06);
-            gain.gain.setValueAtTime(0.06, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
-        }
-
-        function playReveal() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(380, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.18);
-            gain.gain.setValueAtTime(0.1, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.35);
-        }
-
-        function playStart() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(220, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.18);
-            gain.gain.setValueAtTime(0.08, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.22);
-        }
-
-        function playUpgradeTick() {
-            if (!soundEnabled) return;
-            const ctx = getAudioCtx(); if (!ctx) return;
-            const osc = ctx.createOscillator(), gain = ctx.createGain(), filter = ctx.createBiquadFilter();
-            filter.type = 'lowpass'; filter.frequency.value = 900;
-            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-            osc.type = 'sine'; osc.frequency.value = 400 + Math.random() * 100;
-            gain.gain.setValueAtTime(0.05, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.07);
-        }
-
-        // РЕДКОСТИ
-        const rarityNames = { common: 'Обычная', uncommon: 'Необычная', epic: 'Эпическая', mythic: 'Мифическая', legendary: 'Легендарная', pink: 'Розовая', golden: 'Золотая' };
-        const rarityColors = { common: '#94a3b8', uncommon: '#22c55e', epic: '#a855f7', mythic: '#ef4444', legendary: '#f59e0b', pink: '#ec4899', golden: '#facc15' };
-        const rarityOrder = ['common', 'uncommon', 'epic', 'mythic', 'legendary', 'pink', 'golden'];
-
-        const priceRanges = {
-            common: [10, 50], uncommon: [50, 150], epic: [150, 300],
-            mythic: [300, 700], legendary: [700, 1800], pink: [1800, 3000], golden: [2500, 5000]
-        };
-
-        const casePrices = { silver: 75, zeus: 200, dustin: 500, mirage: 1000, kalash: 2000, chingis: 3500 };
-
-        const caseConfig = {
-            silver: { title: 'Сильвер', emoji: '🥈', desc: 'Базовый', img: 'images/silver.png', distribution: { common: 5, uncommon: 10, epic: 5 } },
-            zeus: { title: 'Зевс', emoji: '⚡', desc: 'Грозовой', img: 'images/zeus.png', distribution: { uncommon: 5, epic: 11, mythic: 4 } },
-            dustin: { title: 'Дастин', emoji: '🏆', desc: 'Золотой', img: 'images/dustin.png', distribution: { epic: 4, mythic: 12, legendary: 4 } },
-            mirage: { title: 'Мираж', emoji: '🏜', desc: 'Топовый', img: 'images/mirage.png', distribution: { mythic: 6, legendary: 12, golden: 2 } },
-            kalash: { title: 'Калаш', emoji: '🔫', desc: 'Розовый эксклюзив', img: 'images/kalash.png', distribution: { pink: 20 } },
-            chingis: { title: 'Чингисхан', emoji: '⚔️', desc: 'Легендарный', img: 'images/chingis.png', distribution: { legendary: 2, golden: 18 } }
-        };
-
-        const totalByRarityCount = {};
-        rarityOrder.forEach(r => { totalByRarityCount[r] = 0; });
-        Object.values(caseConfig).forEach(cfg => {
-            Object.entries(cfg.distribution).forEach(([rar, cnt]) => { totalByRarityCount[rar] += cnt; });
+            osc.type = 'triangle'; osc.frequency.value = freq;
+            const start = ctx.currentTime + i * 0.12;
+            gain.gain.setValueAtTime(0, start);
+            gain.gain.linearRampToValueAtTime(0.13, start + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.4);
+            osc.start(start); osc.stop(start + 0.4);
         });
+    }
 
-        function generatePrices(rarity, count) {
-            const [min, max] = priceRanges[rarity];
-            const prices = [];
-            const range = max - min;
-            for (let i = 0; i < count; i++) {
-                const base = min + (range / (count + 1)) * (i + 1);
-                const variation = (Math.random() - 0.5) * (range / count) * 0.5;
-                let price = Math.round(base + variation);
-                if (rarity === 'common' || rarity === 'uncommon' || rarity === 'epic') price = Math.round(price / 5) * 5;
-                else if (rarity === 'mythic' || rarity === 'legendary') price = Math.round(price / 10) * 10;
-                else price = Math.round(price / 50) * 50;
-                price = Math.max(min, Math.min(max, price));
-                prices.push(price);
-            }
-            prices.sort((a, b) => a - b);
-            for (let i = 1; i < prices.length; i++) {
-                if (prices[i] <= prices[i - 1]) prices[i] = prices[i - 1] + (rarity === 'golden' || rarity === 'pink' ? 50 : rarity === 'common' ? 1 : 5);
-            }
-            for (let i = prices.length - 1; i >= 0; i--) {
-                if (prices[i] > max) prices[i] = max - (prices.length - 1 - i) * (rarity === 'golden' || rarity === 'pink' ? 50 : 5);
-            }
-            return prices;
+    function playFail() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(240, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(70, ctx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.6);
+    }
+
+    function playCoin() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1100, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1600, ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.12);
+    }
+
+    function playReveal() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(380, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(850, ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.35);
+    }
+
+    function playStart() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.22);
+    }
+
+    function playUpgradeTick() {
+        if (!soundEnabled) return;
+        const ctx = getAudioCtx(); if (!ctx) return;
+        const osc = ctx.createOscillator(), gain = ctx.createGain(), filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass'; filter.frequency.value = 900;
+        osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+        osc.type = 'sine'; osc.frequency.value = 400 + Math.random() * 100;
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.07);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.07);
+    }
+
+    // РЕДКОСТИ
+    const rarityNames = { common: 'Обычная', uncommon: 'Необычная', epic: 'Эпическая', mythic: 'Мифическая', legendary: 'Легендарная', pink: 'Розовая', golden: 'Золотая' };
+    const rarityColors = { common: '#94a3b8', uncommon: '#22c55e', epic: '#a855f7', mythic: '#ef4444', legendary: '#f59e0b', pink: '#ec4899', golden: '#facc15' };
+    const rarityOrder = ['common', 'uncommon', 'epic', 'mythic', 'legendary', 'pink', 'golden'];
+
+    const priceRanges = {
+        common: [10, 50], uncommon: [50, 150], epic: [150, 300],
+        mythic: [300, 700], legendary: [700, 1800], pink: [1800, 3000], golden: [2500, 5000]
+    };
+
+    const casePrices = { silver: 75, zeus: 200, dustin: 500, mirage: 1000, kalash: 2000, chingis: 3500 };
+
+    const caseConfig = {
+        silver: { title: 'Сильвер', emoji: '🥈', desc: 'Базовый', img: 'images/silver.png', distribution: { common: 5, uncommon: 10, epic: 5 } },
+        zeus: { title: 'Зевс', emoji: '⚡', desc: 'Грозовой', img: 'images/zeus.png', distribution: { uncommon: 5, epic: 11, mythic: 4 } },
+        dustin: { title: 'Дастин', emoji: '🏆', desc: 'Золотой', img: 'images/dustin.png', distribution: { epic: 4, mythic: 12, legendary: 4 } },
+        mirage: { title: 'Мираж', emoji: '🏜', desc: 'Топовый', img: 'images/mirage.png', distribution: { mythic: 6, legendary: 12, golden: 2 } },
+        kalash: { title: 'Калаш', emoji: '🔫', desc: 'Розовый эксклюзив', img: 'images/kalash.png', distribution: { pink: 20 } },
+        chingis: { title: 'Чингисхан', emoji: '⚔️', desc: 'Легендарный', img: 'images/chingis.png', distribution: { legendary: 2, golden: 18 } }
+    };
+
+    const totalByRarityCount = {};
+    rarityOrder.forEach(r => { totalByRarityCount[r] = 0; });
+    Object.values(caseConfig).forEach(cfg => {
+        Object.entries(cfg.distribution).forEach(([rar, cnt]) => { totalByRarityCount[rar] += cnt; });
+    });
+
+    function generatePrices(rarity, count) {
+        const [min, max] = priceRanges[rarity];
+        const prices = [];
+        const range = max - min;
+        for (let i = 0; i < count; i++) {
+            const base = min + (range / (count + 1)) * (i + 1);
+            const variation = (Math.random() - 0.5) * (range / count) * 0.5;
+            let price = Math.round(base + variation);
+            if (rarity === 'common' || rarity === 'uncommon' || rarity === 'epic') price = Math.round(price / 5) * 5;
+            else if (rarity === 'mythic' || rarity === 'legendary') price = Math.round(price / 10) * 10;
+            else price = Math.round(price / 50) * 50;
+            price = Math.max(min, Math.min(max, price));
+            prices.push(price);
         }
+        prices.sort((a, b) => a - b);
+        for (let i = 1; i < prices.length; i++) {
+            if (prices[i] <= prices[i - 1]) prices[i] = prices[i - 1] + (rarity === 'golden' || rarity === 'pink' ? 50 : rarity === 'common' ? 1 : 5);
+        }
+        for (let i = prices.length - 1; i >= 0; i--) {
+            if (prices[i] > max) prices[i] = max - (prices.length - 1 - i) * (rarity === 'golden' || rarity === 'pink' ? 50 : 5);
+        }
+        return prices;
+    }
 
-        const allPricesByRarity = {};
+    const allPricesByRarity = {};
+    rarityOrder.forEach(rarity => {
+        const count = totalByRarityCount[rarity];
+        allPricesByRarity[rarity] = count > 0 ? generatePrices(rarity, count) : [];
+    });
+
+    const priceIndex = {};
+    rarityOrder.forEach(r => { priceIndex[r] = 0; });
+
+    let cardIdCounter = 1;
+    const cases = {};
+
+    Object.keys(caseConfig).forEach(caseKey => {
+        const cfg = caseConfig[caseKey];
+        const photos = [];
         rarityOrder.forEach(rarity => {
-            const count = totalByRarityCount[rarity];
-            allPricesByRarity[rarity] = count > 0 ? generatePrices(rarity, count) : [];
+            const count = cfg.distribution[rarity] || 0;
+            for (let i = 0; i < count; i++) {
+                const idx = priceIndex[rarity];
+                const price = allPricesByRarity[rarity][idx] !== undefined ? allPricesByRarity[rarity][idx] : priceRanges[rarity][0];
+                priceIndex[rarity]++;
+                const num = cardIdCounter++;
+                photos.push({ id: caseKey + '_' + num, num: num, name: 'Карточка #' + num, price: price, rarity: rarity, src: null });
+            }
         });
+        cases[caseKey] = { title: cfg.title, emoji: cfg.emoji, photos: photos };
+    });
 
-        const priceIndex = {};
-        rarityOrder.forEach(r => { priceIndex[r] = 0; });
+    const allPhotos = {};
+    Object.values(cases).forEach(c => c.photos.forEach(p => { allPhotos[p.id] = p; }));
+    const ALL_CARD_IDS = Object.keys(allPhotos);
+    const totalByRarity = {};
+    rarityOrder.forEach(r => { totalByRarity[r] = 0; });
+    Object.values(allPhotos).forEach(p => { totalByRarity[p.rarity]++; });
 
-        let cardIdCounter = 1;
-        const cases = {};
+    function makeCardSVG(photo) {
+        const color = rarityColors[photo.rarity];
+        const colorDark = color + '55';
+        const num = photo.num;
+        const w = 150, h = 200;
+        return `
+            <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;">
+                <defs>
+                    <linearGradient id="bg${photo.id}" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#1c1c21"/>
+                        <stop offset="100%" stop-color="${colorDark}"/>
+                    </linearGradient>
+                </defs>
+                <rect width="${w}" height="${h}" fill="url(#bg${photo.id})"/>
+                <text x="${w/2}" y="${h/2 + 15}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="42" fill="${color}" opacity="0.85">#${num}</text>
+                <text x="${w/2}" y="${h - 30}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="${color}" opacity="0.6">${photo.price} 🪙</text>
+            </svg>
+        `;
+    }
 
-        Object.keys(caseConfig).forEach(caseKey => {
-            const cfg = caseConfig[caseKey];
-            const photos = [];
-            rarityOrder.forEach(rarity => {
-                const count = cfg.distribution[rarity] || 0;
-                for (let i = 0; i < count; i++) {
-                    const idx = priceIndex[rarity];
-                    const price = allPricesByRarity[rarity][idx] !== undefined ? allPricesByRarity[rarity][idx] : priceRanges[rarity][0];
-                    priceIndex[rarity]++;
-                    const num = cardIdCounter++;
-                    photos.push({ id: caseKey + '_' + num, num: num, name: 'Карточка #' + num, price: price, rarity: rarity, src: null });
-                }
-            });
-            cases[caseKey] = { title: cfg.title, emoji: cfg.emoji, photos: photos };
+    // ЭЛЕМЕНТЫ
+    const screenChoose = document.getElementById('screenChoose');
+    const screenSpin = document.getElementById('screenSpin');
+    const screenUpgrade = document.getElementById('screenUpgrade');
+    const screenProfile = document.getElementById('screenProfile');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const soundToggle = document.getElementById('soundToggle');
+    const caseGrid = document.getElementById('caseGrid');
+    const caseTitle = document.getElementById('caseTitle');
+    const casePreview = document.getElementById('casePreview');
+    const casePreviewImg = document.getElementById('casePreviewImg');
+    const backBtn = document.getElementById('backBtn');
+    const upgradeBackBtn = document.getElementById('upgradeBackBtn');
+    const profileBackBtn = document.getElementById('profileBackBtn');
+    const strip = document.getElementById('strip');
+    const stripWrapper = document.getElementById('stripWrapper');
+    const startBtn = document.getElementById('startBtn');
+    const resultEl = document.getElementById('result');
+    const sellBtn = document.getElementById('sellBtn');
+    const tabCases = document.getElementById('tabCases');
+    const tabWork = document.getElementById('tabWork');
+    const tabUpgradeNav = document.getElementById('tabUpgradeNav');
+    const tabInventory = document.getElementById('tabInventory');
+    const viewCases = document.getElementById('viewCases');
+    const viewInventory = document.getElementById('viewInventory');
+    const viewWork = document.getElementById('viewWork');
+    const inventoryGrid = document.getElementById('inventoryGrid');
+    const inventoryEmpty = document.getElementById('inventoryEmpty');
+    const workBtn = document.getElementById('workBtn');
+    const workEarned = document.getElementById('workEarned');
+    const workTotal = document.getElementById('workTotal');
+    let sessionEarned = 0;
+
+    const itemModal = document.getElementById('itemModal');
+    const modalImgWrap = document.getElementById('modalImgWrap');
+    const modalName = document.getElementById('modalName');
+    const modalRarity = document.getElementById('modalRarity');
+    const modalCount = document.getElementById('modalCount');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalClose = document.getElementById('modalClose');
+    const modalSell = document.getElementById('modalSell');
+
+    const chanceCircleChance = document.getElementById('chanceCircleChance');
+    const chanceCircleValue = document.getElementById('chanceCircleValue');
+    const outerArrow = document.getElementById('outerArrow');
+    const chanceText = document.getElementById('chanceText');
+    const upgradeMainBtn = document.getElementById('upgradeMainBtn');
+    const srcSwap = document.getElementById('srcSwap');
+    const dstSwap = document.getElementById('dstSwap');
+    const upgradeInventoryGrid = document.getElementById('upgradeInventoryGrid');
+
+    const welcomeModal = document.getElementById('welcomeModal');
+    const welcomeName = document.getElementById('welcomeName');
+    const welcomeAvatarGrid = document.getElementById('welcomeAvatarGrid');
+    const welcomeStart = document.getElementById('welcomeStart');
+    const editNameModal = document.getElementById('editNameModal');
+    const editNameInput = document.getElementById('editNameInput');
+    const editNameCancel = document.getElementById('editNameCancel');
+    const editNameSave = document.getElementById('editNameSave');
+    const editAvatarModal = document.getElementById('editAvatarModal');
+    const editAvatarGrid = document.getElementById('editAvatarGrid');
+    const editAvatarClose = document.getElementById('editAvatarClose');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileName = document.getElementById('profileName');
+    const profileSince = document.getElementById('profileSince');
+    const statCases = document.getElementById('statCases');
+    const statSpent = document.getElementById('statSpent');
+    const statEarned = document.getElementById('statEarned');
+    const statBest = document.getElementById('statBest');
+    const statUpgrades = document.getElementById('statUpgrades');
+    const statCollected = document.getElementById('statCollected');
+    const collectCount = document.getElementById('collectCount');
+    const collectBar = document.getElementById('collectBar');
+    const collectionGrid = document.getElementById('collectionGrid');
+    const rarityProgress = document.getElementById('rarityProgress');
+    const balanceEls = [document.getElementById('balanceAmount')];
+
+    // СОСТОЯНИЕ
+    let currentCase = null;
+    let currentCaseKey = null;
+    let isSpinning = false;
+    let inventory = {};
+    let studied = {};
+    let pendingPhoto = null;
+    let upgradeChance = 0.5;
+    let selectedSrcId = null;
+    let autoDstId = null;
+    let isUpgrading = false;
+    let tickInterval = null;
+
+    let profile = {
+        name: 'Игрок', avatar: '👤', since: null,
+        stats: { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 }
+    };
+    let collectionFilter = 'all';
+
+    const STORAGE_BALANCE = 'pashadrop_balance_v52';
+    const STORAGE_INVENTORY = 'pashadrop_inventory_v52';
+    const STORAGE_STUDIED = 'pashadrop_studied_v52';
+    const STORAGE_SOUND = 'pashadrop_sound_v52';
+    const STORAGE_PROFILE = 'pashadrop_profile_v52';
+
+    let balance = parseInt(localStorage.getItem(STORAGE_BALANCE));
+    if (isNaN(balance)) balance = 500;
+
+    try { const s = JSON.parse(localStorage.getItem(STORAGE_INVENTORY)); if (s && typeof s === 'object') inventory = s; } catch(e) {}
+    try { const s = JSON.parse(localStorage.getItem(STORAGE_STUDIED)); if (s && typeof s === 'object') studied = s; } catch(e) {}
+    try {
+        const sp = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
+        if (sp && typeof sp === 'object') {
+            profile = Object.assign(profile, sp);
+            if (!profile.stats) profile.stats = { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 };
+        }
+    } catch(e) {}
+
+    if (localStorage.getItem(STORAGE_SOUND) === '0') soundEnabled = false;
+
+    function saveInventory() { try { localStorage.setItem(STORAGE_INVENTORY, JSON.stringify(inventory)); } catch(e) {} }
+    function saveStudied() { try { localStorage.setItem(STORAGE_STUDIED, JSON.stringify(studied)); } catch(e) {} }
+    function saveProfile() { try { localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile)); } catch(e) {} }
+
+    function updateBalance() {
+        localStorage.setItem(STORAGE_BALANCE, balance);
+        balanceEls.forEach(el => { if (el) el.textContent = balance; });
+        updateCaseAvailability();
+    }
+
+    function updateCaseAvailability() {
+        document.querySelectorAll('.case-card').forEach(card => {
+            const price = casePrices[card.dataset.case];
+            if (balance < price) card.classList.add('disabled');
+            else card.classList.remove('disabled');
         });
+    }
 
-        const allPhotos = {};
-        Object.values(cases).forEach(c => c.photos.forEach(p => { allPhotos[p.id] = p; }));
-        const ALL_CARD_IDS = Object.keys(allPhotos);
-        const totalByRarity = {};
-        rarityOrder.forEach(r => { totalByRarity[r] = 0; });
-        Object.values(allPhotos).forEach(p => { totalByRarity[p.rarity]++; });
+    function updateStartBtn() {
+        if (!currentCaseKey) return;
+        const price = casePrices[currentCaseKey];
+        startBtn.textContent = `ОТКРЫТЬ 🎲 — ${price} 🪙`;
+    }
 
-        function makeCardSVG(photo) {
-            const color = rarityColors[photo.rarity];
-            const colorDark = color + '55';
-            const num = photo.num;
-            const w = 150, h = 200;
-            return `
-                <svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;">
-                    <defs>
-                        <linearGradient id="bg${photo.id}" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#1c1c21"/>
-                            <stop offset="100%" stop-color="${colorDark}"/>
-                        </linearGradient>
-                    </defs>
-                    <rect width="${w}" height="${h}" fill="url(#bg${photo.id})"/>
-                    <text x="${w/2}" y="${h/2 + 15}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="42" fill="${color}" opacity="0.85">#${num}</text>
-                    <text x="${w/2}" y="${h - 30}" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="${color}" opacity="0.6">${photo.price} 🪙</text>
-                </svg>
-            `;
-        }
+    function updateSoundIcon() { soundToggle.textContent = soundEnabled ? '🔊' : '🔇'; }
 
-        // ЭЛЕМЕНТЫ
-        const screenChoose = document.getElementById('screenChoose');
-        const screenSpin = document.getElementById('screenSpin');
-        const screenUpgrade = document.getElementById('screenUpgrade');
-        const screenProfile = document.getElementById('screenProfile');
-        const avatarBtn = document.getElementById('avatarBtn');
-        const soundToggle = document.getElementById('soundToggle');
-        const caseGrid = document.getElementById('caseGrid');
-        const caseTitle = document.getElementById('caseTitle');
-        const casePreview = document.getElementById('casePreview');
-        const casePreviewImg = document.getElementById('casePreviewImg');
-        const backBtn = document.getElementById('backBtn');
-        const upgradeBackBtn = document.getElementById('upgradeBackBtn');
-        const profileBackBtn = document.getElementById('profileBackBtn');
-        const strip = document.getElementById('strip');
-        const stripWrapper = document.getElementById('stripWrapper');
-        const startBtn = document.getElementById('startBtn');
-        const resultEl = document.getElementById('result');
-        const sellBtn = document.getElementById('sellBtn');
-        const tabCases = document.getElementById('tabCases');
-        const tabWork = document.getElementById('tabWork');
-        const tabUpgradeNav = document.getElementById('tabUpgradeNav');
-        const tabInventory = document.getElementById('tabInventory');
-        const viewCases = document.getElementById('viewCases');
-        const viewInventory = document.getElementById('viewInventory');
-        const viewWork = document.getElementById('viewWork');
-        const inventoryGrid = document.getElementById('inventoryGrid');
-        const inventoryEmpty = document.getElementById('inventoryEmpty');
-        const workBtn = document.getElementById('workBtn');
-        const workEarned = document.getElementById('workEarned');
-        const workTotal = document.getElementById('workTotal');
-        let sessionEarned = 0;
+    soundToggle.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem(STORAGE_SOUND, soundEnabled ? '1' : '0');
+        updateSoundIcon();
+        if (soundEnabled) playStart();
+    });
 
-        const itemModal = document.getElementById('itemModal');
-        const modalImgWrap = document.getElementById('modalImgWrap');
-        const modalName = document.getElementById('modalName');
-        const modalRarity = document.getElementById('modalRarity');
-        const modalCount = document.getElementById('modalCount');
-        const modalPrice = document.getElementById('modalPrice');
-        const modalClose = document.getElementById('modalClose');
-        const modalSell = document.getElementById('modalSell');
+    const AVATARS = ['🐱', '🐶', '🦊', '🐼', '🐸', '🐷', '🐯', '🦁', '🐺', '🐵', '🐰', '🐭', '🐹', '🐻', '🐨', '🐮', '🐔', '🐧', '🦅', '🦉', '🐴', '🦄'];
 
-        const chanceCircleChance = document.getElementById('chanceCircleChance');
-        const chanceCircleValue = document.getElementById('chanceCircleValue');
-        const outerArrow = document.getElementById('outerArrow');
-        const chanceText = document.getElementById('chanceText');
-        const upgradeMainBtn = document.getElementById('upgradeMainBtn');
-        const srcSwap = document.getElementById('srcSwap');
-        const dstSwap = document.getElementById('dstSwap');
-        const upgradeInventoryGrid = document.getElementById('upgradeInventoryGrid');
-
-        const welcomeModal = document.getElementById('welcomeModal');
-        const welcomeName = document.getElementById('welcomeName');
-        const welcomeAvatarGrid = document.getElementById('welcomeAvatarGrid');
-        const welcomeStart = document.getElementById('welcomeStart');
-        const editNameModal = document.getElementById('editNameModal');
-        const editNameInput = document.getElementById('editNameInput');
-        const editNameCancel = document.getElementById('editNameCancel');
-        const editNameSave = document.getElementById('editNameSave');
-        const editAvatarModal = document.getElementById('editAvatarModal');
-        const editAvatarGrid = document.getElementById('editAvatarGrid');
-        const editAvatarClose = document.getElementById('editAvatarClose');
-        const profileAvatar = document.getElementById('profileAvatar');
-        const profileName = document.getElementById('profileName');
-        const profileSince = document.getElementById('profileSince');
-        const statCases = document.getElementById('statCases');
-        const statSpent = document.getElementById('statSpent');
-        const statEarned = document.getElementById('statEarned');
-        const statBest = document.getElementById('statBest');
-        const statUpgrades = document.getElementById('statUpgrades');
-        const statCollected = document.getElementById('statCollected');
-        const collectCount = document.getElementById('collectCount');
-        const collectBar = document.getElementById('collectBar');
-        const collectionGrid = document.getElementById('collectionGrid');
-        const rarityProgress = document.getElementById('rarityProgress');
-        const balanceEls = [document.getElementById('balanceAmount')];
-
-        // СОСТОЯНИЕ
-        let currentCase = null;
-        let currentCaseKey = null;
-        let isSpinning = false;
-        let inventory = {};
-        let studied = {};
-        let pendingPhoto = null;
-        let upgradeChance = 0.5;
-        let selectedSrcId = null;
-        let autoDstId = null;
-        let isUpgrading = false;
-        let tickInterval = null;
-
-        let profile = {
-            name: 'Игрок', avatar: '👤', since: null,
-            stats: { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 }
-        };
-        let collectionFilter = 'all';
-
-        const STORAGE_BALANCE = 'pashadrop_balance_v52';
-        const STORAGE_INVENTORY = 'pashadrop_inventory_v52';
-        const STORAGE_STUDIED = 'pashadrop_studied_v52';
-        const STORAGE_SOUND = 'pashadrop_sound_v52';
-        const STORAGE_PROFILE = 'pashadrop_profile_v52';
-
-        let balance = parseInt(localStorage.getItem(STORAGE_BALANCE));
-        if (isNaN(balance)) balance = 500;
-
-        try { const s = JSON.parse(localStorage.getItem(STORAGE_INVENTORY)); if (s && typeof s === 'object') inventory = s; } catch(e) {}
-        try { const s = JSON.parse(localStorage.getItem(STORAGE_STUDIED)); if (s && typeof s === 'object') studied = s; } catch(e) {}
-        try {
-            const sp = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
-            if (sp && typeof sp === 'object') {
-                profile = Object.assign(profile, sp);
-                if (!profile.stats) profile.stats = { casesOpened: 0, spent: 0, earned: 0, bestDrop: null, expensiveSale: 0, upgrades: 0, sold: 0 };
-            }
-        } catch(e) {}
-
-        if (localStorage.getItem(STORAGE_SOUND) === '0') soundEnabled = false;
-
-        function saveInventory() { try { localStorage.setItem(STORAGE_INVENTORY, JSON.stringify(inventory)); } catch(e) {} }
-        function saveStudied() { try { localStorage.setItem(STORAGE_STUDIED, JSON.stringify(studied)); } catch(e) {} }
-        function saveProfile() { try { localStorage.setItem(STORAGE_PROFILE, JSON.stringify(profile)); } catch(e) {} }
-
-        function updateBalance() {
-            localStorage.setItem(STORAGE_BALANCE, balance);
-            balanceEls.forEach(el => { if (el) el.textContent = balance; });
-            updateCaseAvailability();
-        }
-
-        function updateCaseAvailability() {
-            document.querySelectorAll('.case-card').forEach(card => {
-                const price = casePrices[card.dataset.case];
-                if (balance < price) card.classList.add('disabled');
-                else card.classList.remove('disabled');
-            });
-        }
-
-        function updateStartBtn() {
-            if (!currentCaseKey) return;
-            const price = casePrices[currentCaseKey];
-            startBtn.textContent = `ОТКРЫТЬ 🎲 — ${price} 🪙`;
-        }
-
-        function updateSoundIcon() { soundToggle.textContent = soundEnabled ? '🔊' : '🔇'; }
-
-        soundToggle.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            localStorage.setItem(STORAGE_SOUND, soundEnabled ? '1' : '0');
-            updateSoundIcon();
-            if (soundEnabled) playStart();
-        });
-
-        const AVATARS = ['🐱', '🐶', '🦊', '🐼', '🐸', '🐷', '🐯', '🦁', '🐺', '🐵', '🐰', '🐭', '🐹', '🐻', '🐨', '🐮', '🐔', '🐧', '🦅', '🦉', '🐴', '🦄'];
-
-        function initWelcomeAvatarGrid() {
-            welcomeAvatarGrid.innerHTML = '';
-            AVATARS.slice(0, 12).forEach(emoji => {
-                const btn = document.createElement('button');
-                btn.className = 'avatar-option';
-                btn.textContent = emoji;
-                btn.type = 'button';
-                if (emoji === profile.avatar) btn.classList.add('selected');
-                btn.addEventListener('click', () => {
-                    welcomeAvatarGrid.querySelectorAll('.avatar-option').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                });
-                welcomeAvatarGrid.appendChild(btn);
-            });
-        }
-
-        function initEditAvatarGrid() {
-            editAvatarGrid.innerHTML = '';
-            AVATARS.forEach(emoji => {
-                const btn = document.createElement('button');
-                btn.className = 'avatar-option';
-                btn.textContent = emoji;
-                btn.type = 'button';
-                if (emoji === profile.avatar) btn.classList.add('selected');
-                btn.addEventListener('click', () => {
-                    profile.avatar = emoji;
-                    saveProfile();
-                    editAvatarModal.classList.remove('active');
-                    renderProfile();
-                });
-                editAvatarGrid.appendChild(btn);
-            });
-        }
-
-        welcomeStart.addEventListener('click', () => {
-            const name = welcomeName.value.trim() || 'Игрок';
-            const selected = welcomeAvatarGrid.querySelector('.avatar-option.selected');
-            const avatar = selected ? selected.textContent : '👤';
-            profile.name = name.slice(0, 16);
-            profile.avatar = avatar;
-            profile.since = new Date().toISOString();
-            saveProfile();
-            welcomeModal.classList.remove('active');
-            renderProfile();
-        });
-
-        function showWelcome() {
-            initWelcomeAvatarGrid();
-            welcomeName.value = '';
-            welcomeModal.classList.add('active');
-        }
-
-        function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        function switchScreen(name) {
-            screenChoose.classList.remove('active');
-            screenSpin.classList.remove('active');
-            screenUpgrade.classList.remove('active');
-            screenProfile.classList.remove('active');
-            if (name === 'choose') screenChoose.classList.add('active');
-            else if (name === 'spin') screenSpin.classList.add('active');
-            else if (name === 'upgrade') screenUpgrade.classList.add('active');
-            else if (name === 'profile') screenProfile.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function renderProfile() {
-            profileAvatar.textContent = profile.avatar;
-            profileName.innerHTML = `${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
-            if (profile.since) {
-                const d = new Date(profile.since);
-                const dd = String(d.getDate()).padStart(2, '0');
-                const mm = String(d.getMonth() + 1).padStart(2, '0');
-                const yyyy = d.getFullYear();
-                profileSince.textContent = `Играешь с: ${dd}.${mm}.${yyyy}`;
-            } else {
-                profileSince.textContent = 'Играешь с: —';
-            }
-            statCases.textContent = profile.stats.casesOpened;
-            statSpent.textContent = profile.stats.spent.toLocaleString('ru-RU');
-            statEarned.textContent = profile.stats.earned.toLocaleString('ru-RU');
-            statUpgrades.textContent = profile.stats.upgrades;
-            statCollected.textContent = getCollectedCount() + '/120';
-            if (profile.stats.bestDrop) {
-                const b = profile.stats.bestDrop;
-                statBest.innerHTML = `<span style="color:${rarityColors[b.rarity]}; font-size: 12px;">#${b.num || '?'}</span>`;
-            } else {
-                statBest.textContent = '—';
-            }
-            renderCollection();
-        }
-
-        function isStudied(id) { return studied[id] === true || (inventory[id] && inventory[id].count > 0); }
-        function getCollectedCount() { return ALL_CARD_IDS.filter(id => isStudied(id)).length; }
-        function getCollectedByRarity(rarity) { return ALL_CARD_IDS.filter(id => allPhotos[id].rarity === rarity && isStudied(id)).length; }
-
-        function renderRarityProgress() {
-            rarityProgress.innerHTML = '';
-            const allChip = document.createElement('div');
-            allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
-            allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
-            allChip.addEventListener('click', () => { collectionFilter = 'all'; renderCollection(); });
-            rarityProgress.appendChild(allChip);
-            rarityOrder.forEach(rarity => {
-                const total = totalByRarity[rarity];
-                if (total === 0) return;
-                const collected = getCollectedByRarity(rarity);
-                const chip = document.createElement('div');
-                chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
-                chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
-                chip.addEventListener('click', () => { collectionFilter = rarity; renderCollection(); });
-                rarityProgress.appendChild(chip);
-            });
-        }
-
-        function renderCollection() {
-            collectionGrid.innerHTML = '';
-            renderRarityProgress();
-            const owned = getCollectedCount();
-            collectCount.textContent = owned;
-            collectBar.style.width = (owned / 120) * 100 + '%';
-            let ids = [...ALL_CARD_IDS].sort((a, b) => {
-                const pa = allPhotos[a], pb = allPhotos[b];
-                const ia = rarityOrder.indexOf(pa.rarity);
-                const ib = rarityOrder.indexOf(pb.rarity);
-                if (ia !== ib) return ia - ib;
-                return pa.num - pb.num;
-            });
-            if (collectionFilter !== 'all') ids = ids.filter(id => allPhotos[id].rarity === collectionFilter);
-            ids.forEach(id => {
-                const photo = allPhotos[id];
-                const hasIt = inventory[id] && inventory[id].count > 0;
-                const wasStudied = isStudied(id);
-                const el = document.createElement('div');
-                el.className = `inv-item rarity-${photo.rarity}`;
-                if (!wasStudied) { el.style.filter = 'grayscale(1) brightness(0.35)'; el.style.opacity = '0.5'; }
-                else if (!hasIt) { el.classList.add('studied'); }
-                el.innerHTML = `${makeCardSVG(photo)}<div class="inv-name">${photo.name}</div><div class="inv-rarity">${rarityNames[photo.rarity]}</div>`;
-                collectionGrid.appendChild(el);
-            });
-        }
-
-        avatarBtn.addEventListener('click', () => { renderProfile(); switchScreen('profile'); });
-        profileBackBtn.addEventListener('click', () => switchScreen('choose'));
-        profileAvatar.addEventListener('click', () => { initEditAvatarGrid(); editAvatarModal.classList.add('active'); });
-        profileName.addEventListener('click', () => { editNameInput.value = profile.name; editNameModal.classList.add('active'); });
-        editNameCancel.addEventListener('click', () => editNameModal.classList.remove('active'));
-        editNameSave.addEventListener('click', () => {
-            const name = editNameInput.value.trim() || 'Игрок';
-            profile.name = name.slice(0, 16);
-            saveProfile();
-            editNameModal.classList.remove('active');
-            renderProfile();
-        });
-        editAvatarClose.addEventListener('click', () => editAvatarModal.classList.remove('active'));
-
-        function renderCaseGrid() {
-            caseGrid.innerHTML = '';
-            Object.keys(caseConfig).forEach(key => {
-                const cfg = caseConfig[key];
-                const price = casePrices[key];
-                const card = document.createElement('div');
-                card.className = 'case-card ' + key;
-                card.dataset.case = key;
-                card.innerHTML = `
-                    <div class="case-art">
-                        <div class="case-glow"></div>
-                        <span class="case-emoji">${cfg.emoji}</span>
-                        <img src="${cfg.img}" alt="${cfg.title}" loading="lazy">
-                    </div>
-                    <div class="case-name">${cfg.title}</div>
-                    <div class="case-desc">${cfg.desc}</div>
-                    <div class="case-price">🪙 ${price}</div>
-                `;
-                caseGrid.appendChild(card);
-            });
-
-            document.querySelectorAll('.case-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const key = card.dataset.case;
-                    const price = casePrices[key];
-                    if (balance < price) {
-                        card.animate([
-                            { transform: 'translateX(0)' },
-                            { transform: 'translateX(-6px)' },
-                            { transform: 'translateX(6px)' },
-                            { transform: 'translateX(0)' }
-                        ], { duration: 250 });
-                        return;
-                    }
-                    currentCase = cases[key];
-                    currentCaseKey = key;
-                    caseTitle.textContent = caseConfig[key].title;
-                    updateStartBtn();
-                    casePreviewImg.src = caseConfig[key].img;
-                    casePreview.style.display = 'flex';
-                    strip.innerHTML = '';
-                    strip.style.transition = 'none';
-                    strip.style.transform = 'translateX(0)';
-                    stripWrapper.classList.remove('active');
-                    startBtn.classList.add('active');
-                    startBtn.disabled = false;
-                    sellBtn.classList.remove('active');
-                    resultEl.classList.remove('show');
-                    resultEl.textContent = '';
-                    pendingPhoto = null;
-                    switchScreen('spin');
-                });
-            });
-            updateCaseAvailability();
-        }
-
-        function addToInventory(photo, count = 1) {
-            if (!inventory[photo.id]) {
-                inventory[photo.id] = { count: 0, num: photo.num, name: photo.name, rarity: photo.rarity, price: photo.price };
-            }
-            inventory[photo.id].count += count;
-            studied[photo.id] = true;
-            saveInventory();
-            saveStudied();
-        }
-
-        function removeFromInventory(photoId, count = 1) {
-            if (!inventory[photoId]) return false;
-            inventory[photoId].count -= count;
-            if (inventory[photoId].count <= 0) delete inventory[photoId];
-            saveInventory();
-            return true;
-        }
-
-        function renderInventory() {
-            inventoryGrid.innerHTML = '';
-            const ids = Object.keys(inventory);
-            if (ids.length === 0) { inventoryEmpty.style.display = 'block'; return; }
-            inventoryEmpty.style.display = 'none';
-            ids.forEach(id => {
-                const item = inventory[id];
-                const el = document.createElement('div');
-                el.className = `inv-item rarity-${item.rarity}`;
-                el.innerHTML = `
-                    ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
-                    <div class="inv-name">${item.name || 'Карточка'}</div>
-                    <div class="inv-count">×${item.count}</div>
-                    <div class="inv-rarity">${rarityNames[item.rarity]}</div>
-                `;
-                el.addEventListener('click', () => openItemModal(id));
-                inventoryGrid.appendChild(el);
-            });
-        }
-
-        let modalPhotoId = null;
-
-        function openItemModal(id) {
-            const item = inventory[id];
-            if (!item) return;
-            modalPhotoId = id;
-            modalImgWrap.innerHTML = makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity });
-            modalName.textContent = item.name || 'Карточка';
-            modalRarity.textContent = rarityNames[item.rarity];
-            modalRarity.style.color = rarityColors[item.rarity];
-            modalCount.textContent = `В инвентаре: ${item.count}`;
-            modalPrice.textContent = `Цена продажи: 🪙 ${item.price}`;
-            itemModal.classList.add('active');
-        }
-
-        modalClose.addEventListener('click', () => { itemModal.classList.remove('active'); modalPhotoId = null; });
-
-        modalSell.addEventListener('click', () => {
-            if (!modalPhotoId || !inventory[modalPhotoId]) return;
-            const item = inventory[modalPhotoId];
-            const price = item.price;
-            removeFromInventory(modalPhotoId, 1);
-            balance += price;
-            profile.stats.sold++;
-            profile.stats.earned += price;
-            if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
-            saveProfile();
-            updateBalance();
-            playCoin();
-            itemModal.classList.remove('active');
-            modalPhotoId = null;
-            renderInventory();
-            renderCollection();
-            renderUpgradeInventory();
-        });
-
-        function pickAutoTarget(srcRarity, chance) {
-            const srcItem = inventory[selectedSrcId];
-            if (!srcItem) return null;
-            const srcPrice = srcItem.price;
-            const srcIdx = rarityOrder.indexOf(srcRarity);
-            const candidates = [];
-            for (const id in allPhotos) {
-                const p = allPhotos[id];
-                const dstIdx = rarityOrder.indexOf(p.rarity);
-                if (dstIdx <= srcIdx) continue;
-                const actualChance = srcPrice / p.price;
-                const dist = Math.abs(actualChance - chance);
-                candidates.push({ photo: p, dist });
-            }
-            if (candidates.length === 0) return null;
-            candidates.sort((a, b) => a.dist - b.dist);
-            return candidates[0].photo.id;
-        }
-
-        function recalcUpgrade() {
-            if (!selectedSrcId || !inventory[selectedSrcId]) { autoDstId = null; updateUpgradeUI(); return; }
-            const srcItem = inventory[selectedSrcId];
-            const srcIdx = rarityOrder.indexOf(srcItem.rarity);
-            if (srcIdx >= rarityOrder.length - 1) { autoDstId = null; updateUpgradeUI(); return; }
-            autoDstId = pickAutoTarget(srcItem.rarity, upgradeChance);
-            updateUpgradeUI();
-        }
-
-        function getRealChance() {
-            if (!selectedSrcId || !autoDstId) return 0;
-            const src = inventory[selectedSrcId];
-            const dst = allPhotos[autoDstId];
-            if (!src || !dst) return 0;
-            return Math.min(0.95, Math.max(0.01, src.price / dst.price));
-        }
-
-        function getTargetPhoto() { return autoDstId ? allPhotos[autoDstId] || null : null; }
-
-        function updateUpgradeUI() {
-            const chance = getRealChance();
-            const armed = selectedSrcId && autoDstId;
-
-            // Процент
-            if (chance > 0) chanceCircleValue.textContent = Math.round(chance * 100) + '%';
-            else chanceCircleValue.textContent = '—';
-
-            // Зелёный сектор — длина = шанс * длина окружности
-            const circumference = 2 * Math.PI * 54; // ~339.29
-            const greenLength = circumference * chance;
-            if (chanceCircleChance) {
-                chanceCircleChance.setAttribute('stroke-dasharray', greenLength + ' ' + circumference);
-            }
-
-            // Слот "Отдаёшь"
-            if (selectedSrcId && inventory[selectedSrcId]) {
-                const item = inventory[selectedSrcId];
-                srcSwap.classList.add('filled');
-                srcSwap.innerHTML = `
-                    ${makeCardSVG({ id: selectedSrcId, num: item.num || '?', price: item.price, rarity: item.rarity })}
-                    <div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name || 'Карточка'}</div>
-                `;
-            } else {
-                srcSwap.classList.remove('filled');
-                srcSwap.innerHTML = `<span class="swap-plus">+</span>`;
-            }
-
-            // Слот "Получаешь"
-            if (autoDstId && allPhotos[autoDstId]) {
-                const t = allPhotos[autoDstId];
-                dstSwap.classList.add('filled');
-                dstSwap.innerHTML = `
-                    ${makeCardSVG(t)}
-                    <div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>
-                `;
-            } else {
-                dstSwap.classList.remove('filled');
-                dstSwap.innerHTML = `<span class="swap-plus">?</span>`;
-            }
-
-            if (selectedSrcId && autoDstId) {
-                const t = allPhotos[autoDstId];
-                chanceText.innerHTML = `Шанс: <b>${Math.round(chance * 100)}%</b> · ${t.name} (${t.price} 🪙)`;
-            } else if (selectedSrcId) {
-                chanceText.textContent = 'Нет подходящей цели — нужна карточка выше по редкости';
-            } else {
-                chanceText.textContent = 'Выбери карточку из инвентаря ниже';
-            }
-
-            if (armed && !isUpgrading) upgradeMainBtn.disabled = false;
-            else upgradeMainBtn.disabled = true;
-        }
-
-        function renderUpgradeInventory() {
-            upgradeInventoryGrid.innerHTML = '';
-            const ids = Object.keys(inventory);
-            if (ids.length === 0) {
-                upgradeInventoryGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-mute); padding: 30px 20px; font-size: 12px;">Инвентарь пуст</div>';
-                return;
-            }
-            ids.forEach(id => {
-                const item = inventory[id];
-                const idx = rarityOrder.indexOf(item.rarity);
-                const el = document.createElement('div');
-                el.className = `inv-item rarity-${item.rarity}`;
-                el.innerHTML = `
-                    ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
-                    <div class="inv-name">${item.name || 'Карточка'}</div>
-                    <div class="inv-count">×${item.count}</div>
-                    <div class="inv-rarity">${rarityNames[item.rarity]}</div>
-                `;
-                el.addEventListener('click', () => {
-                    if (isUpgrading) return;
-                    if (idx >= rarityOrder.length - 1) {
-                        el.animate([
-                            { transform: 'translateX(0)' },
-                            { transform: 'translateX(-5px)' },
-                            { transform: 'translateX(5px)' },
-                            { transform: 'translateX(0)' }
-                        ], { duration: 200 });
-                        return;
-                    }
-                    selectedSrcId = id;
-                    recalcUpgrade();
-                    renderUpgradeInventory();
-                });
-                upgradeInventoryGrid.appendChild(el);
-            });
-        }
-
-        srcSwap.addEventListener('click', () => {
-            if (isUpgrading) return;
-            if (selectedSrcId) {
-                selectedSrcId = null;
-                autoDstId = null;
-                updateUpgradeUI();
-                renderUpgradeInventory();
-                return;
-            }
-            upgradeInventoryGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-
-        dstSwap.addEventListener('click', () => {
-            if (isUpgrading) return;
-            if (!selectedSrcId) { alert('Сначала выбери карточку из инвентаря'); return; }
-            const t = getTargetPhoto();
-            if (!t) { alert('Нет подходящей цели'); return; }
-            alert(`Цель: ${t.name}\n${rarityNames[t.rarity]}\nЦена: 🪙 ${t.price}\nШанс: ${Math.round(getRealChance()*100)}%`);
-        });
-
-        document.querySelectorAll('.mode-btn[data-chance]').forEach(btn => {
+    function initWelcomeAvatarGrid() {
+        welcomeAvatarGrid.innerHTML = '';
+        AVATARS.slice(0, 12).forEach(emoji => {
+            const btn = document.createElement('button');
+            btn.className = 'avatar-option';
+            btn.textContent = emoji;
+            btn.type = 'button';
+            if (emoji === profile.avatar) btn.classList.add('selected');
             btn.addEventListener('click', () => {
-                if (isUpgrading) return;
-                document.querySelectorAll('.mode-btn[data-chance]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                upgradeChance = parseFloat(btn.dataset.chance);
-                if (selectedSrcId) recalcUpgrade();
+                welcomeAvatarGrid.querySelectorAll('.avatar-option').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+            welcomeAvatarGrid.appendChild(btn);
+        });
+    }
+
+    function initEditAvatarGrid() {
+        editAvatarGrid.innerHTML = '';
+        AVATARS.forEach(emoji => {
+            const btn = document.createElement('button');
+            btn.className = 'avatar-option';
+            btn.textContent = emoji;
+            btn.type = 'button';
+            if (emoji === profile.avatar) btn.classList.add('selected');
+            btn.addEventListener('click', () => {
+                profile.avatar = emoji;
+                saveProfile();
+                editAvatarModal.classList.remove('active');
+                renderProfile();
+            });
+            editAvatarGrid.appendChild(btn);
+        });
+    }
+
+    welcomeStart.addEventListener('click', () => {
+        const name = welcomeName.value.trim() || 'Игрок';
+        const selected = welcomeAvatarGrid.querySelector('.avatar-option.selected');
+        const avatar = selected ? selected.textContent : '👤';
+        profile.name = name.slice(0, 16);
+        profile.avatar = avatar;
+        profile.since = new Date().toISOString();
+        saveProfile();
+        welcomeModal.classList.remove('active');
+        renderProfile();
+    });
+
+    function showWelcome() {
+        initWelcomeAvatarGrid();
+        welcomeName.value = '';
+        welcomeModal.classList.add('active');
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function switchScreen(name) {
+        screenChoose.classList.remove('active');
+        screenSpin.classList.remove('active');
+        screenUpgrade.classList.remove('active');
+        screenProfile.classList.remove('active');
+        if (name === 'choose') screenChoose.classList.add('active');
+        else if (name === 'spin') screenSpin.classList.add('active');
+        else if (name === 'upgrade') screenUpgrade.classList.add('active');
+        else if (name === 'profile') screenProfile.classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderProfile() {
+        profileAvatar.textContent = profile.avatar;
+        profileName.innerHTML = `${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
+        if (profile.since) {
+            const d = new Date(profile.since);
+            const dd = String(d.getDate()).padStart(2, '0');
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            profileSince.textContent = `Играешь с: ${dd}.${mm}.${yyyy}`;
+        } else {
+            profileSince.textContent = 'Играешь с: —';
+        }
+        statCases.textContent = profile.stats.casesOpened;
+        statSpent.textContent = profile.stats.spent.toLocaleString('ru-RU');
+        statEarned.textContent = profile.stats.earned.toLocaleString('ru-RU');
+        statUpgrades.textContent = profile.stats.upgrades;
+        statCollected.textContent = getCollectedCount() + '/120';
+        if (profile.stats.bestDrop) {
+            const b = profile.stats.bestDrop;
+            statBest.innerHTML = `<span style="color:${rarityColors[b.rarity]}; font-size: 12px;">#${b.num || '?'}</span>`;
+        } else {
+            statBest.textContent = '—';
+        }
+        renderCollection();
+    }
+
+    function isStudied(id) { return studied[id] === true || (inventory[id] && inventory[id].count > 0); }
+    function getCollectedCount() { return ALL_CARD_IDS.filter(id => isStudied(id)).length; }
+    function getCollectedByRarity(rarity) { return ALL_CARD_IDS.filter(id => allPhotos[id].rarity === rarity && isStudied(id)).length; }
+
+    function renderRarityProgress() {
+        rarityProgress.innerHTML = '';
+        const allChip = document.createElement('div');
+        allChip.className = 'rarity-chip' + (collectionFilter === 'all' ? ' active' : '');
+        allChip.innerHTML = `📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
+        allChip.addEventListener('click', () => { collectionFilter = 'all'; renderCollection(); });
+        rarityProgress.appendChild(allChip);
+        rarityOrder.forEach(rarity => {
+            const total = totalByRarity[rarity];
+            if (total === 0) return;
+            const collected = getCollectedByRarity(rarity);
+            const chip = document.createElement('div');
+            chip.className = 'rarity-chip' + (collectionFilter === rarity ? ' active' : '');
+            chip.innerHTML = `<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
+            chip.addEventListener('click', () => { collectionFilter = rarity; renderCollection(); });
+            rarityProgress.appendChild(chip);
+        });
+    }
+
+    function renderCollection() {
+        collectionGrid.innerHTML = '';
+        renderRarityProgress();
+        const owned = getCollectedCount();
+        collectCount.textContent = owned;
+        collectBar.style.width = (owned / 120) * 100 + '%';
+        let ids = [...ALL_CARD_IDS].sort((a, b) => {
+            const pa = allPhotos[a], pb = allPhotos[b];
+            const ia = rarityOrder.indexOf(pa.rarity);
+            const ib = rarityOrder.indexOf(pb.rarity);
+            if (ia !== ib) return ia - ib;
+            return pa.num - pb.num;
+        });
+        if (collectionFilter !== 'all') ids = ids.filter(id => allPhotos[id].rarity === collectionFilter);
+        ids.forEach(id => {
+            const photo = allPhotos[id];
+            const hasIt = inventory[id] && inventory[id].count > 0;
+            const wasStudied = isStudied(id);
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${photo.rarity}`;
+            if (!wasStudied) { el.style.filter = 'grayscale(1) brightness(0.35)'; el.style.opacity = '0.5'; }
+            else if (!hasIt) { el.classList.add('studied'); }
+            el.innerHTML = `${makeCardSVG(photo)}<div class="inv-name">${photo.name}</div><div class="inv-rarity">${rarityNames[photo.rarity]}</div>`;
+            collectionGrid.appendChild(el);
+        });
+    }
+
+    avatarBtn.addEventListener('click', () => { renderProfile(); switchScreen('profile'); });
+    profileBackBtn.addEventListener('click', () => switchScreen('choose'));
+    profileAvatar.addEventListener('click', () => { initEditAvatarGrid(); editAvatarModal.classList.add('active'); });
+    profileName.addEventListener('click', () => { editNameInput.value = profile.name; editNameModal.classList.add('active'); });
+    editNameCancel.addEventListener('click', () => editNameModal.classList.remove('active'));
+    editNameSave.addEventListener('click', () => {
+        const name = editNameInput.value.trim() || 'Игрок';
+        profile.name = name.slice(0, 16);
+        saveProfile();
+        editNameModal.classList.remove('active');
+        renderProfile();
+    });
+    editAvatarClose.addEventListener('click', () => editAvatarModal.classList.remove('active'));
+
+    function renderCaseGrid() {
+        caseGrid.innerHTML = '';
+        Object.keys(caseConfig).forEach(key => {
+            const cfg = caseConfig[key];
+            const price = casePrices[key];
+            const card = document.createElement('div');
+            card.className = 'case-card ' + key;
+            card.dataset.case = key;
+            card.innerHTML = `
+                <div class="case-art">
+                    <div class="case-glow"></div>
+                    <span class="case-emoji">${cfg.emoji}</span>
+                    <img src="${cfg.img}" alt="${cfg.title}" loading="lazy">
+                </div>
+                <div class="case-name">${cfg.title}</div>
+                <div class="case-desc">${cfg.desc}</div>
+                <div class="case-price">🪙 ${price}</div>
+            `;
+            caseGrid.appendChild(card);
+        });
+
+        document.querySelectorAll('.case-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const key = card.dataset.case;
+                const price = casePrices[key];
+                if (balance < price) {
+                    card.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-6px)' },
+                        { transform: 'translateX(6px)' },
+                        { transform: 'translateX(0)' }
+                    ], { duration: 250 });
+                    return;
+                }
+                currentCase = cases[key];
+                currentCaseKey = key;
+                caseTitle.textContent = caseConfig[key].title;
+                updateStartBtn();
+                casePreviewImg.src = caseConfig[key].img;
+                casePreview.style.display = 'flex';
+                strip.innerHTML = '';
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0)';
+                stripWrapper.classList.remove('active');
+                startBtn.classList.add('active');
+                startBtn.disabled = false;
+                sellBtn.classList.remove('active');
+                resultEl.classList.remove('show');
+                resultEl.textContent = '';
+                pendingPhoto = null;
+                switchScreen('spin');
             });
         });
+        updateCaseAvailability();
+    }
 
-        // === КНОПКА УЛУЧШИТЬ — с правильной логикой вращения ===
-        upgradeMainBtn.addEventListener('click', () => {
-            if (isUpgrading) return;
-            if (!selectedSrcId || !autoDstId) return;
-            if (!inventory[selectedSrcId]) return;
+    function addToInventory(photo, count = 1) {
+        if (!inventory[photo.id]) {
+            inventory[photo.id] = { count: 0, num: photo.num, name: photo.name, rarity: photo.rarity, price: photo.price };
+        }
+        inventory[photo.id].count += count;
+        studied[photo.id] = true;
+        saveInventory();
+        saveStudied();
+    }
 
-            const srcItem = inventory[selectedSrcId];
-            const dstItem = allPhotos[autoDstId];
-            if (!srcItem || !dstItem) return;
+    function removeFromInventory(photoId, count = 1) {
+        if (!inventory[photoId]) return false;
+        inventory[photoId].count -= count;
+        if (inventory[photoId].count <= 0) delete inventory[photoId];
+        saveInventory();
+        return true;
+    }
 
-            const chance = getRealChance();
-            const success = Math.random() < chance;
+    function renderInventory() {
+        inventoryGrid.innerHTML = '';
+        const ids = Object.keys(inventory);
+        if (ids.length === 0) { inventoryEmpty.style.display = 'block'; return; }
+        inventoryEmpty.style.display = 'none';
+        ids.forEach(id => {
+            const item = inventory[id];
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${item.rarity}`;
+            el.innerHTML = `
+                ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="inv-name">${item.name || 'Карточка'}</div>
+                <div class="inv-count">×${item.count}</div>
+                <div class="inv-rarity">${rarityNames[item.rarity]}</div>
+            `;
+            el.addEventListener('click', () => openItemModal(id));
+            inventoryGrid.appendChild(el);
+        });
+    }
 
-            isUpgrading = true;
-            upgradeMainBtn.disabled = true;
-            playStart();
+    let modalPhotoId = null;
 
-            clearInterval(tickInterval);
-            let tickCount = 0;
-            tickInterval = setInterval(() => {
-                playUpgradeTick();
-                tickCount++;
-                if (tickCount > 25) {
-                    clearInterval(tickInterval);
-                    tickInterval = setInterval(() => playUpgradeTick(), 200);
+    function openItemModal(id) {
+        const item = inventory[id];
+        if (!item) return;
+        modalPhotoId = id;
+        modalImgWrap.innerHTML = makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity });
+        modalName.textContent = item.name || 'Карточка';
+        modalRarity.textContent = rarityNames[item.rarity];
+        modalRarity.style.color = rarityColors[item.rarity];
+        modalCount.textContent = `В инвентаре: ${item.count}`;
+        modalPrice.textContent = `Цена продажи: 🪙 ${item.price}`;
+        itemModal.classList.add('active');
+    }
+
+    modalClose.addEventListener('click', () => { itemModal.classList.remove('active'); modalPhotoId = null; });
+
+    modalSell.addEventListener('click', () => {
+        if (!modalPhotoId || !inventory[modalPhotoId]) return;
+        const item = inventory[modalPhotoId];
+        const price = item.price;
+        removeFromInventory(modalPhotoId, 1);
+        balance += price;
+        profile.stats.sold++;
+        profile.stats.earned += price;
+        if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
+        saveProfile();
+        updateBalance();
+        playCoin();
+        itemModal.classList.remove('active');
+        modalPhotoId = null;
+        renderInventory();
+        renderCollection();
+        renderUpgradeInventory();
+    });
+
+    function pickAutoTarget(srcRarity, chance) {
+        const srcItem = inventory[selectedSrcId];
+        if (!srcItem) return null;
+        const srcPrice = srcItem.price;
+        const srcIdx = rarityOrder.indexOf(srcRarity);
+        const candidates = [];
+        for (const id in allPhotos) {
+            const p = allPhotos[id];
+            const dstIdx = rarityOrder.indexOf(p.rarity);
+            if (dstIdx <= srcIdx) continue;
+            const actualChance = srcPrice / p.price;
+            const dist = Math.abs(actualChance - chance);
+            candidates.push({ photo: p, dist });
+        }
+        if (candidates.length === 0) return null;
+        candidates.sort((a, b) => a.dist - b.dist);
+        return candidates[0].photo.id;
+    }
+
+    function recalcUpgrade() {
+        if (!selectedSrcId || !inventory[selectedSrcId]) { autoDstId = null; updateUpgradeUI(); return; }
+        const srcItem = inventory[selectedSrcId];
+        const srcIdx = rarityOrder.indexOf(srcItem.rarity);
+        if (srcIdx >= rarityOrder.length - 1) { autoDstId = null; updateUpgradeUI(); return; }
+        autoDstId = pickAutoTarget(srcItem.rarity, upgradeChance);
+        updateUpgradeUI();
+    }
+
+    function getRealChance() {
+        if (!selectedSrcId || !autoDstId) return 0;
+        const src = inventory[selectedSrcId];
+        const dst = allPhotos[autoDstId];
+        if (!src || !dst) return 0;
+        return Math.min(0.95, Math.max(0.01, src.price / dst.price));
+    }
+
+    function getTargetPhoto() { return autoDstId ? allPhotos[autoDstId] || null : null; }
+
+    function updateUpgradeUI() {
+        const chance = getRealChance();
+        const armed = selectedSrcId && autoDstId;
+
+        if (chance > 0) chanceCircleValue.textContent = Math.round(chance * 100) + '%';
+        else chanceCircleValue.textContent = '—';
+
+        const circumference = 2 * Math.PI * 54;
+        const greenLength = circumference * chance;
+        if (chanceCircleChance) {
+            chanceCircleChance.setAttribute('stroke-dasharray', greenLength + ' ' + circumference);
+        }
+
+        if (selectedSrcId && inventory[selectedSrcId]) {
+            const item = inventory[selectedSrcId];
+            srcSwap.classList.add('filled');
+            srcSwap.innerHTML = `
+                ${makeCardSVG({ id: selectedSrcId, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name || 'Карточка'}</div>
+            `;
+        } else {
+            srcSwap.classList.remove('filled');
+            srcSwap.innerHTML = `<span class="swap-plus">+</span>`;
+        }
+
+        if (autoDstId && allPhotos[autoDstId]) {
+            const t = allPhotos[autoDstId];
+            dstSwap.classList.add('filled');
+            dstSwap.innerHTML = `
+                ${makeCardSVG(t)}
+                <div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>
+            `;
+        } else {
+            dstSwap.classList.remove('filled');
+            dstSwap.innerHTML = `<span class="swap-plus">?</span>`;
+        }
+
+        if (selectedSrcId && autoDstId) {
+            const t = allPhotos[autoDstId];
+            chanceText.innerHTML = `Шанс: <b>${Math.round(chance * 100)}%</b> · ${t.name} (${t.price} 🪙)`;
+        } else if (selectedSrcId) {
+            chanceText.textContent = 'Нет подходящей цели — нужна карточка выше по редкости';
+        } else {
+            chanceText.textContent = 'Выбери карточку из инвентаря ниже';
+        }
+
+        if (armed && !isUpgrading) upgradeMainBtn.disabled = false;
+        else upgradeMainBtn.disabled = true;
+    }
+
+    function renderUpgradeInventory() {
+        upgradeInventoryGrid.innerHTML = '';
+        const ids = Object.keys(inventory);
+        if (ids.length === 0) {
+            upgradeInventoryGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-mute); padding: 30px 20px; font-size: 12px;">Инвентарь пуст</div>';
+            return;
+        }
+        ids.forEach(id => {
+            const item = inventory[id];
+            const idx = rarityOrder.indexOf(item.rarity);
+            const el = document.createElement('div');
+            el.className = `inv-item rarity-${item.rarity}`;
+            el.innerHTML = `
+                ${makeCardSVG({ id: id, num: item.num || '?', price: item.price, rarity: item.rarity })}
+                <div class="inv-name">${item.name || 'Карточка'}</div>
+                <div class="inv-count">×${item.count}</div>
+                <div class="inv-rarity">${rarityNames[item.rarity]}</div>
+            `;
+            el.addEventListener('click', () => {
+                if (isUpgrading) return;
+                if (idx >= rarityOrder.length - 1) {
+                    el.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-5px)' },
+                        { transform: 'translateX(5px)' },
+                        { transform: 'translateX(0)' }
+                    ], { duration: 200 });
+                    return;
                 }
-            }, 80);
-
-            // === ЛОГИКА ВРАЩЕНИЯ СТРЕЛКИ ===
-            // Круг: 0° = справа (3 часа), 90° = снизу (6 часов), 180° = слева (9 часов), 270° = сверху (12 часов)
-            // Но стрелка у нас стартует сверху (transform-origin: 50% 0% = вращение по часовой от верха)
-            // Старт: 0° = стрелка смотрит вверх
-            //
-            // Зелёный сектор (наш SVG): начинается снизу (transform: rotate(90 60 60)) и идёт по часовой
-            // Значит зелёный = [0°..chance*360°] если считать от "низа" = 180° в системе стрелки
-            // В системе стрелки (0 = вверх): низ = 180°
-            //
-            // Упрощаем: стрелка должна попасть в диапазон [180° - chance*360°, 180°] (сектор снизу)
-            // При успехе — попадает туда, при провале — в оставшуюся часть (0°..180°-chance*360°)
-
-            let finalAngle;
-            const chanceAngle = chance * 360;
-
-            if (success) {
-                // В зелёном секторе (около 180° = снизу)
-                const inGreen = 0.1 + Math.random() * 0.8;
-                // Сектор снизу: от (180° - chanceAngle) до 180°
-                finalAngle = (180 - chanceAngle * inGreen) % 360;
-            } else {
-                // В красной зоне (сверху, 0°..180°-chanceAngle)
-                const redRange = 360 - chanceAngle;
-                const inRed = 0.1 + Math.random() * 0.8;
-                finalAngle = redRange * inRed;
-            }
-
-            const totalRotation = 360 * 5 + finalAngle;
-            outerArrow.style.transition = 'none';
-            outerArrow.style.transform = 'rotate(0deg)';
-            void outerArrow.offsetWidth;
-            outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
-            outerArrow.style.transform = `rotate(${totalRotation}deg)`;
-
-            setTimeout(() => {
-                clearInterval(tickInterval);
-                tickInterval = null;
-                showUpgradeResult(srcItem, dstItem, success, chance);
-            }, 4200);
-        });
-
-        function showUpgradeResult(srcItem, dstItem, success, chance) {
-            const curRot = parseFloat((outerArrow.style.transform.match(/rotate\(([\d.\-]+)deg\)/) || [0, 0])[1]);
-            const finalAngle = ((curRot % 360) + 360) % 360;
-            outerArrow.style.transition = 'none';
-            outerArrow.style.transform = `rotate(${finalAngle}deg)`;
-            void outerArrow.offsetWidth;
-            outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
-
-            removeFromInventory(selectedSrcId, 1);
-
-            if (success) {
-                addToInventory(dstItem, 1);
-                profile.stats.upgrades++;
-                saveProfile();
-                playSuccess();
-                chanceText.innerHTML = `<span style="color:#4ade80; font-weight:bold;">🎉 УСПЕХ — получено: ${dstItem.name}</span>`;
-            } else {
-                playFail();
-                chanceText.innerHTML = `<span style="color:#f87171; font-weight:bold;">💥 НЕУДАЧА — предмет потерян</span>`;
-            }
-
-            if (!inventory[selectedSrcId]) {
-                selectedSrcId = null;
-                autoDstId = null;
-            } else {
+                selectedSrcId = id;
                 recalcUpgrade();
-            }
-
-            renderInventory();
-            renderCollection();
-            renderUpgradeInventory();
-            isUpgrading = false;
-
-            setTimeout(() => {
-                updateUpgradeUI();
                 renderUpgradeInventory();
-            }, 1500);
-        }
-
-        function setActiveTab(activeBtn) {
-            [tabCases, tabWork, tabUpgradeNav, tabInventory].forEach(b => b.classList.remove('active'));
-            activeBtn.classList.add('active');
-        }
-
-        tabCases.addEventListener('click', () => {
-            setActiveTab(tabCases);
-            viewCases.style.display = 'block';
-            viewInventory.style.display = 'none';
-            viewWork.style.display = 'none';
-            switchScreen('choose');
+            });
+            upgradeInventoryGrid.appendChild(el);
         });
+    }
 
-        tabInventory.addEventListener('click', () => {
-            setActiveTab(tabInventory);
-            viewCases.style.display = 'none';
-            viewInventory.style.display = 'block';
-            viewWork.style.display = 'none';
-            renderInventory();
-            switchScreen('choose');
-        });
-
-        tabWork.addEventListener('click', () => {
-            setActiveTab(tabWork);
-            viewCases.style.display = 'none';
-            viewInventory.style.display = 'none';
-            viewWork.style.display = 'block';
-            switchScreen('choose');
-        });
-
-        tabUpgradeNav.addEventListener('click', () => {
+    srcSwap.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (selectedSrcId) {
             selectedSrcId = null;
             autoDstId = null;
             updateUpgradeUI();
             renderUpgradeInventory();
-            switchScreen('upgrade');
-        });
+            return;
+        }
+        upgradeInventoryGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
 
-        upgradeBackBtn.addEventListener('click', () => {
+    dstSwap.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (!selectedSrcId) { alert('Сначала выбери карточку из инвентаря'); return; }
+        const t = getTargetPhoto();
+        if (!t) { alert('Нет подходящей цели'); return; }
+        alert(`Цель: ${t.name}\n${rarityNames[t.rarity]}\nЦена: 🪙 ${t.price}\nШанс: ${Math.round(getRealChance()*100)}%`);
+    });
+
+    document.querySelectorAll('.mode-btn[data-chance]').forEach(btn => {
+        btn.addEventListener('click', () => {
             if (isUpgrading) return;
-            setActiveTab(tabCases);
-            viewCases.style.display = 'block';
-            viewInventory.style.display = 'none';
-            viewWork.style.display = 'none';
-            switchScreen('choose');
-            renderInventory();
+            document.querySelectorAll('.mode-btn[data-chance]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            upgradeChance = parseFloat(btn.dataset.chance);
+            if (selectedSrcId) recalcUpgrade();
         });
+    });
 
-        workBtn.addEventListener('click', (e) => {
-            balance += 1;
-            profile.stats.earned += 1;
-            saveProfile();
-            updateBalance();
-            playCoin();
-            sessionEarned += 1;
-            workTotal.textContent = sessionEarned;
-            workEarned.textContent = '+1 🪙';
-            const coin = document.createElement('div');
-            coin.className = 'float-coin';
-            coin.textContent = '+1 🪙';
-            const rect = workBtn.getBoundingClientRect();
-            const x = e.clientX || (rect.left + rect.width / 2);
-            const y = e.clientY || (rect.top + rect.height / 2);
-            coin.style.left = x + 'px';
-            coin.style.top = y + 'px';
-            document.body.appendChild(coin);
-            setTimeout(() => coin.remove(), 1000);
-            clearTimeout(workBtn._t);
-            workBtn._t = setTimeout(() => { workEarned.textContent = ''; }, 400);
-        });
+    // КНОПКА УЛУЧШИТЬ
+    upgradeMainBtn.addEventListener('click', () => {
+        if (isUpgrading) return;
+        if (!selectedSrcId || !autoDstId) return;
+        if (!inventory[selectedSrcId]) return;
 
-        backBtn.addEventListener('click', () => {
-            if (isSpinning) return;
-            setActiveTab(tabCases);
-            viewCases.style.display = 'block';
-            viewInventory.style.display = 'none';
-            viewWork.style.display = 'none';
-            switchScreen('choose');
-            renderInventory();
-        });
+        const srcItem = inventory[selectedSrcId];
+        const dstItem = allPhotos[autoDstId];
+        if (!srcItem || !dstItem) return;
 
-        function shuffle(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+        const chance = getRealChance();
+        const success = Math.random() < chance;
+
+        isUpgrading = true;
+        upgradeMainBtn.disabled = true;
+        playStart();
+
+        clearInterval(tickInterval);
+        let tickCount = 0;
+        tickInterval = setInterval(() => {
+            playUpgradeTick();
+            tickCount++;
+            if (tickCount > 25) {
+                clearInterval(tickInterval);
+                tickInterval = setInterval(() => playUpgradeTick(), 200);
             }
-            return arr;
+        }, 80);
+
+        // Вращение: 0° = стрелка сверху, крутится по часовой
+        // Зелёный сектор снизу (180°): от (180 - chance*360) до 180
+        let finalAngle;
+        const chanceAngle = chance * 360;
+
+        if (success) {
+            // В зелёной зоне (у низа, около 180°)
+            const inGreen = 0.1 + Math.random() * 0.8;
+            finalAngle = 180 - chanceAngle * inGreen;
+        } else {
+            // В красной зоне (остальная часть)
+            const redRange = 360 - chanceAngle;
+            const inRed = 0.1 + Math.random() * 0.8;
+            finalAngle = redRange * inRed;
         }
 
-        let stripOrder = [];
+        const totalRotation = 360 * 5 + finalAngle;
+        outerArrow.style.transition = 'none';
+        outerArrow.style.transform = 'rotate(0deg)';
+        void outerArrow.offsetWidth;
+        outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
+        outerArrow.style.transform = `rotate(${totalRotation}deg)`;
 
-        function buildStrip() {
-            strip.innerHTML = '';
-            const shuffled = shuffle(currentCase.photos);
-            stripOrder = shuffled.map(p => p.id);
-            for (let i = 0; i < 4; i++) {
-                shuffled.forEach(item => {
-                    const card = document.createElement('div');
-                    card.className = `photo rarity-${item.rarity}`;
-                    card.innerHTML = `
-                        ${makeCardSVG(item)}
-                        <div class="photo-name">${item.name}</div>
-                        <div class="rarity-badge">${rarityNames[item.rarity]}</div>
-                    `;
-                    strip.appendChild(card);
-                });
-            }
-        }
-
-        function spin() {
-            if (isSpinning) return;
-            const price = casePrices[currentCaseKey];
-            if (balance < price) {
-                resultEl.innerHTML = `Недостаточно монет — нужно 🪙 ${price}`;
-                resultEl.classList.add('show');
-                return;
-            }
-
-            balance -= price;
-            profile.stats.casesOpened++;
-            profile.stats.spent += price;
-            saveProfile();
-            updateBalance();
-
-            isSpinning = true;
-            startBtn.classList.remove('active');
-            startBtn.disabled = true;
-            sellBtn.classList.remove('active');
-            resultEl.classList.remove('show');
-            resultEl.textContent = '';
-            pendingPhoto = null;
-
-            casePreview.style.display = 'none';
-            stripWrapper.classList.add('active');
-            buildStrip();
-
-            strip.style.transition = 'none';
-            strip.style.transform = 'translateX(0)';
-            void strip.offsetHeight;
-
-            playStart();
+        setTimeout(() => {
             clearInterval(tickInterval);
-            tickInterval = setInterval(playTick, 80);
-            setTimeout(() => {
-                clearInterval(tickInterval);
-                tickInterval = setInterval(playTick, 180);
-            }, 2000);
-            setTimeout(() => {
-                clearInterval(tickInterval);
-                tickInterval = setInterval(playTick, 350);
-            }, 3000);
+            tickInterval = null;
+            showUpgradeResult(srcItem, dstItem, success, chance);
+        }, 4200);
+    });
 
-            const photosLen = currentCase.photos.length;
-            const wonPhoto = currentCase.photos[Math.floor(Math.random() * photosLen)];
+    function showUpgradeResult(srcItem, dstItem, success, chance) {
+        const curRot = parseFloat((outerArrow.style.transform.match(/rotate\(([\d.\-]+)deg\)/) || [0, 0])[1]);
+        const finalAngle = ((curRot % 360) + 360) % 360;
+        outerArrow.style.transition = 'none';
+        outerArrow.style.transform = `rotate(${finalAngle}deg)`;
+        void outerArrow.offsetWidth;
+        outerArrow.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.3, 1)';
 
-            const indexesInStrip = [];
-            for (let copyIdx = 1; copyIdx < 4; copyIdx++) {
-                const offset = copyIdx * photosLen;
-                const posInShuffled = stripOrder.indexOf(wonPhoto.id);
-                if (posInShuffled !== -1) indexesInStrip.push(offset + posInShuffled);
-            }
+        removeFromInventory(selectedSrcId, 1);
 
-            const chosenIndex = indexesInStrip.length > 0
-                ? indexesInStrip[Math.floor(Math.random() * indexesInStrip.length)]
-                : Math.floor(photosLen * 1.5 + Math.random() * photosLen);
-
-            const first = strip.children[0];
-            const cardWidth = first.offsetWidth + 14;
-            const wrapperWidth = stripWrapper.offsetWidth;
-            const centerOffset = wrapperWidth / 2 - first.offsetWidth / 2;
-            const targetX = -(chosenIndex * cardWidth) + centerOffset;
-            const duration = 3500;
-
-            strip.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.7, 0.3, 1)`;
-            strip.style.transform = `translateX(${targetX}px)`;
-
-            setTimeout(() => {
-                clearInterval(tickInterval);
-                tickInterval = null;
-                const rarity = wonPhoto.rarity;
-                const color = rarityColors[rarity];
-                const cardPrice = wonPhoto.price;
-                addToInventory(wonPhoto);
-                updateBestDrop(wonPhoto);
-                playReveal();
-                pendingPhoto = wonPhoto;
-                resultEl.innerHTML =
-                    `Выпало: <b style="color:${color}">${wonPhoto.name}</b><br>` +
-                    `<span style="color:${color}; font-size:13px;">${rarityNames[rarity]}</span><br>` +
-                    `<span style="color:#888;font-size:12px;">Уже в инвентаре. Продать за 🪙 ${cardPrice}?</span>`;
-                resultEl.classList.add('show');
-                sellBtn.textContent = `💰 ПРОДАТЬ за ${cardPrice} 🪙`;
-                sellBtn.classList.add('active');
-                isSpinning = false;
-            }, duration + 50);
+        if (success) {
+            addToInventory(dstItem, 1);
+            profile.stats.upgrades++;
+            saveProfile();
+            playSuccess();
+            chanceText.innerHTML = `<span style="color:#4ade80; font-weight:bold;">🎉 УСПЕХ — получено: ${dstItem.name}</span>`;
+        } else {
+            playFail();
+            chanceText.innerHTML = `<span style="color:#f87171; font-weight:bold;">💥 НЕУДАЧА — предмет потерян</span>`;
         }
 
-        sellBtn.addEventListener('click', () => {
-            if (!pendingPhoto) return;
-            const price = pendingPhoto.price;
-            removeFromInventory(pendingPhoto.id, 1);
-            balance += price;
-            profile.stats.sold++;
-            profile.stats.earned += price;
-            if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
-            saveProfile();
-            updateBalance();
-            playCoin();
-            resultEl.innerHTML =
-                `Продал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br>` +
-                `<span style="color:#fbbf24;">+ ${price} 🪙</span>`;
-            resultEl.classList.add('show');
-            sellBtn.classList.remove('active');
-            pendingPhoto = null;
-            casePreview.style.display = 'flex';
-            startBtn.classList.add('active');
-            startBtn.disabled = false;
-            stripWrapper.classList.remove('active');
-            updateStartBtn();
-        });
-
-        function updateBestDrop(photo) {
-            const oldBest = profile.stats.bestDrop;
-            const newIdx = rarityOrder.indexOf(photo.rarity);
-            if (!oldBest) {
-                profile.stats.bestDrop = { name: photo.name, num: photo.num, rarity: photo.rarity, price: photo.price };
-            } else {
-                const oldIdx = rarityOrder.indexOf(oldBest.rarity);
-                if (newIdx > oldIdx || (newIdx === oldIdx && photo.price > oldBest.price)) {
-                    profile.stats.bestDrop = { name: photo.name, num: photo.num, rarity: photo.rarity, price: photo.price };
-                }
-            }
-            saveProfile();
+        if (!inventory[selectedSrcId]) {
+            selectedSrcId = null;
+            autoDstId = null;
+        } else {
+            recalcUpgrade();
         }
 
-        startBtn.addEventListener('click', spin);
-        updateSoundIcon();
-        renderCaseGrid();
-        updateBalance();
         renderInventory();
+        renderCollection();
+        renderUpgradeInventory();
+        isUpgrading = false;
+
+        setTimeout(() => {
+            updateUpgradeUI();
+            renderUpgradeInventory();
+        }, 1500);
+    }
+
+    function setActiveTab(activeBtn) {
+        [tabCases, tabWork, tabUpgradeNav, tabInventory].forEach(b => b.classList.remove('active'));
+        activeBtn.classList.add('active');
+    }
+
+    tabCases.addEventListener('click', () => {
+        setActiveTab(tabCases);
+        viewCases.style.display = 'block';
+        viewInventory.style.display = 'none';
+        viewWork.style.display = 'none';
+        switchScreen('choose');
+    });
+
+    tabInventory.addEventListener('click', () => {
+        setActiveTab(tabInventory);
+        viewCases.style.display = 'none';
+        viewInventory.style.display = 'block';
+        viewWork.style.display = 'none';
+        renderInventory();
+        switchScreen('choose');
+    });
+
+    tabWork.addEventListener('click', () => {
+        setActiveTab(tabWork);
+        viewCases.style.display = 'none';
+        viewInventory.style.display = 'none';
+        viewWork.style.display = 'block';
+        switchScreen('choose');
+    });
+
+    tabUpgradeNav.addEventListener('click', () => {
+        selectedSrcId = null;
+        autoDstId = null;
         updateUpgradeUI();
         renderUpgradeInventory();
+        switchScreen('upgrade');
+    });
 
-        if (!profile.since) {
-            setTimeout(() => showWelcome(), 300);
-        } else {
-            renderProfile();
+    upgradeBackBtn.addEventListener('click', () => {
+        if (isUpgrading) return;
+        setActiveTab(tabCases);
+        viewCases.style.display = 'block';
+        viewInventory.style.display = 'none';
+        viewWork.style.display = 'none';
+        switchScreen('choose');
+        renderInventory();
+    });
+
+    workBtn.addEventListener('click', (e) => {
+        balance += 1;
+        profile.stats.earned += 1;
+        saveProfile();
+        updateBalance();
+        playCoin();
+        sessionEarned += 1;
+        workTotal.textContent = sessionEarned;
+        workEarned.textContent = '+1 🪙';
+        const coin = document.createElement('div');
+        coin.className = 'float-coin';
+        coin.textContent = '+1 🪙';
+        const rect = workBtn.getBoundingClientRect();
+        const x = e.clientX || (rect.left + rect.width / 2);
+        const y = e.clientY || (rect.top + rect.height / 2);
+        coin.style.left = x + 'px';
+        coin.style.top = y + 'px';
+        document.body.appendChild(coin);
+        setTimeout(() => coin.remove(), 1000);
+        clearTimeout(workBtn._t);
+        workBtn._t = setTimeout(() => { workEarned.textContent = ''; }, 400);
+    });
+
+    backBtn.addEventListener('click', () => {
+        if (isSpinning) return;
+        setActiveTab(tabCases);
+        viewCases.style.display = 'block';
+        viewInventory.style.display = 'none';
+        viewWork.style.display = 'none';
+        switchScreen('choose');
+        renderInventory();
+    });
+
+    function shuffle(array) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    let stripOrder = [];
+
+    function buildStrip() {
+        strip.innerHTML = '';
+        const shuffled = shuffle(currentCase.photos);
+        stripOrder = shuffled.map(p => p.id);
+        for (let i = 0; i < 4; i++) {
+            shuffled.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `photo rarity-${item.rarity}`;
+                card.innerHTML = `
+                    ${makeCardSVG(item)}
+                    <div class="photo-name">${item.name}</div>
+                    <div class="rarity-badge">${rarityNames[item.rarity]}</div>
+                `;
+                strip.appendChild(card);
+            });
+        }
+    }
+
+    function spin() {
+        if (isSpinning) return;
+        const price = casePrices[currentCaseKey];
+        if (balance < price) {
+            resultEl.innerHTML = `Недостаточно монет — нужно 🪙 ${price}`;
+            resultEl.classList.add('show');
+            return;
         }
 
-        document.addEventListener('click', () => {
-            if (soundEnabled) getAudioCtx();
-        }, { once: true });
-    </script>
+        balance -= price;
+        profile.stats.casesOpened++;
+        profile.stats.spent += price;
+        saveProfile();
+        updateBalance();
+
+        isSpinning = true;
+        startBtn.classList.remove('active');
+        startBtn.disabled = true;
+        sellBtn.classList.remove('active');
+        resultEl.classList.remove('show');
+        resultEl.textContent = '';
+        pendingPhoto = null;
+
+        casePreview.style.display = 'none';
+        stripWrapper.classList.add('active');
+        buildStrip();
+
+        strip.style.transition = 'none';
+        strip.style.transform = 'translateX(0)';
+        void strip.offsetHeight;
+
+        playStart();
+        clearInterval(tickInterval);
+        tickInterval = setInterval(playTick, 80);
+        setTimeout(() => {
+            clearInterval(tickInterval);
+            tickInterval = setInterval(playTick, 180);
+        }, 2000);
+        setTimeout(() => {
+            clearInterval(tickInterval);
+            tickInterval = setInterval(playTick, 350);
+        }, 3000);
+
+        const photosLen = currentCase.photos.length;
+        const wonPhoto = currentCase.photos[Math.floor(Math.random() * photosLen)];
+
+        const indexesInStrip = [];
+        for (let copyIdx = 1; copyIdx < 4; copyIdx++) {
+            const offset = copyIdx * photosLen;
+            const posInShuffled = stripOrder.indexOf(wonPhoto.id);
+            if (posInShuffled !== -1) indexesInStrip.push(offset + posInShuffled);
+        }
+
+        const chosenIndex = indexesInStrip.length > 0
+            ? indexesInStrip[Math.floor(Math.random() * indexesInStrip.length)]
+            : Math.floor(photosLen * 1.5 + Math.random() * photosLen);
+
+        const first = strip.children[0];
+        const cardWidth = first.offsetWidth + 14;
+        const wrapperWidth = stripWrapper.offsetWidth;
+        const centerOffset = wrapperWidth / 2 - first.offsetWidth / 2;
+        const targetX = -(chosenIndex * cardWidth) + centerOffset;
+        const duration = 3500;
+
+        strip.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.7, 0.3, 1)`;
+        strip.style.transform = `translateX(${targetX}px)`;
+
+        setTimeout(() => {
+            clearInterval(tickInterval);
+            tickInterval = null;
+            const rarity = wonPhoto.rarity;
+            const color = rarityColors[rarity];
+            const cardPrice = wonPhoto.price;
+            addToInventory(wonPhoto);
+            updateBestDrop(wonPhoto);
+            playReveal();
+            pendingPhoto = wonPhoto;
+            resultEl.innerHTML =
+                `Выпало: <b style="color:${color}">${wonPhoto.name}</b><br>` +
+                `<span style="color:${color}; font-size:13px;">${rarityNames[rarity]}</span><br>` +
+                `<span style="color:#888;font-size:12px;">Уже в инвентаре. Продать за 🪙 ${cardPrice}?</span>`;
+            resultEl.classList.add('show');
+            sellBtn.textContent = `💰 ПРОДАТЬ за ${cardPrice} 🪙`;
+            sellBtn.classList.add('active');
+            isSpinning = false;
+        }, duration + 50);
+    }
+
+    sellBtn.addEventListener('click', () => {
+        if (!pendingPhoto) return;
+        const price = pendingPhoto.price;
+        removeFromInventory(pendingPhoto.id, 1);
+        balance += price;
+        profile.stats.sold++;
+        profile.stats.earned += price;
+        if (price > profile.stats.expensiveSale) profile.stats.expensiveSale = price;
+        saveProfile();
+        updateBalance();
+        playCoin();
+        resultEl.innerHTML =
+            `Продал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br>` +
+            `<span style="color:#fbbf24;">+ ${price} 🪙</span>`;
+        resultEl.classList.add('show');
+        sellBtn.classList.remove('active');
+        pendingPhoto = null;
+        casePreview.style.display = 'flex';
+        startBtn.classList.add('active');
+        startBtn.disabled = false;
+        stripWrapper.classList.remove('active');
+        updateStartBtn();
+    });
+
+    function updateBestDrop(photo) {
+        const oldBest = profile.stats.bestDrop;
+        const newIdx = rarityOrder.indexOf(photo.rarity);
+        if (!oldBest) {
+            profile.stats.bestDrop = { name: photo.name, num: photo.num, rarity: photo.rarity, price: photo.price };
+        } else {
+            const oldIdx = rarityOrder.indexOf(oldBest.rarity);
+            if (newIdx > oldIdx || (newIdx === oldIdx && photo.price > oldBest.price)) {
+                profile.stats.bestDrop = { name: photo.name, num: photo.num, rarity: photo.rarity, price: photo.price };
+            }
+        }
+        saveProfile();
+    }
+
+    startBtn.addEventListener('click', spin);
+    updateSoundIcon();
+    renderCaseGrid();
+    updateBalance();
+    renderInventory();
+    updateUpgradeUI();
+    renderUpgradeInventory();
+
+    if (!profile.since) {
+        setTimeout(() => showWelcome(), 300);
+    } else {
+        renderProfile();
+    }
+
+    document.addEventListener('click', () => {
+        if (soundEnabled) getAudioCtx();
+    }, { once: true });
+                                             </script>
 
 </body>
     </html>
