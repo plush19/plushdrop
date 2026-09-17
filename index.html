@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PashaDrop v6.2</title>
+<title>PashaDrop v6.3</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg-base:#0b0c10;--bg-deep:#08090d;--bg-mid:#12131a;--bg-card:#171820;--bg-elev:#1e2029;--bg-soft:#252836;--border-dark:#1a1c24;--border:#262934;--border-soft:#343846;--border-light:#454a5c;--text:#d8dae4;--text-dim:#8a8fa3;--text-mute:#555a6e;--red:#e11d48;--red-light:#f43f5e;--red-glow:rgba(225,29,72,0.55);--purple:#8b5cf6;--gold:#fbbf24}
@@ -38,6 +38,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 @keyframes screenFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
 .case-card{position:relative;padding:20px 12px 16px;border-radius:16px;background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg-mid) 100%);border:1px solid var(--border);cursor:pointer;text-align:center;transition:all 0.3s ease;overflow:hidden;display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04)}
+.case-card.stars{background:radial-gradient(ellipse at 50% 100%,rgba(250,220,60,0.25),transparent 70%),linear-gradient(180deg,var(--bg-card),var(--bg-mid))}
 .case-card.silver{background:radial-gradient(ellipse at 50% 100%,rgba(230,130,40,0.25),transparent 70%),linear-gradient(180deg,var(--bg-card),var(--bg-mid))}
 .case-card.zeus{background:radial-gradient(ellipse at 50% 100%,rgba(150,100,180,0.25),transparent 70%),linear-gradient(180deg,var(--bg-card),var(--bg-mid))}
 .case-card.dustin{background:radial-gradient(ellipse at 50% 100%,rgba(59,100,200,0.25),transparent 70%),linear-gradient(180deg,var(--bg-card),var(--bg-mid))}
@@ -51,6 +52,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .case-art img{max-width:100%;max-height:130px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.7));transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)}
 .case-card:hover .case-art img{transform:translateY(-6px) scale(1.08)}
 .case-art .case-glow{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:100px;height:20px;border-radius:50%;filter:blur(14px);opacity:0.55;z-index:-1;pointer-events:none}
+.case-card.stars .case-glow{background:rgba(250,220,60,0.85)}
 .case-card.silver .case-glow{background:rgba(240,140,40,0.85)}
 .case-card.zeus .case-glow{background:rgba(170,120,200,0.85)}
 .case-card.dustin .case-glow{background:rgba(60,120,220,0.85)}
@@ -446,12 +448,12 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-info"><div class="stat-value" id="statCases">0</div><div class="stat-label">Кейсов</div></div></div>
 <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-info"><div class="stat-value" id="statEarned">0</div><div class="stat-label">Заработано</div></div></div>
 <div class="stat-card"><div class="stat-icon">⬆️</div><div class="stat-info"><div class="stat-value" id="statUpgrades">0</div><div class="stat-label">Апгрейдов</div></div></div>
-<div class="stat-card"><div class="stat-icon">📚</div><div class="stat-info"><div class="stat-value" id="statCollected">0/120</div><div class="stat-label">Собрано</div></div></div>
+<div class="stat-card"><div class="stat-icon">📚</div><div class="stat-info"><div class="stat-value" id="statCollected">0/160</div><div class="stat-label">Собрано</div></div></div>
 <div class="stat-card"><div class="stat-icon">💸</div><div class="stat-info"><div class="stat-value" id="statSpent">0</div><div class="stat-label">Потрачено</div></div></div>
 <div class="stat-card"><div class="stat-icon">💎</div><div class="stat-info"><div class="stat-value" id="statBest">—</div><div class="stat-label">Лучший дроп</div></div></div>
 </div>
 <div class="collection-block">
-<div class="collection-header"><h2>📚 Коллекция</h2><div class="collection-count"><span id="collectCount">0</span> / 120</div></div>
+<div class="collection-header"><h2>📚 Коллекция</h2><div class="collection-count"><span id="collectCount">0</span> / 160</div></div>
 <div class="collection-progress"><div class="collection-progress-bar" id="collectBar" style="width:0%"></div></div>
 <div class="rarity-progress" id="rarityProgress"></div>
 <div class="inventory-grid" id="collectionGrid" style="margin-top:8px;"></div>
@@ -523,8 +525,9 @@ const rarityOrder=['common','uncommon','epic','mythic','legendary','pink','golde
 const priceRanges={common:[10,50],uncommon:[50,150],epic:[150,300],mythic:[300,700],legendary:[700,1800],pink:[1800,3000],golden:[2500,5000]};
 
 // ==================== КЕЙСЫ ====================
-const casePrices={silver:100,zeus:200,dustin:600,mirage:1000,kalash:2300,chingis:3700};
+const casePrices={stars:25,silver:100,zeus:200,dustin:600,mirage:1000,kalash:2300,chingis:3700};
 const caseConfig={
+stars:{title:'Звёзды',emoji:'⭐',desc:'Для новичков',img:'images/zvezdi.png',distribution:{common:7,uncommon:11,epic:2}},
 silver:{title:'Сильвер',emoji:'🥈',desc:'Базовый',img:'images/silver.png',distribution:{common:5,uncommon:10,epic:5}},
 zeus:{title:'Зевс',emoji:'⚡',desc:'Грозовой',img:'images/zeus.png',distribution:{uncommon:5,epic:11,mythic:4}},
 dustin:{title:'Дастин',emoji:'🏆',desc:'Золотой',img:'images/dustin.png',distribution:{epic:4,mythic:12,legendary:4}},
@@ -581,8 +584,39 @@ photos.push({id:ck+'_'+num,num:num,name:'Карточка #'+num,price:price,rar
 cases[ck]={title:cfg.title,emoji:cfg.emoji,photos:photos};
 });
 
+// ==================== 20 ЗОЛОТЫХ КАРТОЧЕК ДЛЯ АПГРЕЙДА (вне кейсов) ====================
+const UPGRADE_ONLY_PRICE_MIN=4000;
+const UPGRADE_ONLY_PRICE_MAX=8000;
+const UPGRADE_ONLY_COUNT=20;
+
+const upgradeOnlyPrices=[];
+for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
+  let price;
+  do{
+    price=UPGRADE_ONLY_PRICE_MIN+Math.floor(Math.random()*(UPGRADE_ONLY_PRICE_MAX-UPGRADE_ONLY_PRICE_MIN+1));
+  }while(upgradeOnlyPrices.includes(price));
+  upgradeOnlyPrices.push(price);
+}
+upgradeOnlyPrices.sort((a,b)=>a-b);
+
+const upgradeOnlyPhotos=[];
+for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
+  const num=cardIdCounter++;
+  upgradeOnlyPhotos.push({
+    id:'upgrade_golden_'+(i+1),
+    num:num,
+    name:'Золотая #'+(i+1),
+    price:upgradeOnlyPrices[i],
+    rarity:'golden',
+    src:null,
+    upgradeOnly:true
+  });
+}
+
+// ==================== СБОРКА ВСЕХ КАРТОЧЕК ====================
 const allPhotos={};
 Object.values(cases).forEach(c=>c.photos.forEach(p=>{allPhotos[p.id]=p}));
+upgradeOnlyPhotos.forEach(p=>{allPhotos[p.id]=p});
 const ALL_CARD_IDS=Object.keys(allPhotos);
 const totalByRarity={};
 rarityOrder.forEach(r=>{totalByRarity[r]=0});
@@ -711,7 +745,7 @@ statCases.textContent=profile.stats.casesOpened;
 statSpent.textContent=profile.stats.spent.toLocaleString('ru-RU');
 statEarned.textContent=profile.stats.earned.toLocaleString('ru-RU');
 statUpgrades.textContent=profile.stats.upgrades;
-statCollected.textContent=getCollectedCount()+'/120';
+statCollected.textContent=getCollectedCount()+'/160';
 if(profile.stats.bestDrop){const b=profile.stats.bestDrop;statBest.innerHTML=`<span style="color:${rarityColors[b.rarity]}; font-size: 12px;">#${b.num||'?'}</span>`}else{statBest.textContent='—'}
 renderCollection();
 }
@@ -724,7 +758,7 @@ function renderRarityProgress(){
 rarityProgress.innerHTML='';
 const allChip=document.createElement('div');
 allChip.className='rarity-chip'+(collectionFilter==='all'?' active':'');
-allChip.innerHTML=`📚 Все <span style="color:#fff;">${getCollectedCount()}/120</span>`;
+allChip.innerHTML=`📚 Все <span style="color:#fff;">${getCollectedCount()}/160</span>`;
 allChip.addEventListener('click',()=>{collectionFilter='all';renderCollection()});
 rarityProgress.appendChild(allChip);
 rarityOrder.forEach(rarity=>{
@@ -743,7 +777,7 @@ collectionGrid.innerHTML='';
 renderRarityProgress();
 const owned=getCollectedCount();
 collectCount.textContent=owned;
-collectBar.style.width=(owned/120)*100+'%';
+collectBar.style.width=(owned/160)*100+'%';
 let ids=[...ALL_CARD_IDS].sort((a,b)=>{const pa=allPhotos[a],pb=allPhotos[b];const ia=rarityOrder.indexOf(pa.rarity),ib=rarityOrder.indexOf(pb.rarity);if(ia!==ib)return ia-ib;return pa.num-pb.num});
 if(collectionFilter!=='all')ids=ids.filter(id=>allPhotos[id].rarity===collectionFilter);
 ids.forEach(id=>{
@@ -824,17 +858,35 @@ modalClose.addEventListener('click',()=>{itemModal.classList.remove('active');mo
 modalSell.addEventListener('click',()=>{if(!modalPhotoId||!inventory[modalPhotoId])return;const item=inventory[modalPhotoId];const price=item.price;removeFromInventory(modalPhotoId,1);balance+=price;profile.stats.sold++;profile.stats.earned+=price;if(price>profile.stats.expensiveSale)profile.stats.expensiveSale=price;saveProfile();updateBalance();playCoin();itemModal.classList.remove('active');modalPhotoId=null;renderInventory();renderCollection();renderUpgradeInventory()});
 
 // ==================== АПГРЕЙД ====================
+const UPGRADE_MAX_PRICE=8000;
+
 function pickAutoTarget(srcRarity,chance){
 const srcItem=inventory[selectedSrcId];if(!srcItem)return null;
 const srcPrice=srcItem.price;
 const srcIdx=rarityOrder.indexOf(srcRarity);
 const candidates=[];
-for(const id in allPhotos){const p=allPhotos[id];const dstIdx=rarityOrder.indexOf(p.rarity);if(dstIdx<=srcIdx)continue;const actualChance=srcPrice/p.price;const dist=Math.abs(actualChance-chance);candidates.push({photo:p,dist})}
+for(const id in allPhotos){
+const p=allPhotos[id];
+const dstIdx=rarityOrder.indexOf(p.rarity);
+if(dstIdx<=srcIdx)continue;
+if(p.price>UPGRADE_MAX_PRICE)continue; // потолок 8000
+const actualChance=srcPrice/p.price;
+const dist=Math.abs(actualChance-chance);
+candidates.push({photo:p,dist});
+}
 if(candidates.length===0)return null;
 candidates.sort((a,b)=>a.dist-b.dist);
 return candidates[0].photo.id;
 }
-function recalcUpgrade(){if(!selectedSrcId||!inventory[selectedSrcId]){autoDstId=null;updateUpgradeUI();return}const srcItem=inventory[selectedSrcId];const srcIdx=rarityOrder.indexOf(srcItem.rarity);if(srcIdx>=rarityOrder.length-1){autoDstId=null;updateUpgradeUI();return}autoDstId=pickAutoTarget(srcItem.rarity,upgradeChance);updateUpgradeUI()}
+function recalcUpgrade(){
+if(!selectedSrcId||!inventory[selectedSrcId]){autoDstId=null;updateUpgradeUI();return}
+const srcItem=inventory[selectedSrcId];
+if(srcItem.price>=UPGRADE_MAX_PRICE){autoDstId=null;updateUpgradeUI();return}
+const srcIdx=rarityOrder.indexOf(srcItem.rarity);
+if(srcIdx>=rarityOrder.length-1){autoDstId=null;updateUpgradeUI();return}
+autoDstId=pickAutoTarget(srcItem.rarity,upgradeChance);
+updateUpgradeUI();
+}
 function getRealChance(){if(!selectedSrcId||!autoDstId)return 0;const src=inventory[selectedSrcId];const dst=allPhotos[autoDstId];if(!src||!dst)return 0;return Math.min(0.95,Math.max(0.01,src.price/dst.price))}
 function getTargetPhoto(){return autoDstId?allPhotos[autoDstId]||null:null}
 
@@ -846,22 +898,28 @@ else chanceCircleValue.textContent='—';
 
 const circumference=2*Math.PI*54;
 const greenLength=circumference*chance;
-// Дуга стартует сверху (rotate(-90)), идёт по часовой.
-// Центрируем зелёную зону на 180° (низ круга).
-// Начало дуги в градусах: 180 - chance*180
-const startOffset = ((180 - chance*180) / 360) * circumference;
+const startOffset=((180-chance*180)/360)*circumference;
 if(chanceCircleChance){
-  chanceCircleChance.setAttribute('stroke-dasharray', greenLength + ' ' + circumference);
-  chanceCircleChance.setAttribute('stroke-dashoffset', -startOffset);
+chanceCircleChance.setAttribute('stroke-dasharray',greenLength+' '+circumference);
+chanceCircleChance.setAttribute('stroke-dashoffset',-startOffset);
 }
 
 if(selectedSrcId&&inventory[selectedSrcId]){const item=inventory[selectedSrcId];srcSwap.classList.add('filled');srcSwap.innerHTML=`${makeCardSVG({id:selectedSrcId,num:item.num||'?',price:item.price,rarity:item.rarity})}<div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name||'Карточка'}</div>`}
 else{srcSwap.classList.remove('filled');srcSwap.innerHTML=`<span class="swap-plus">+</span>`}
 if(autoDstId&&allPhotos[autoDstId]){const t=allPhotos[autoDstId];dstSwap.classList.add('filled');dstSwap.innerHTML=`${makeCardSVG(t)}<div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>`}
 else{dstSwap.classList.remove('filled');dstSwap.innerHTML=`<span class="swap-plus">?</span>`}
-if(selectedSrcId&&autoDstId){const t=allPhotos[autoDstId];chanceText.innerHTML=`Шанс: <b>${Math.round(chance*100)}%</b> · ${t.name} (${t.price} 🪙)`}
-else if(selectedSrcId){chanceText.textContent='Нет подходящей цели'}
-else{chanceText.textContent='Выбери карточку из инвентаря ниже'}
+
+if(selectedSrcId&&inventory[selectedSrcId]&&inventory[selectedSrcId].price>=UPGRADE_MAX_PRICE){
+chanceText.innerHTML=`<span style="color:#f87171;font-weight:bold;">Карточка достигла потолка ${UPGRADE_MAX_PRICE} 🪙 — апгрейд недоступен</span>`;
+}else if(selectedSrcId&&autoDstId){
+const t=allPhotos[autoDstId];
+chanceText.innerHTML=`Шанс: <b>${Math.round(chance*100)}%</b> · ${t.name} (${t.price} 🪙)`;
+}else if(selectedSrcId){
+chanceText.textContent='Нет подходящей цели';
+}else{
+chanceText.textContent='Выбери карточку из инвентаря ниже';
+}
+
 if(armed&&!isUpgrading)upgradeMainBtn.disabled=false;else upgradeMainBtn.disabled=true;
 }
 
@@ -877,6 +935,7 @@ el.className=`inv-item rarity-${item.rarity}`;
 el.innerHTML=`${makeCardSVG({id:id,num:item.num||'?',price:item.price,rarity:item.rarity})}<div class="inv-name">${item.name||'Карточка'}</div><div class="inv-count">×${item.count}</div><div class="inv-rarity">${rarityNames[item.rarity]}</div>`;
 el.addEventListener('click',()=>{
 if(isUpgrading)return;
+if(item.price>=UPGRADE_MAX_PRICE){el.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:200});return}
 if(idx>=rarityOrder.length-1){el.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:200});return}
 selectedSrcId=id;recalcUpgrade();renderUpgradeInventory();
 });
@@ -889,7 +948,6 @@ dstSwap.addEventListener('click',()=>{if(isUpgrading)return;if(!selectedSrcId){a
 
 document.querySelectorAll('.mode-btn[data-chance]').forEach(btn=>{btn.addEventListener('click',()=>{if(isUpgrading)return;document.querySelectorAll('.mode-btn[data-chance]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');upgradeChance=parseFloat(btn.dataset.chance);if(selectedSrcId)recalcUpgrade()})});
 
-// ==================== КРУТКА АПГРЕЙДА ====================
 upgradeMainBtn.addEventListener('click',()=>{
 if(isUpgrading)return;
 if(!selectedSrcId||!autoDstId)return;
@@ -897,6 +955,7 @@ if(!inventory[selectedSrcId])return;
 const srcItem=inventory[selectedSrcId];
 const dstItem=allPhotos[autoDstId];
 if(!srcItem||!dstItem)return;
+if(srcItem.price>=UPGRADE_MAX_PRICE)return;
 
 const chance=getRealChance();
 const success=Math.random()<chance;
@@ -908,31 +967,27 @@ playStart();
 clearInterval(tickInterval);
 let tickCount=0;
 tickInterval=setInterval(()=>{
-  playUpgradeTick();
-  tickCount++;
-  if(tickCount>25){
-    clearInterval(tickInterval);
-    tickInterval=setInterval(()=>playUpgradeTick(),200);
-  }
+playUpgradeTick();
+tickCount++;
+if(tickCount>25){
+clearInterval(tickInterval);
+tickInterval=setInterval(()=>playUpgradeTick(),200);
+}
 },80);
 
-// Стрелка: rotate(0) = вверх (12 часов), идёт по часовой.
-// Зелёная дуга нарисована СНИЗУ (центр 180°).
 const chanceAngle=chance*360;
 const greenCenter=180;
 const greenHalf=chanceAngle/2;
 
 let finalAngle;
 if(success){
-  // Внутри зелёной зоны
-  finalAngle=greenCenter-greenHalf+Math.random()*(greenHalf*2);
+finalAngle=greenCenter-greenHalf+Math.random()*(greenHalf*2);
 }else{
-  // Вне зелёной зоны
-  let a;
-  do{
-    a=Math.random()*360;
-  }while(a>=(greenCenter-greenHalf)&&a<=(greenCenter+greenHalf));
-  finalAngle=a;
+let a;
+do{
+a=Math.random()*360;
+}while(a>=(greenCenter-greenHalf)&&a<=(greenCenter+greenHalf));
+finalAngle=a;
 }
 finalAngle=((finalAngle%360)+360)%360;
 
@@ -945,9 +1000,9 @@ outerArrow.style.transition='transform 4s cubic-bezier(0.15,0.85,0.3,1)';
 outerArrow.style.transform=`rotate(${totalRotation}deg)`;
 
 setTimeout(()=>{
-  clearInterval(tickInterval);
-  tickInterval=null;
-  showUpgradeResult(srcItem,dstItem,success,chance);
+clearInterval(tickInterval);
+tickInterval=null;
+showUpgradeResult(srcItem,dstItem,success,chance);
 },4200);
 });
 
@@ -1335,4 +1390,4 @@ if(!profile.since){setTimeout(()=>showWelcome(),300)}else{renderProfile()}
 document.addEventListener('click',()=>{if(soundEnabled)getAudioCtx()},{once:true});
 </script>
 </body>
-    </html>
+  </html>
