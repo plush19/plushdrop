@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PashaDrop v6.3</title>
+<title>PashaDrop v6.5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg-base:#0b0c10;--bg-deep:#08090d;--bg-mid:#12131a;--bg-card:#171820;--bg-elev:#1e2029;--bg-soft:#252836;--border-dark:#1a1c24;--border:#262934;--border-soft:#343846;--border-light:#454a5c;--text:#d8dae4;--text-dim:#8a8fa3;--text-mute:#555a6e;--red:#e11d48;--red-light:#f43f5e;--red-glow:rgba(225,29,72,0.55);--purple:#8b5cf6;--gold:#fbbf24}
@@ -23,7 +23,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .avatar-btn:hover{border-color:rgba(225,29,72,0.6);box-shadow:0 0 20px rgba(225,29,72,0.35);transform:scale(1.05)}
 .balance{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,rgba(30,32,41,0.9),rgba(23,24,32,0.9));border:1px solid var(--border-soft);border-radius:100px;padding:10px 20px;font-size:15px;font-weight:800;min-width:0;position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06)}
 .balance::before{content:'';position:absolute;inset:0;border-radius:100px;background:linear-gradient(135deg,rgba(251,191,36,0.12),transparent 50%);pointer-events:none}
-.balance .coin{font-size:18px;filter:drop-shadow(0 0 6px rgba(251,191,36,0.6))}
+.balance .coin{font-size:18px}
 .balance .amount{color:#fff;text-shadow:0 0 12px rgba(251,191,36,0.4)}
 .sound-toggle{width:42px;height:42px;border-radius:10px;background:var(--bg-elev);border:1px solid var(--border);font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0;transition:all 0.2s}
 .sound-toggle:hover{border-color:rgba(225,29,72,0.5);box-shadow:0 0 15px rgba(225,29,72,0.25)}
@@ -49,7 +49,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .case-card:active{transform:translateY(0) scale(0.98)}
 .case-card.disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;filter:grayscale(0.6)}
 .case-art{position:relative;width:100%;height:130px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
-.case-art img{max-width:100%;max-height:130px;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.7));transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+.case-art img{max-width:100%;max-height:130px;width:auto;height:auto;object-fit:contain;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1)}
 .case-card:hover .case-art img{transform:translateY(-6px) scale(1.08)}
 .case-art .case-glow{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:100px;height:20px;border-radius:50%;filter:blur(14px);opacity:0.55;z-index:-1;pointer-events:none}
 .case-card.stars .case-glow{background:rgba(250,220,60,0.85)}
@@ -59,7 +59,7 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .case-card.mirage .case-glow{background:rgba(240,190,40,0.85)}
 .case-card.kalash .case-glow{background:rgba(220,50,110,0.85)}
 .case-card.chingis .case-glow{background:rgba(240,190,60,0.85)}
-.case-emoji{position:absolute;top:-2px;right:2px;font-size:18px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));z-index:2}
+.case-emoji{position:absolute;top:-2px;right:2px;font-size:18px;z-index:2}
 .case-name{font-size:14px;font-weight:800;margin-bottom:3px;color:#fff}
 .case-desc{font-size:10px;color:var(--text-mute);margin-bottom:10px;text-transform:uppercase;font-weight:700}
 .case-price{display:inline-block;padding:5px 14px;border-radius:100px;background:linear-gradient(135deg,rgba(251,191,36,0.12),rgba(225,29,72,0.08));border:1px solid rgba(251,191,36,0.4);font-size:12px;font-weight:800;color:#fbbf24}
@@ -69,7 +69,12 @@ button:active:not(:disabled){transform:translateY(0) scale(0.97)}
 button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-shadow:none}
 .back-btn{align-self:flex-start;background:transparent;padding:8px 16px;font-size:12px;margin-bottom:20px;border:1px solid var(--border-soft);color:var(--text-dim);box-shadow:none}
 .back-btn:hover{border-color:var(--border-light);color:var(--text)}
-.open-btn{width:100%;max-width:360px;padding:18px;font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,#e11d48,#8b5cf6);border:none;border-radius:14px;box-shadow:0 8px 25px rgba(225,29,72,0.45),0 0 40px rgba(225,29,72,0.25);margin-top:20px;display:none}
+.mode-selector{display:flex;gap:8px;margin:16px auto 0;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:5px;justify-content:center;max-width:280px;width:100%}
+.mode-selector-btn{flex:1;padding:12px 20px;font-size:15px;font-weight:900;background:transparent;border:1px solid transparent;border-radius:10px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;box-shadow:none;letter-spacing:0.5px}
+.mode-selector-btn:hover:not(:disabled){color:var(--text);background:rgba(255,255,255,0.04)}
+.mode-selector-btn.active{background:linear-gradient(135deg,#e11d48,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(225,29,72,0.4)}
+.mode-selector-btn:disabled{opacity:0.3;cursor:not-allowed}
+.open-btn{width:100%;max-width:360px;padding:18px;font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,#e11d48,#8b5cf6);border:none;border-radius:14px;box-shadow:0 8px 25px rgba(225,29,72,0.45);margin-top:16px;display:none}
 .open-btn.active{display:block}
 .result-actions{display:none;gap:10px;margin-top:16px;width:100%;max-width:400px}
 .result-actions.active{display:flex}
@@ -78,13 +83,63 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .btn-keep:hover:not(:disabled){border-color:rgba(34,197,94,0.85);box-shadow:0 0 20px rgba(34,197,94,0.35)}
 .btn-sell{border-color:rgba(251,191,36,0.45)}
 .btn-sell:hover:not(:disabled){border-color:rgba(251,191,36,0.85);box-shadow:0 0 20px rgba(251,191,36,0.35)}
-.strip-wrapper{position:relative;width:100%;height:280px;overflow:hidden;border-radius:18px;background:linear-gradient(180deg,#06070a,#0d0e14);border:1px solid rgba(225,29,72,0.3);box-shadow:0 0 40px rgba(225,29,72,0.15),0 20px 50px rgba(0,0,0,0.6);margin-top:20px;display:none}
-.strip-wrapper.active{display:block}
-.strip{display:flex;gap:14px;padding:30px 16px;height:100%;align-items:center;will-change:transform}
-.photo{flex:0 0 150px;height:200px;border-radius:12px;overflow:hidden;position:relative;background:var(--bg-mid);border:2px solid var(--border);flex-shrink:0;box-shadow:0 4px 15px rgba(0,0,0,0.5)}
+.strips-container{width:100%;display:none;flex-direction:column;gap:14px;margin-top:20px}
+.strips-container.active{display:flex}
+.strip-block{width:100%;background:linear-gradient(180deg,#06070a,#0d0e14);border:1px solid rgba(225,29,72,0.3);border-radius:14px;overflow:hidden;position:relative}
+.strip-wrapper{position:relative;width:100%;height:180px;overflow:hidden;background:linear-gradient(180deg,#06070a,#0d0e14)}
+.strip-wrapper.single{height:280px}
+.strip{display:flex;gap:14px;padding:20px 16px;height:100%;align-items:center;will-change:transform}
+.photo{flex:0 0 110px;height:150px;border-radius:10px;overflow:hidden;position:relative;background:var(--bg-mid);border:2px solid var(--border);flex-shrink:0}
+.strip-wrapper.single .photo{flex:0 0 150px;height:200px;border-radius:12px}
 .photo img,.photo svg{width:100%;height:100%;object-fit:cover;display:block}
 .photo-name{position:absolute;top:0;left:0;right:0;padding:5px;text-align:center;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,0.75);z-index:2}
 .rarity-badge{position:absolute;bottom:0;left:0;right:0;padding:6px;text-align:center;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;background:rgba(0,0,0,0.85)}
+.pointer{position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,var(--red-light) 20%,var(--red-light) 80%,transparent);transform:translateX(-50%);z-index:5;pointer-events:none;box-shadow:0 0 15px var(--red-light)}
+.pointer::before,.pointer::after{content:'';position:absolute;left:50%;transform:translateX(-50%);border:10px solid transparent}
+.pointer::before{top:-4px;border-top-color:var(--red-light)}.pointer::after{bottom:-4px;border-bottom-color:var(--red-light)}
+.strip-wrapper::before,.strip-wrapper::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:4;pointer-events:none}
+.strip-wrapper::before{left:0;background:linear-gradient(90deg,#06070a 30%,transparent)}
+.strip-wrapper::after{right:0;background:linear-gradient(-90deg,#06070a 30%,transparent)}
+.strip-result{display:none;padding:12px;background:linear-gradient(180deg,rgba(13,14,20,0.95),rgba(6,7,10,0.95));border-top:1px solid var(--border)}
+.strip-result.active{display:block}
+.strip-result-info{text-align:center;margin-bottom:10px;font-size:13px;line-height:1.4}
+.strip-result-info b{font-size:15px}
+.strip-result-actions{display:flex;gap:8px}
+.strip-result-actions button{flex:1;padding:10px 8px;font-size:12px;border-radius:10px}
+.strip-result-done{padding:12px;text-align:center;font-size:13px;font-weight:700}
+.bulk-actions{display:none;gap:10px;margin-top:16px;width:100%;max-width:500px}
+.bulk-actions.active{display:flex}
+.bulk-actions button{flex:1;padding:14px 12px;font-size:14px;border-radius:12px}
+.bulk-actions .btn-keep-all{border-color:rgba(34,197,94,0.45)}
+.bulk-actions .btn-keep-all:hover:not(:disabled){border-color:rgba(34,197,94,0.85);box-shadow:0 0 20px rgba(34,197,94,0.35)}
+.bulk-actions .btn-sell-all{border-color:rgba(251,191,36,0.45)}
+.bulk-actions .btn-sell-all:hover:not(:disabled){border-color:rgba(251,191,36,0.85);box-shadow:0 0 20px rgba(251,191,36,0.35)}
+.spin-summary{display:none;padding:16px;border-radius:14px;text-align:center;font-size:14px;font-weight:700;line-height:1.6;margin-top:16px;animation:slideUp 0.3s ease}
+.spin-summary.active{display:block}
+.spin-summary.profit{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(22,163,74,0.05));border:1px solid rgba(34,197,94,0.4);color:#4ade80}
+.spin-summary.loss{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(153,27,27,0.05));border:1px solid rgba(239,68,68,0.4);color:#f87171}
+.spin-summary.neutral{background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(88,28,135,0.05));border:1px solid rgba(139,92,246,0.4);color:#a78bfa}
+.spin-summary b{font-size:17px}
+.case-contents-block{width:100%;max-width:600px;margin-top:24px}
+.case-contents-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all 0.2s;user-select:none}
+.case-contents-header:hover{border-color:var(--border-soft)}
+.case-contents-header.open{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.case-contents-title{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.case-contents-arrow{font-size:12px;color:var(--text-dim);transition:transform 0.3s}
+.case-contents-header.open .case-contents-arrow{transform:rotate(180deg)}
+.case-contents-body{display:none;padding:14px;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-top:none;border-bottom-left-radius:14px;border-bottom-right-radius:14px;max-height:600px;overflow-y:auto}
+.case-contents-body.open{display:block}
+.case-contents-body::-webkit-scrollbar{width:6px}
+.case-contents-body::-webkit-scrollbar-track{background:var(--bg-deep);border-radius:3px}
+.case-contents-body::-webkit-scrollbar-thumb{background:var(--border-soft);border-radius:3px}
+.contents-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.contents-item{position:relative;border-radius:10px;overflow:hidden;background:var(--bg-mid);border:1px solid var(--border);cursor:default;transition:all 0.2s}
+.contents-item:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.5)}
+.contents-item-img{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--bg-deep)}
+.contents-item-img svg{width:100%;height:100%;display:block}
+.contents-price-tag{position:absolute;top:6px;left:6px;padding:3px 8px;border-radius:6px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:11px;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,0.5);z-index:2}
+.contents-item-name{padding:6px 8px;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contents-rarity-bar{height:4px;width:100%}
 .rarity-common{border-color:#94a3b8}.rarity-common .rarity-badge{color:#94a3b8}
 .rarity-uncommon{border-color:#22c55e;box-shadow:0 0 12px rgba(34,197,94,0.4)}.rarity-uncommon .rarity-badge{color:#22c55e}
 .rarity-epic{border-color:#a855f7;box-shadow:0 0 14px rgba(168,85,247,0.5)}.rarity-epic .rarity-badge{color:#a855f7}
@@ -92,17 +147,9 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .rarity-legendary{border-color:#f59e0b;box-shadow:0 0 18px rgba(245,158,11,0.65)}.rarity-legendary .rarity-badge{color:#f59e0b}
 .rarity-pink{border-color:#ec4899;box-shadow:0 0 22px rgba(236,72,153,0.75)}.rarity-pink .rarity-badge{color:#ec4899}
 .rarity-golden{border-color:#facc15;box-shadow:0 0 24px rgba(250,204,21,0.85)}.rarity-golden .rarity-badge{color:#facc15}
-.pointer{position:absolute;top:0;bottom:0;left:50%;width:3px;background:linear-gradient(180deg,transparent,var(--red-light) 20%,var(--red-light) 80%,transparent);transform:translateX(-50%);z-index:5;pointer-events:none;box-shadow:0 0 15px var(--red-light),0 0 35px var(--red-glow)}
-.pointer::before,.pointer::after{content:'';position:absolute;left:50%;transform:translateX(-50%);border:10px solid transparent;filter:drop-shadow(0 0 10px var(--red-light))}
-.pointer::before{top:-4px;border-top-color:var(--red-light)}.pointer::after{bottom:-4px;border-bottom-color:var(--red-light)}
-.strip-wrapper::before,.strip-wrapper::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:4;pointer-events:none}
-.strip-wrapper::before{left:0;background:linear-gradient(90deg,#06070a 30%,transparent)}
-.strip-wrapper::after{right:0;background:linear-gradient(-90deg,#06070a 30%,transparent)}
-.result{margin-top:24px;font-size:16px;font-weight:700;text-align:center;opacity:0;transition:opacity 0.3s;min-height:60px;line-height:1.5}
-.result.show{opacity:1}
 .inventory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;width:100%;margin-top:10px}
 .inv-item{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--border);cursor:pointer;background:var(--bg-mid);aspect-ratio:3/4;transition:all 0.25s;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
-.inv-item:hover{border-color:rgba(225,29,72,0.6);transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.5),0 0 20px rgba(225,29,72,0.2)}
+.inv-item:hover{border-color:rgba(225,29,72,0.6);transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.5)}
 .inv-item:active{transform:scale(0.97)}
 .inv-item img,.inv-item svg{width:100%;height:100%;object-fit:cover;display:block}
 .inv-item .inv-name{position:absolute;top:0;left:0;right:0;padding:3px 4px;text-align:center;font-size:8px;font-weight:700;color:#fff;background:rgba(0,0,0,0.78);z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -116,7 +163,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .inv-item.rarity-pink{border-color:#ec4899}.inv-item.rarity-pink .inv-rarity{color:#ec4899}
 .inv-item.rarity-golden{border-color:#facc15}.inv-item.rarity-golden .inv-rarity{color:#facc15}
 .inv-item.studied{filter:grayscale(0.85) brightness(0.55);opacity:0.65}
-.inv-item.studied::after{content:'✓';position:absolute;top:4px;left:4px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 0 10px rgba(34,197,94,0.7)}
+.inv-item.studied::after{content:'✓';position:absolute;top:4px;left:4px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:900;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3}
 .empty-msg{text-align:center;color:var(--text-mute);padding:50px 20px;font-size:13px}
 .profile-header-card{width:100%;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:20px;padding:24px 20px;margin-bottom:16px;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.4)}
 .profile-header-card::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.5),transparent)}
@@ -139,11 +186,11 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .collection-header h2{font-size:14px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
 .collection-count{font-size:13px;font-weight:800;color:#fff;padding:4px 12px;border-radius:100px;background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(139,92,246,0.1));border:1px solid rgba(225,29,72,0.3)}
 .collection-progress{width:100%;height:10px;background:var(--bg-deep);border-radius:5px;overflow:hidden;margin-bottom:14px;border:1px solid var(--border-dark);box-shadow:inset 0 2px 4px rgba(0,0,0,0.5)}
-.collection-progress-bar{height:100%;background:linear-gradient(90deg,#e11d48,#8b5cf6,#fbbf24);border-radius:5px;transition:width 0.6s ease;box-shadow:0 0 15px rgba(225,29,72,0.6)}
+.collection-progress-bar{height:100%;background:linear-gradient(90deg,#e11d48,#8b5cf6,#fbbf24);border-radius:5px;transition:width 0.6s ease}
 .rarity-progress{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .rarity-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:100px;background:linear-gradient(135deg,var(--bg-elev),var(--bg-mid));border:1px solid var(--border);font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s}
 .rarity-chip:hover{border-color:var(--border-soft)}
-.rarity-chip.active{background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.55);box-shadow:0 0 12px rgba(225,29,72,0.3)}
+.rarity-chip.active{background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.55)}
 .rarity-chip .chip-dot{width:8px;height:8px;border-radius:50%}
 .modal-overlay{position:fixed;inset:0;background:rgba(5,6,10,0.9);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
 .modal-overlay.active{display:flex;animation:fadeIn 0.2s ease}
@@ -154,11 +201,11 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .modal-box h2{font-size:20px;color:#fff;margin-bottom:8px;font-weight:900}
 .modal-box p{color:var(--text-dim);font-size:13px;margin-bottom:20px;line-height:1.5}
 .modal-input{width:100%;padding:14px 16px;background:var(--bg-deep);border:1px solid var(--border-soft);border-radius:12px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;text-align:center;margin-bottom:16px;outline:none;box-shadow:inset 0 2px 6px rgba(0,0,0,0.4)}
-.modal-input:focus{border-color:rgba(225,29,72,0.6);box-shadow:0 0 20px rgba(225,29,72,0.25),inset 0 2px 6px rgba(0,0,0,0.4)}
+.modal-input:focus{border-color:rgba(225,29,72,0.6)}
 .avatar-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:20px}
 .avatar-option{aspect-ratio:1;border-radius:12px;background:linear-gradient(135deg,var(--bg-elev),var(--bg-mid));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;transition:all 0.2s;padding:0;line-height:1}
 .avatar-option:hover{border-color:var(--border-soft);transform:scale(1.06)}
-.avatar-option.selected{border-color:var(--red);box-shadow:0 0 18px rgba(225,29,72,0.55);background:linear-gradient(135deg,rgba(225,29,72,0.15),var(--bg-elev))}
+.avatar-option.selected{border-color:var(--red);background:linear-gradient(135deg,rgba(225,29,72,0.15),var(--bg-elev))}
 .modal-box img,.modal-box svg{width:130px;height:175px;object-fit:cover;border-radius:12px;border:2px solid var(--border-soft);margin-bottom:16px}
 .modal-name{font-size:14px;color:#fff;margin-bottom:4px;font-weight:700}
 .modal-rarity{font-size:15px;font-weight:800;margin-bottom:6px}
@@ -172,25 +219,25 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .swap-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
 .swap-label-top{font-size:10px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px}
 .swap-item{width:100%;aspect-ratio:3/4;border-radius:12px;background:var(--bg-deep);border:2px dashed var(--border-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:all 0.2s}
-.swap-item:hover{border-color:rgba(225,29,72,0.5);box-shadow:0 0 20px rgba(225,29,72,0.2)}
+.swap-item:hover{border-color:rgba(225,29,72,0.5)}
 .swap-item.filled{border-style:solid;border-color:var(--border-soft)}
 .swap-item img,.swap-item svg{width:100%;height:100%;object-fit:cover;display:block}
 .swap-item .swap-plus{font-size:42px;color:var(--border-light);font-weight:200}
 .swap-item .swap-label{position:absolute;bottom:0;left:0;right:0;padding:6px 4px;text-align:center;font-size:9px;font-weight:800;text-transform:uppercase;background:rgba(0,0,0,0.9);line-height:1.2}
 .chance-circle-wrap{position:relative;width:150px;height:150px;flex-shrink:0}
 .chance-circle-svg{width:100%;height:100%;display:block}
-.chance-circle-track{fill:none;stroke:#dc2626;stroke-width:10;opacity:0.95;filter:drop-shadow(0 0 6px rgba(220,38,38,0.5))}
-.chance-circle-chance{fill:none;stroke:#16a34a;stroke-width:10;stroke-linecap:butt;transition:stroke-dasharray 0.5s cubic-bezier(0.34,1.56,0.64,1),stroke-dashoffset 0.5s cubic-bezier(0.34,1.56,0.64,1);filter:drop-shadow(0 0 8px rgba(22,163,74,0.8))}
+.chance-circle-track{fill:none;stroke:#dc2626;stroke-width:10;opacity:0.95}
+.chance-circle-chance{fill:none;stroke:#16a34a;stroke-width:10;stroke-linecap:butt;transition:stroke-dasharray 0.5s cubic-bezier(0.34,1.56,0.64,1),stroke-dashoffset 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .chance-circle-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;pointer-events:none}
 .chance-circle-label{font-size:9px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:3px}
-.chance-circle-value{font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1;text-shadow:0 0 25px rgba(225,29,72,0.5)}
-.outer-arrow{position:absolute;top:50%;left:50%;width:4px;height:36px;margin-left:-2px;margin-top:-100px;transform-origin:50% 100px;z-index:10;pointer-events:none;transition:transform 4s cubic-bezier(0.15,0.85,0.3,1)}
-.outer-arrow::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:#f43f5e;border-radius:2px;box-shadow:0 0 8px rgba(244,63,94,0.9)}
-.outer-arrow::before{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:12px solid #f43f5e;filter:drop-shadow(0 0 6px rgba(244,63,94,1));z-index:2}
+.chance-circle-value{font-size:30px;font-weight:900;color:#fff;letter-spacing:-0.03em;line-height:1}
+.outer-arrow{position:absolute;top:50%;left:50%;width:4px;height:36px;margin-left:-2px;margin-top:-100px;transform-origin:50% 100px;z-index:10;pointer-events:none;transition:transform 4s cubic-bezier(0.15,0.85,0.3,1);will-change:transform}
+.outer-arrow::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:#f43f5e;border-radius:2px}
+.outer-arrow::before{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:12px solid #f43f5e;z-index:2}
 .mode-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
 .mode-btn{padding:14px 6px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:12px;color:var(--text-dim);cursor:pointer;transition:all 0.25s}
 .mode-btn:hover:not(:disabled){border-color:var(--border-soft);color:var(--text)}
-.mode-btn.active{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff;box-shadow:0 0 20px rgba(225,29,72,0.35)}
+.mode-btn.active{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff}
 .upgrade-main-btn{width:100%;padding:20px;font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--bg-elev),var(--bg-mid));border:1px solid rgba(225,29,72,0.35);border-radius:14px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;margin-bottom:24px}
 .upgrade-main-btn:not(:disabled){color:#fff;background:linear-gradient(135deg,#e11d48,#8b5cf6);border-color:transparent;box-shadow:0 8px 25px rgba(225,29,72,0.5)}
 .upgrade-inventory-block{width:100%;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
@@ -205,37 +252,38 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .chance-text b{color:#fff;font-size:15px}
 .roulette-screen{width:100%;max-width:640px}
 .roulette-wheel-wrap{position:relative;width:260px;height:260px;margin:20px auto 24px;flex-shrink:0}
-.roulette-wheel-svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px rgba(220,38,38,0.3))}
+.roulette-wheel-wrap::before{content:'';position:absolute;inset:-10px;border-radius:50%;box-shadow:0 0 30px rgba(220,38,38,0.3);pointer-events:none;z-index:0}
+.roulette-wheel-svg{width:100%;height:100%;display:block;position:relative;z-index:1}
 .roulette-sector-red{fill:#dc2626}
 .roulette-sector-black{fill:#1f2937}
 .roulette-divider{stroke:#0a0a0d;stroke-width:2}
 .roulette-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at center,var(--bg-elev),var(--bg-deep));border:3px solid var(--border-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;box-shadow:0 0 30px rgba(0,0,0,0.8),inset 0 2px 10px rgba(0,0,0,0.5)}
 .roulette-center-label{font-size:8px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:2px}
-.roulette-center-value{font-size:22px;font-weight:900;color:#fff;line-height:1;text-shadow:0 0 15px rgba(225,29,72,0.6)}
-.roulette-arrow{position:absolute;top:50%;left:50%;width:5px;height:130px;margin-left:-2.5px;margin-top:-130px;transform-origin:50% 100%;z-index:8;pointer-events:none;transition:transform 4.5s cubic-bezier(0.15,0.85,0.3,1)}
-.roulette-arrow::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:14px solid #fbbf24;filter:drop-shadow(0 0 10px rgba(251,191,36,1));z-index:3}
-.roulette-arrow::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,#fbbf24,#f59e0b);border-radius:2px;box-shadow:0 0 12px rgba(251,191,36,0.9)}
+.roulette-center-value{font-size:22px;font-weight:900;color:#fff;line-height:1}
+.roulette-arrow{position:absolute;top:50%;left:50%;width:5px;height:130px;margin-left:-2.5px;margin-top:-130px;transform-origin:50% 100%;z-index:8;pointer-events:none;transition:transform 4.5s cubic-bezier(0.15,0.85,0.3,1);will-change:transform}
+.roulette-arrow::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:14px solid #fbbf24;z-index:3}
+.roulette-arrow::after{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,#fbbf24,#f59e0b);border-radius:2px}
 .roulette-bets-block{width:100%;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
 .roulette-bets-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .roulette-bets-header h3{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
 .roulette-coins-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .roulette-coin-btn{padding:12px 4px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;transition:all 0.2s}
 .roulette-coin-btn:hover{border-color:rgba(251,191,36,0.5);color:#fbbf24}
-.roulette-coin-btn.selected{background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(225,29,72,0.1));border-color:rgba(251,191,36,0.6);color:#fbbf24;box-shadow:0 0 15px rgba(251,191,36,0.3)}
+.roulette-coin-btn.selected{background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(225,29,72,0.1));border-color:rgba(251,191,36,0.6);color:#fbbf24}
 .roulette-chances{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .roulette-chance-btn{padding:14px 6px;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:12px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;text-align:center}
 .roulette-chance-btn .mult{display:block;font-size:10px;font-weight:700;margin-top:4px;opacity:0.7}
 .roulette-chance-btn:hover{border-color:var(--border-soft);color:var(--text)}
-.roulette-chance-btn.active{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff;box-shadow:0 0 20px rgba(225,29,72,0.35)}
+.roulette-chance-btn.active{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff}
 .roulette-color-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
 .roulette-color-btn{padding:20px;font-size:18px;font-weight:900;letter-spacing:1px;border:2px solid;border-radius:14px;cursor:pointer;transition:all 0.25s;text-transform:uppercase}
 .roulette-color-btn.red{background:linear-gradient(135deg,rgba(220,38,38,0.2),rgba(220,38,38,0.05));border-color:#dc2626;color:#fca5a5}
-.roulette-color-btn.red:hover,.roulette-color-btn.red.selected{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;box-shadow:0 0 25px rgba(220,38,38,0.6);transform:translateY(-2px)}
+.roulette-color-btn.red:hover,.roulette-color-btn.red.selected{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;transform:translateY(-2px)}
 .roulette-color-btn.black{background:linear-gradient(135deg,rgba(31,41,55,0.6),rgba(17,24,39,0.4));border-color:#4b5563;color:#d1d5db}
-.roulette-color-btn.black:hover,.roulette-color-btn.black.selected{background:linear-gradient(135deg,#1f2937,#0f172a);border-color:#6b7280;color:#fff;box-shadow:0 0 25px rgba(75,85,99,0.6);transform:translateY(-2px)}
+.roulette-color-btn.black:hover,.roulette-color-btn.black.selected{background:linear-gradient(135deg,#1f2937,#0f172a);border-color:#6b7280;color:#fff;transform:translateY(-2px)}
 .roulette-spin-btn{width:100%;padding:20px;font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--bg-elev),var(--bg-mid));border:1px solid rgba(225,29,72,0.35);border-radius:14px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;margin-bottom:20px}
-.roulette-spin-btn:not(:disabled){color:#fff;background:linear-gradient(135deg,#dc2626,#e11d48);border-color:transparent;box-shadow:0 8px 25px rgba(220,38,38,0.5),0 0 40px rgba(220,38,38,0.3)}
-.roulette-spin-btn:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(220,38,38,0.6)}
+.roulette-spin-btn:not(:disabled){color:#fff;background:linear-gradient(135deg,#dc2626,#e11d48);border-color:transparent;box-shadow:0 8px 25px rgba(220,38,38,0.5)}
+.roulette-spin-btn:not(:disabled):hover{transform:translateY(-2px)}
 .roulette-result{margin-top:16px;padding:16px;border-radius:14px;text-align:center;font-size:16px;font-weight:800;min-height:60px;display:none;animation:slideUp 0.4s ease}
 .roulette-result.show{display:block}
 .roulette-result.win{background:linear-gradient(135deg,rgba(34,197,94,0.2),rgba(22,163,74,0.1));border:1px solid rgba(34,197,94,0.5);color:#4ade80}
@@ -245,13 +293,13 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .roulette-history-dot.win{background:rgba(34,197,94,0.3);color:#4ade80;border-color:rgba(34,197,94,0.5)}
 .roulette-history-dot.lose{background:rgba(239,68,68,0.3);color:#f87171;border-color:rgba(239,68,68,0.5)}
 .work-panel{width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;padding:20px}
-.work-btn{width:180px;height:180px;border-radius:50%;font-size:60px;background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(139,92,246,0.1));border:2px solid rgba(225,29,72,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-tap-highlight-color:transparent;transition:all 0.15s;padding:0;box-shadow:0 0 40px rgba(225,29,72,0.3)}
-.work-btn:hover{border-color:rgba(225,29,72,0.85);box-shadow:0 0 60px rgba(225,29,72,0.5);transform:scale(1.02)}
-.work-btn:active{transform:scale(0.94);box-shadow:0 0 80px rgba(225,29,72,0.7)}
+.work-btn{width:180px;height:180px;border-radius:50%;font-size:60px;background:linear-gradient(135deg,rgba(225,29,72,0.15),rgba(139,92,246,0.1));border:2px solid rgba(225,29,72,0.5);cursor:pointer;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-tap-highlight-color:transparent;transition:all 0.15s;padding:0}
+.work-btn:hover{border-color:rgba(225,29,72,0.85);transform:scale(1.02)}
+.work-btn:active{transform:scale(0.94)}
 .work-info{margin-top:28px;font-size:12px;color:var(--text-dim);line-height:1.6}
 .work-info span{color:#fff;font-weight:800}
-.work-earned{margin-top:18px;font-size:20px;font-weight:900;color:#fbbf24;min-height:28px;text-shadow:0 0 15px rgba(251,191,36,0.5)}
-.float-coin{position:fixed;font-size:24px;pointer-events:none;z-index:9999;animation:floatUp 0.9s ease-out forwards;font-weight:900;color:#fbbf24;text-shadow:0 0 15px rgba(251,191,36,0.9)}
+.work-earned{margin-top:18px;font-size:20px;font-weight:900;color:#fbbf24;min-height:28px}
+.float-coin{position:fixed;font-size:24px;pointer-events:none;z-index:9999;animation:floatUp 0.9s ease-out forwards;font-weight:900;color:#fbbf24}
 @keyframes floatUp{0%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-90px) scale(1.5)}}
 @media (max-width:600px){
 .content-area{padding:16px 12px 30px}
@@ -267,8 +315,10 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .sound-toggle{font-size:15px}
 .balance{font-size:13px;padding:9px 14px}
 .nav-btn{padding:9px 3px;font-size:10px}
-.strip-wrapper{height:240px;border-radius:14px}
-.photo{flex:0 0 130px;height:180px;border-radius:10px}
+.strip-wrapper{height:150px}
+.strip-wrapper.single{height:240px}
+.photo{flex:0 0 95px;height:130px;border-radius:8px}
+.strip-wrapper.single .photo{flex:0 0 130px;height:180px;border-radius:10px}
 .inventory-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
 .upgrade-inventory-grid{grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px}
 .work-btn{width:150px;height:150px;font-size:50px}
@@ -292,6 +342,10 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .roulette-center-value{font-size:18px}
 .roulette-arrow{height:110px;margin-top:-110px}
 .roulette-color-btn{padding:16px;font-size:16px}
+.mode-selector-btn{padding:10px 14px;font-size:14px}
+.contents-grid{gap:8px}
+.contents-item-name{font-size:9px}
+.strip-result-actions button{font-size:11px;padding:9px 6px}
 }
 </style>
 </head>
@@ -343,17 +397,27 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <h1 id="caseTitle" style="font-size:26px; font-weight:900; color:#fff; margin-bottom:6px;">Кейс</h1>
 <p id="caseSubtitle" style="color:var(--text-dim); font-size:13px; margin-bottom:20px;">Нажми «Открыть»</p>
 <div id="casePreview" style="width: 100%; display: flex; justify-content: center; margin-bottom: 8px;">
-<img id="casePreviewImg" src="" alt="" style="max-width: 240px; max-height: 180px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7));">
+<img id="casePreviewImg" src="" alt="" style="max-width: 240px; max-height: 180px;">
 </div>
-<div class="strip-wrapper" id="stripWrapper">
-<div class="pointer"></div>
-<div class="strip" id="strip"></div>
+<div class="mode-selector" id="modeSelector">
+<button class="mode-selector-btn active" data-mode="1" id="modeBtn1">×1</button>
+<button class="mode-selector-btn" data-mode="3" id="modeBtn3">×3</button>
 </div>
-<div class="result" id="result"></div>
 <button class="open-btn active" id="startBtn">ОТКРЫТЬ 🎲</button>
-<div class="result-actions" id="resultActions">
-<button class="btn-keep" id="keepBtn">✓ Забрать</button>
-<button class="btn-sell" id="sellBtn">💰 Продать</button>
+<div class="strips-container" id="stripsContainer"></div>
+<div class="bulk-actions" id="bulkActions">
+<button class="btn-keep-all" id="keepAllBtn">✓ Забрать всё</button>
+<button class="btn-sell-all" id="sellAllBtn">💰 Продать всё за 0 🪙</button>
+</div>
+<div class="spin-summary" id="spinSummary"></div>
+<div class="case-contents-block" id="caseContentsBlock">
+<div class="case-contents-header" id="caseContentsHeader">
+<div class="case-contents-title">📋 Содержимое кейса: <span id="caseContentsName">—</span></div>
+<div class="case-contents-arrow">▼</div>
+</div>
+<div class="case-contents-body" id="caseContentsBody">
+<div class="contents-grid" id="contentsGrid"></div>
+</div>
 </div>
 </div>
 
@@ -510,7 +574,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 // ==================== ЗВУКИ ====================
 let audioCtx=null,soundEnabled=true;
 function getAudioCtx(){if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){soundEnabled=false}}if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
-function playTick(){if(!soundEnabled)return;const c=getAudioCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=1800;o.connect(f);f.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=550+Math.random()*200;g.gain.setValueAtTime(0.035,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.09);o.start(c.currentTime);o.stop(c.currentTime+0.09)}
+function playTick(){if(!soundEnabled)return;const c=getAudioCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=1800;o.connect(f);f.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=550+Math.random()*200;g.gain.setValueAtTime(0.03,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.09);o.start(c.currentTime);o.stop(c.currentTime+0.09)}
 function playSuccess(){if(!soundEnabled)return;const c=getAudioCtx();if(!c)return;[523.25,659.25,783.99,1046.5].forEach((fq,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=fq;const s=c.currentTime+i*0.12;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(0.13,s+0.02);g.gain.exponentialRampToValueAtTime(0.001,s+0.4);o.start(s);o.stop(s+0.4)})}
 function playFail(){if(!soundEnabled)return;const c=getAudioCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(240,c.currentTime);o.frequency.exponentialRampToValueAtTime(70,c.currentTime+0.6);g.gain.setValueAtTime(0.08,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.6);o.start(c.currentTime);o.stop(c.currentTime+0.6)}
 function playCoin(){if(!soundEnabled)return;const c=getAudioCtx();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.setValueAtTime(1100,c.currentTime);o.frequency.exponentialRampToValueAtTime(1600,c.currentTime+0.06);g.gain.setValueAtTime(0.06,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.12);o.start(c.currentTime);o.stop(c.currentTime+0.12)}
@@ -584,36 +648,34 @@ photos.push({id:ck+'_'+num,num:num,name:'Карточка #'+num,price:price,rar
 cases[ck]={title:cfg.title,emoji:cfg.emoji,photos:photos};
 });
 
-// ==================== 20 ЗОЛОТЫХ КАРТОЧЕК ДЛЯ АПГРЕЙДА (вне кейсов) ====================
 const UPGRADE_ONLY_PRICE_MIN=4000;
 const UPGRADE_ONLY_PRICE_MAX=8000;
 const UPGRADE_ONLY_COUNT=20;
 
 const upgradeOnlyPrices=[];
 for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
-  let price;
-  do{
-    price=UPGRADE_ONLY_PRICE_MIN+Math.floor(Math.random()*(UPGRADE_ONLY_PRICE_MAX-UPGRADE_ONLY_PRICE_MIN+1));
-  }while(upgradeOnlyPrices.includes(price));
-  upgradeOnlyPrices.push(price);
+let price;
+do{
+price=UPGRADE_ONLY_PRICE_MIN+Math.floor(Math.random()*(UPGRADE_ONLY_PRICE_MAX-UPGRADE_ONLY_PRICE_MIN+1));
+}while(upgradeOnlyPrices.includes(price));
+upgradeOnlyPrices.push(price);
 }
 upgradeOnlyPrices.sort((a,b)=>a-b);
 
 const upgradeOnlyPhotos=[];
 for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
-  const num=cardIdCounter++;
-  upgradeOnlyPhotos.push({
-    id:'upgrade_golden_'+(i+1),
-    num:num,
-    name:'Золотая #'+(i+1),
-    price:upgradeOnlyPrices[i],
-    rarity:'golden',
-    src:null,
-    upgradeOnly:true
-  });
+const num=cardIdCounter++;
+upgradeOnlyPhotos.push({
+id:'upgrade_golden_'+(i+1),
+num:num,
+name:'Золотая #'+(i+1),
+price:upgradeOnlyPrices[i],
+rarity:'golden',
+src:null,
+upgradeOnly:true
+});
 }
 
-// ==================== СБОРКА ВСЕХ КАРТОЧЕК ====================
 const allPhotos={};
 Object.values(cases).forEach(c=>c.photos.forEach(p=>{allPhotos[p.id]=p}));
 upgradeOnlyPhotos.forEach(p=>{allPhotos[p.id]=p});
@@ -636,7 +698,11 @@ const screenChoose=$('screenChoose'),screenSpin=$('screenSpin'),screenUpgrade=$(
 const logoBlock=$('logoBlock'),avatarBtn=$('avatarBtn'),soundToggle=$('soundToggle');
 const caseGrid=$('caseGrid'),caseTitle=$('caseTitle'),casePreview=$('casePreview'),casePreviewImg=$('casePreviewImg');
 const backBtn=$('backBtn'),upgradeBackBtn=$('upgradeBackBtn'),profileBackBtn=$('profileBackBtn'),rouletteBackBtn=$('rouletteBackBtn');
-const strip=$('strip'),stripWrapper=$('stripWrapper'),startBtn=$('startBtn'),resultEl=$('result'),resultActions=$('resultActions'),keepBtn=$('keepBtn'),sellBtn=$('sellBtn');
+const startBtn=$('startBtn'),stripWrapper=$('stripWrapper');
+const modeSelector=$('modeSelector'),modeBtn1=$('modeBtn1'),modeBtn3=$('modeBtn3');
+const stripsContainer=$('stripsContainer'),bulkActions=$('bulkActions'),keepAllBtn=$('keepAllBtn'),sellAllBtn=$('sellAllBtn');
+const spinSummary=$('spinSummary');
+const caseContentsBlock=$('caseContentsBlock'),caseContentsHeader=$('caseContentsHeader'),caseContentsName=$('caseContentsName'),caseContentsBody=$('caseContentsBody'),contentsGrid=$('contentsGrid');
 const tabCases=$('tabCases'),tabWork=$('tabWork'),tabUpgradeNav=$('tabUpgradeNav'),tabInventory=$('tabInventory'),tabRouletteNav=$('tabRouletteNav');
 const viewCases=$('viewCases'),viewInventory=$('viewInventory'),viewWork=$('viewWork');
 const inventoryGrid=$('inventoryGrid'),inventoryEmpty=$('inventoryEmpty');
@@ -655,7 +721,10 @@ const balanceEls=[$('balanceAmount')];
 
 // ==================== СОСТОЯНИЕ ====================
 let currentCase=null,currentCaseKey=null,isSpinning=false;
-let inventory={},studied={},pendingPhoto=null;
+let inventory={},studied={};
+let multiMode=1;
+let pendingPhotos=[]; // массив {photo, status:'pending'|'kept'|'sold', stripEl, resultEl, actionsEl, doneEl}
+let spinCost=0;
 let upgradeChance=0.5,selectedSrcId=null,autoDstId=null,isUpgrading=false,tickInterval=null;
 let profile={name:'Игрок',avatar:'👤',since:null,stats:{casesOpened:0,spent:0,earned:0,bestDrop:null,expensiveSale:0,upgrades:0,sold:0}};
 let collectionFilter='all';
@@ -669,6 +738,7 @@ const STORAGE_STUDIED='pashadrop_studied_v53';
 const STORAGE_SOUND='pashadrop_sound_v53';
 const STORAGE_PROFILE='pashadrop_profile_v53';
 const STORAGE_ROULETTE_HISTORY='pashadrop_roulette_history_v6';
+const STORAGE_MULTI_MODE='pashadrop_multi_mode_v1';
 
 let balance=parseInt(localStorage.getItem(STORAGE_BALANCE));
 if(isNaN(balance))balance=500;
@@ -677,30 +747,42 @@ try{const s=JSON.parse(localStorage.getItem(STORAGE_STUDIED));if(s&&typeof s==='
 try{const s=JSON.parse(localStorage.getItem(STORAGE_ROULETTE_HISTORY));if(Array.isArray(s))rouletteHistoryData=s}catch(e){}
 try{const sp=JSON.parse(localStorage.getItem(STORAGE_PROFILE));if(sp&&typeof sp==='object'){profile=Object.assign(profile,sp);if(!profile.stats)profile.stats={casesOpened:0,spent:0,earned:0,bestDrop:null,expensiveSale:0,upgrades:0,sold:0}}}catch(e){}
 if(localStorage.getItem(STORAGE_SOUND)==='0')soundEnabled=false;
+try{const mm=parseInt(localStorage.getItem(STORAGE_MULTI_MODE));if(mm===1||mm===3)multiMode=mm}catch(e){}
 
 function saveInventory(){try{localStorage.setItem(STORAGE_INVENTORY,JSON.stringify(inventory))}catch(e){}}
 function saveStudied(){try{localStorage.setItem(STORAGE_STUDIED,JSON.stringify(studied))}catch(e){}}
 function saveProfile(){try{localStorage.setItem(STORAGE_PROFILE,JSON.stringify(profile))}catch(e){}}
 function saveRouletteHistory(){try{localStorage.setItem(STORAGE_ROULETTE_HISTORY,JSON.stringify(rouletteHistoryData.slice(-15)))}catch(e){}}
+function saveMultiMode(){try{localStorage.setItem(STORAGE_MULTI_MODE,multiMode.toString())}catch(e){}}
 
-function updateBalance(){localStorage.setItem(STORAGE_BALANCE,balance);balanceEls.forEach(el=>{if(el)el.textContent=balance});updateCaseAvailability()}
+function updateBalance(){localStorage.setItem(STORAGE_BALANCE,balance);balanceEls.forEach(el=>{if(el)el.textContent=balance});updateCaseAvailability();updateStartBtn()}
 function updateCaseAvailability(){document.querySelectorAll('.case-card').forEach(card=>{const price=casePrices[card.dataset.case];if(balance<price)card.classList.add('disabled');else card.classList.remove('disabled')})}
-function updateStartBtn(){if(!currentCaseKey)return;const price=casePrices[currentCaseKey];startBtn.textContent=`ОТКРЫТЬ 🎲 — ${price} 🪙`}
+function updateStartBtn(){
+if(!currentCaseKey)return;
+const price=casePrices[currentCaseKey];
+const total=price*multiMode;
+startBtn.textContent=multiMode===1?`ОТКРЫТЬ 🎲 — ${price} 🪙`:`ОТКРЫТЬ ×3 🎲 — ${total} 🪙`;
+const canAfford1=balance>=price;
+const canAfford3=balance>=price*3;
+modeBtn1.disabled=!canAfford1;
+modeBtn3.disabled=!canAfford3;
+if(multiMode===3&&!canAfford3&&canAfford1){multiMode=1;saveMultiMode();updateModeSelectorUI()}
+if(startBtn.classList.contains('active'))startBtn.disabled=!canAfford1;
+}
 function updateSoundIcon(){soundToggle.textContent=soundEnabled?'🔊':'🔇'}
+function updateModeSelectorUI(){
+modeBtn1.classList.toggle('active',multiMode===1);
+modeBtn3.classList.toggle('active',multiMode===3);
+updateStartBtn();
+}
 
 soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;localStorage.setItem(STORAGE_SOUND,soundEnabled?'1':'0');updateSoundIcon();if(soundEnabled)playStart()});
 
 // ==================== ЛОГОТИП ====================
 logoBlock.addEventListener('click',()=>{
 if(isSpinning||isUpgrading||isRouletteSpinning)return;
-if(pendingPhoto){addToInventory(pendingPhoto,1);updateBestDrop(pendingPhoto);pendingPhoto=null;}
-resultActions.classList.remove('active');
-resultEl.classList.remove('show');
-resultEl.textContent='';
-stripWrapper.classList.remove('active');
-strip.innerHTML='';
-casePreview.style.display='flex';
-startBtn.classList.add('active');startBtn.disabled=false;
+autoCollectAllPending();
+resetSpinScreen();
 setActiveTab(tabCases);
 viewCases.style.display='block';
 viewInventory.style.display='none';
@@ -728,15 +810,35 @@ else if(name==='roulette')screenRoulette.classList.add('active');
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function autoCollectPending(){
-if(pendingPhoto){
-addToInventory(pendingPhoto,1);
-updateBestDrop(pendingPhoto);
-pendingPhoto=null;
+// ==================== АВТОСБОР ====================
+function autoCollectAllPending(){
+if(pendingPhotos.length===0)return;
+pendingPhotos.forEach(item=>{
+if(item.status==='pending'){
+addToInventory(item.photo,1);
+updateBestDrop(item.photo);
+item.status='kept';
 }
-resultActions.classList.remove('active');
+});
+pendingPhotos=[];
 }
 
+function resetSpinScreen(){
+stripsContainer.innerHTML='';
+stripsContainer.classList.remove('active');
+bulkActions.classList.remove('active');
+spinSummary.classList.remove('active','profit','loss','neutral');
+spinSummary.innerHTML='';
+casePreview.style.display='flex';
+startBtn.classList.add('active');startBtn.disabled=false;
+modeSelector.style.display='flex';
+caseContentsBlock.style.display='block';
+caseContentsBody.classList.remove('open');
+caseContentsHeader.classList.remove('open');
+updateModeSelectorUI();
+}
+
+// ==================== ПРОФИЛЬ ====================
 function renderProfile(){
 profileAvatar.textContent=profile.avatar;
 profileName.innerHTML=`${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
@@ -766,7 +868,7 @@ const total=totalByRarity[rarity];if(total===0)return;
 const collected=getCollectedByRarity(rarity);
 const chip=document.createElement('div');
 chip.className='rarity-chip'+(collectionFilter===rarity?' active':'');
-chip.innerHTML=`<span class="chip-dot" style="background:${rarityColors[rarity]}; box-shadow:0 0 6px ${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
+chip.innerHTML=`<span class="chip-dot" style="background:${rarityColors[rarity]};"></span> ${rarityNames[rarity]} <span style="color:#fff;">${collected}/${total}</span>`;
 chip.addEventListener('click',()=>{collectionFilter=rarity;renderCollection()});
 rarityProgress.appendChild(chip);
 });
@@ -801,6 +903,7 @@ editNameCancel.addEventListener('click',()=>editNameModal.classList.remove('acti
 editNameSave.addEventListener('click',()=>{const name=editNameInput.value.trim()||'Игрок';profile.name=name.slice(0,16);saveProfile();editNameModal.classList.remove('active');renderProfile()});
 editAvatarClose.addEventListener('click',()=>editAvatarModal.classList.remove('active'));
 
+// ==================== ГЛАВНАЯ / КЕЙСЫ ====================
 function renderCaseGrid(){
 caseGrid.innerHTML='';
 Object.keys(caseConfig).forEach(key=>{
@@ -819,21 +922,45 @@ const price=casePrices[key];
 if(balance<price){card.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:250});return}
 currentCase=cases[key];currentCaseKey=key;
 caseTitle.textContent=caseConfig[key].title;
-updateStartBtn();
 casePreviewImg.src=caseConfig[key].img;
 casePreview.style.display='flex';
-strip.innerHTML='';strip.style.transition='none';strip.style.transform='translateX(0)';
-stripWrapper.classList.remove('active');
-startBtn.classList.add('active');startBtn.disabled=false;
-resultActions.classList.remove('active');
-resultEl.classList.remove('show');resultEl.textContent='';
-pendingPhoto=null;
+stripsContainer.innerHTML='';
+stripsContainer.classList.remove('active');
+startBtn.classList.add('active');
+resetSpinScreen();
+renderContents();
+pendingPhotos=[];
 switchScreen('spin');
 });
 });
 updateCaseAvailability();
 }
 
+function renderContents(){
+caseContentsName.textContent=caseConfig[currentCaseKey].title+' ('+currentCase.photos.length+' карточек)';
+contentsGrid.innerHTML='';
+const sorted=[...currentCase.photos].sort((a,b)=>a.price-b.price);
+sorted.forEach(photo=>{
+const el=document.createElement('div');
+el.className='contents-item';
+el.innerHTML=`
+<div class="contents-item-img">
+<div class="contents-price-tag">${photo.price} 🪙</div>
+${makeCardSVG(photo)}
+</div>
+<div class="contents-item-name">${photo.name}</div>
+<div class="contents-rarity-bar" style="background:${rarityColors[photo.rarity]}"></div>
+`;
+contentsGrid.appendChild(el);
+});
+}
+
+caseContentsHeader.addEventListener('click',()=>{
+caseContentsHeader.classList.toggle('open');
+caseContentsBody.classList.toggle('open');
+});
+
+// ==================== ИНВЕНТАРЬ ====================
 function addToInventory(photo,count=1){if(!inventory[photo.id]){inventory[photo.id]={count:0,num:photo.num,name:photo.name,rarity:photo.rarity,price:photo.price}}inventory[photo.id].count+=count;studied[photo.id]=true;saveInventory();saveStudied()}
 function removeFromInventory(photoId,count=1){if(!inventory[photoId])return false;inventory[photoId].count-=count;if(inventory[photoId].count<=0)delete inventory[photoId];saveInventory();return true}
 
@@ -869,7 +996,7 @@ for(const id in allPhotos){
 const p=allPhotos[id];
 const dstIdx=rarityOrder.indexOf(p.rarity);
 if(dstIdx<=srcIdx)continue;
-if(p.price>UPGRADE_MAX_PRICE)continue; // потолок 8000
+if(p.price>UPGRADE_MAX_PRICE)continue;
 const actualChance=srcPrice/p.price;
 const dist=Math.abs(actualChance-chance);
 candidates.push({photo:p,dist});
@@ -895,7 +1022,6 @@ const chance=getRealChance();
 const armed=selectedSrcId&&autoDstId;
 if(chance>0)chanceCircleValue.textContent=Math.round(chance*100)+'%';
 else chanceCircleValue.textContent='—';
-
 const circumference=2*Math.PI*54;
 const greenLength=circumference*chance;
 const startOffset=((180-chance*180)/360)*circumference;
@@ -903,12 +1029,10 @@ if(chanceCircleChance){
 chanceCircleChance.setAttribute('stroke-dasharray',greenLength+' '+circumference);
 chanceCircleChance.setAttribute('stroke-dashoffset',-startOffset);
 }
-
 if(selectedSrcId&&inventory[selectedSrcId]){const item=inventory[selectedSrcId];srcSwap.classList.add('filled');srcSwap.innerHTML=`${makeCardSVG({id:selectedSrcId,num:item.num||'?',price:item.price,rarity:item.rarity})}<div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name||'Карточка'}</div>`}
 else{srcSwap.classList.remove('filled');srcSwap.innerHTML=`<span class="swap-plus">+</span>`}
 if(autoDstId&&allPhotos[autoDstId]){const t=allPhotos[autoDstId];dstSwap.classList.add('filled');dstSwap.innerHTML=`${makeCardSVG(t)}<div class="swap-label" style="color:${rarityColors[t.rarity]}">${t.name}</div>`}
 else{dstSwap.classList.remove('filled');dstSwap.innerHTML=`<span class="swap-plus">?</span>`}
-
 if(selectedSrcId&&inventory[selectedSrcId]&&inventory[selectedSrcId].price>=UPGRADE_MAX_PRICE){
 chanceText.innerHTML=`<span style="color:#f87171;font-weight:bold;">Карточка достигла потолка ${UPGRADE_MAX_PRICE} 🪙 — апгрейд недоступен</span>`;
 }else if(selectedSrcId&&autoDstId){
@@ -919,7 +1043,6 @@ chanceText.textContent='Нет подходящей цели';
 }else{
 chanceText.textContent='Выбери карточку из инвентаря ниже';
 }
-
 if(armed&&!isUpgrading)upgradeMainBtn.disabled=false;else upgradeMainBtn.disabled=true;
 }
 
@@ -956,29 +1079,24 @@ const srcItem=inventory[selectedSrcId];
 const dstItem=allPhotos[autoDstId];
 if(!srcItem||!dstItem)return;
 if(srcItem.price>=UPGRADE_MAX_PRICE)return;
-
 const chance=getRealChance();
 const success=Math.random()<chance;
-
 isUpgrading=true;
 upgradeMainBtn.disabled=true;
 playStart();
-
 clearInterval(tickInterval);
 let tickCount=0;
 tickInterval=setInterval(()=>{
 playUpgradeTick();
 tickCount++;
-if(tickCount>25){
+if(tickCount>20){
 clearInterval(tickInterval);
-tickInterval=setInterval(()=>playUpgradeTick(),200);
+tickInterval=setInterval(()=>playUpgradeTick(),250);
 }
-},80);
-
+},120);
 const chanceAngle=chance*360;
 const greenCenter=180;
 const greenHalf=chanceAngle/2;
-
 let finalAngle;
 if(success){
 finalAngle=greenCenter-greenHalf+Math.random()*(greenHalf*2);
@@ -990,15 +1108,12 @@ a=Math.random()*360;
 finalAngle=a;
 }
 finalAngle=((finalAngle%360)+360)%360;
-
 const totalRotation=360*5+finalAngle;
-
 outerArrow.style.transition='none';
 outerArrow.style.transform='rotate(0deg)';
 void outerArrow.offsetWidth;
 outerArrow.style.transition='transform 4s cubic-bezier(0.15,0.85,0.3,1)';
 outerArrow.style.transform=`rotate(${totalRotation}deg)`;
-
 setTimeout(()=>{
 clearInterval(tickInterval);
 tickInterval=null;
@@ -1013,7 +1128,6 @@ outerArrow.style.transition='none';
 outerArrow.style.transform=`rotate(${finalAngle}deg)`;
 void outerArrow.offsetWidth;
 outerArrow.style.transition='transform 4s cubic-bezier(0.15,0.85,0.3,1)';
-
 removeFromInventory(selectedSrcId,1);
 if(success){addToInventory(dstItem,1);profile.stats.upgrades++;saveProfile();playSuccess();chanceText.innerHTML=`<span style="color:#4ade80;font-weight:bold;">🎉 УСПЕХ — получено: ${dstItem.name}</span>`}
 else{playFail();chanceText.innerHTML=`<span style="color:#f87171;font-weight:bold;">💥 НЕУДАЧА — предмет потерян</span>`}
@@ -1136,18 +1250,14 @@ if(isRouletteSpinning)return;
 if(!rouletteBetAmount||rouletteBetAmount<=0){alert('Выбери сумму ставки');return}
 if(balance<rouletteBetAmount){alert('Недостаточно монет');return}
 if(!rouletteColor){alert('Выбери цвет');return}
-
 isRouletteSpinning=true;
 rouletteSpinBtn.disabled=true;
 rouletteResult.classList.remove('show','win','lose');
 rouletteResult.textContent='';
-
 balance-=rouletteBetAmount;
 updateBalance();
 const betValue=rouletteBetAmount;
-
 const win=Math.random()<rouletteChanceVal;
-
 const totalSectors=24;
 const anglePerSector=360/totalSectors;
 const playerColor=rouletteColor;
@@ -1179,18 +1289,15 @@ const centerAngle=targetSector*anglePerSector;
 const jitter=(Math.random()-0.5)*10;
 const finalAngle=centerAngle+jitter;
 const totalRotation=360*5+finalAngle;
-
 playStart();
 clearInterval(tickInterval);
 let tickCount=0;
-tickInterval=setInterval(()=>{playTick();tickCount++;if(tickCount>30){clearInterval(tickInterval);tickInterval=setInterval(()=>playTick(),150)}},70);
-
+tickInterval=setInterval(()=>{playTick();tickCount++;if(tickCount>25){clearInterval(tickInterval);tickInterval=setInterval(()=>playTick(),200)}},110);
 rouletteArrow.style.transition='none';
 rouletteArrow.style.transform='rotate(0deg)';
 void rouletteArrow.offsetWidth;
 rouletteArrow.style.transition='transform 4.5s cubic-bezier(0.15,0.85,0.3,1)';
 rouletteArrow.style.transform=`rotate(${totalRotation}deg)`;
-
 setTimeout(()=>{clearInterval(tickInterval);tickInterval=null;finishRouletteSpin(win,betValue)},4700);
 });
 
@@ -1202,7 +1309,6 @@ rouletteArrow.style.transition='none';
 rouletteArrow.style.transform=`rotate(${finalAngle}deg)`;
 void rouletteArrow.offsetWidth;
 rouletteArrow.style.transition='transform 4.5s cubic-bezier(0.15,0.85,0.3,1)';
-
 if(win){
 playSuccess();
 let mult=1;
@@ -1233,11 +1339,11 @@ function setActiveTab(activeBtn){
 activeBtn.classList.add('active');
 }
 
-tabCases.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
-tabInventory.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabInventory);viewCases.style.display='none';viewInventory.style.display='block';viewWork.style.display='none';renderInventory();switchScreen('choose')});
-tabWork.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabWork);viewCases.style.display='none';viewInventory.style.display='none';viewWork.style.display='block';switchScreen('choose')});
-tabUpgradeNav.addEventListener('click',()=>{autoCollectPending();selectedSrcId=null;autoDstId=null;updateUpgradeUI();renderUpgradeInventory();switchScreen('upgrade')});
-tabRouletteNav.addEventListener('click',()=>{autoCollectPending();drawRouletteWheel();updateRouletteUI();switchScreen('roulette')});
+tabCases.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
+tabInventory.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabInventory);viewCases.style.display='none';viewInventory.style.display='block';viewWork.style.display='none';renderInventory();switchScreen('choose')});
+tabWork.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabWork);viewCases.style.display='none';viewInventory.style.display='none';viewWork.style.display='block';switchScreen('choose')});
+tabUpgradeNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();selectedSrcId=null;autoDstId=null;updateUpgradeUI();renderUpgradeInventory();switchScreen('upgrade')});
+tabRouletteNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();drawRouletteWheel();updateRouletteUI();switchScreen('roulette')});
 
 upgradeBackBtn.addEventListener('click',()=>{if(isUpgrading)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()});
 rouletteBackBtn.addEventListener('click',()=>{if(isRouletteSpinning)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
@@ -1260,111 +1366,243 @@ workBtn._t=setTimeout(()=>{workEarned.textContent=''},400);
 
 backBtn.addEventListener('click',()=>{
 if(isSpinning)return;
-autoCollectPending();
+autoCollectAllPending();
+resetSpinScreen();
 setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()
 });
 
-// ==================== КЕЙСЫ ====================
+// ==================== РЕЖИМ ×1 / ×3 ====================
+modeBtn1.addEventListener('click',()=>{if(isSpinning)return;if(modeBtn1.disabled)return;multiMode=1;saveMultiMode();updateModeSelectorUI()});
+modeBtn3.addEventListener('click',()=>{if(isSpinning)return;if(modeBtn3.disabled)return;multiMode=3;saveMultiMode();updateModeSelectorUI()});
+
+// ==================== КРУТКА КЕЙСА ====================
 function shuffle(array){const arr=[...array];for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
-let stripOrder=[];
-function buildStrip(){
-strip.innerHTML='';
-const shuffled=shuffle(currentCase.photos);
-stripOrder=shuffled.map(p=>p.id);
+
+function buildStripHTML(photos,stripEl){
+stripEl.innerHTML='';
+const shuffled=shuffle(photos);
+const stripOrder=shuffled.map(p=>p.id);
 for(let i=0;i<4;i++){
 shuffled.forEach(item=>{
 const card=document.createElement('div');
 card.className=`photo rarity-${item.rarity}`;
 card.innerHTML=`${makeCardSVG(item)}<div class="photo-name">${item.name}</div><div class="rarity-badge">${rarityNames[item.rarity]}</div>`;
-strip.appendChild(card);
+stripEl.appendChild(card);
 });
 }
+return stripOrder;
 }
 
 function spin(){
 if(isSpinning)return;
+if(!currentCase||!currentCaseKey)return;
 const price=casePrices[currentCaseKey];
-if(balance<price){resultEl.innerHTML=`Недостаточно монет — нужно 🪙 ${price}`;resultEl.classList.add('show');return}
-balance-=price;
-profile.stats.casesOpened++;profile.stats.spent+=price;
+const total=price*multiMode;
+if(balance<total){
+// fallback: если денег не хватает на ×3, но на ×1 хватает — предупредим
+if(multiMode===3&&balance>=price){multiMode=1;saveMultiMode();updateModeSelectorUI();return}
+return;
+}
+
+balance-=total;
+profile.stats.casesOpened+=multiMode;
+profile.stats.spent+=total;
 saveProfile();updateBalance();
+
 isSpinning=true;
 startBtn.classList.remove('active');startBtn.disabled=true;
-resultActions.classList.remove('active');
-resultEl.classList.remove('show');resultEl.textContent='';
-pendingPhoto=null;
+modeSelector.style.display='none';
+caseContentsBlock.style.display='none';
+caseContentsBody.classList.remove('open');
+caseContentsHeader.classList.remove('open');
 casePreview.style.display='none';
-stripWrapper.classList.add('active');
-buildStrip();
-strip.style.transition='none';strip.style.transform='translateX(0)';
-void strip.offsetHeight;
-playStart();
-clearInterval(tickInterval);
-tickInterval=setInterval(playTick,80);
-setTimeout(()=>{clearInterval(tickInterval);tickInterval=setInterval(playTick,180)},2000);
-setTimeout(()=>{clearInterval(tickInterval);tickInterval=setInterval(playTick,350)},3000);
+spinSummary.classList.remove('active');
+bulkActions.classList.remove('active');
+pendingPhotos=[];
 
-const photosLen=currentCase.photos.length;
-const wonPhoto=currentCase.photos[Math.floor(Math.random()*photosLen)];
+stripsContainer.innerHTML='';
+stripsContainer.classList.add('active');
+
+const stripCount=multiMode;
+
+for(let i=0;i<stripCount;i++){
+const block=document.createElement('div');
+block.className='strip-block';
+block.innerHTML=`
+<div class="strip-wrapper${stripCount===1?' single':''}">
+<div class="pointer"></div>
+<div class="strip"></div>
+</div>
+<div class="strip-result">
+<div class="strip-result-info"></div>
+<div class="strip-result-actions">
+<button class="btn-keep">✓ Забрать</button>
+<button class="btn-sell">💰 Продать</button>
+</div>
+<div class="strip-result-done" style="display:none;"></div>
+</div>
+`;
+stripsContainer.appendChild(block);
+
+const stripEl=block.querySelector('.strip');
+const stripWrapperEl=block.querySelector('.strip-wrapper');
+const resultEl=block.querySelector('.strip-result');
+const resultInfoEl=block.querySelector('.strip-result-info');
+const actionsEl=block.querySelector('.strip-result-actions');
+const doneEl=block.querySelector('.strip-result-done');
+
+const stripOrder=buildStripHTML(currentCase.photos,stripEl);
+stripEl.style.transition='none';stripEl.style.transform='translateX(0)';
+
+// выбираем карточку
+const wonPhoto=currentCase.photos[Math.floor(Math.random()*currentCase.photos.length)];
 const indexesInStrip=[];
 for(let copyIdx=1;copyIdx<4;copyIdx++){
-const offset=copyIdx*photosLen;
+const offset=copyIdx*currentCase.photos.length;
 const posInShuffled=stripOrder.indexOf(wonPhoto.id);
 if(posInShuffled!==-1)indexesInStrip.push(offset+posInShuffled);
 }
-const chosenIndex=indexesInStrip.length>0?indexesInStrip[Math.floor(Math.random()*indexesInStrip.length)]:Math.floor(photosLen*1.5+Math.random()*photosLen);
-const first=strip.children[0];
+const chosenIndex=indexesInStrip.length>0?indexesInStrip[Math.floor(Math.random()*indexesInStrip.length)]:Math.floor(currentCase.photos.length*1.5+Math.random()*currentCase.photos.length);
+const first=stripEl.children[0];
 const cardWidth=first.offsetWidth+14;
-const wrapperWidth=stripWrapper.offsetWidth;
+const wrapperWidth=stripWrapperEl.offsetWidth;
 const centerOffset=wrapperWidth/2-first.offsetWidth/2;
 const targetX=-(chosenIndex*cardWidth)+centerOffset;
 const duration=3500;
-strip.style.transition=`transform ${duration}ms cubic-bezier(0.2,0.7,0.3,1)`;
-strip.style.transform=`translateX(${targetX}px)`;
+stripEl.style.transition=`transform ${duration}ms cubic-bezier(0.2,0.7,0.3,1)`;
+stripEl.style.transform=`translateX(${targetX}px)`;
 
-setTimeout(()=>{
-clearInterval(tickInterval);tickInterval=null;
-const rarity=wonPhoto.rarity;const color=rarityColors[rarity];const cardPrice=wonPhoto.price;
-playReveal();
-pendingPhoto=wonPhoto;
-resultEl.innerHTML=`Выпало: <b style="color:${color}">${wonPhoto.name}</b><br><span style="color:${color};font-size:13px;">${rarityNames[rarity]}</span><br><span style="color:#888;font-size:12px;">Забрать или продать за 🪙 ${cardPrice}?</span>`;
-resultEl.classList.add('show');
-sellBtn.textContent=`💰 Продать за ${cardPrice} 🪙`;
-resultActions.classList.add('active');
-isSpinning=false;
-},duration+50);
+const pendingItem={photo:wonPhoto,status:'pending',resultEl,resultInfoEl,actionsEl,doneEl,block};
+pendingPhotos.push(pendingItem);
+
+// обработчики кнопок
+const keepBtn=actionsEl.querySelector('.btn-keep');
+const sellBtn=actionsEl.querySelector('.btn-sell');
+keepBtn.addEventListener('click',()=>handleStripKeep(pendingItem));
+sellBtn.addEventListener('click',()=>handleStripSell(pendingItem));
 }
 
-keepBtn.addEventListener('click',()=>{
-if(!pendingPhoto)return;
-addToInventory(pendingPhoto,1);
-updateBestDrop(pendingPhoto);
-playCoin();
-resultEl.innerHTML=`Забрал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br><span style="color:#888;font-size:12px;">Карточка в инвентаре</span>`;
-resultEl.classList.add('show');
-resultActions.classList.remove('active');
-pendingPhoto=null;
-casePreview.style.display='flex';
-startBtn.classList.add('active');startBtn.disabled=false;
-stripWrapper.classList.remove('active');
-updateStartBtn();
-});
+// звук
+playStart();
+clearInterval(tickInterval);
+tickInterval=setInterval(playTick,120);
+setTimeout(()=>{clearInterval(tickInterval);tickInterval=setInterval(playTick,200)},2000);
+setTimeout(()=>{clearInterval(tickInterval);tickInterval=setInterval(playTick,400)},3000);
 
-sellBtn.addEventListener('click',()=>{
-if(!pendingPhoto)return;
-const price=pendingPhoto.price;
+// финализация
+setTimeout(()=>{
+clearInterval(tickInterval);tickInterval=null;
+playReveal();
+renderStripResults();
+isSpinning=false;
+},3500+50);
+}
+
+function renderStripResults(){
+pendingPhotos.forEach(item=>{
+if(item.status!=='pending')return;
+const photo=item.photo;
+const color=rarityColors[photo.rarity];
+item.resultInfoEl.innerHTML=`Выпало: <b style="color:${color}">${photo.name}</b><br><span style="color:${color};font-size:12px;">${rarityNames[photo.rarity]}</span>`;
+const sellBtn=item.actionsEl.querySelector('.btn-sell');
+sellBtn.textContent=`💰 Продать за ${photo.price} 🪙`;
+item.resultEl.classList.add('active');
+});
+updateBulkActions();
+}
+
+function updateBulkActions(){
+const pending=pendingPhotos.filter(p=>p.status==='pending');
+if(pending.length===0){
+bulkActions.classList.remove('active');
+return;
+}
+const totalSell=pending.reduce((sum,p)=>sum+p.photo.price,0);
+sellAllBtn.textContent=`💰 Продать всё за ${totalSell} 🪙`;
+bulkActions.classList.add('active');
+}
+
+function handleStripKeep(item){
+if(item.status!=='pending')return;
+addToInventory(item.photo,1);
+updateBestDrop(item.photo);
+item.status='kept';
+playCoin();
+item.actionsEl.style.display='none';
+item.doneEl.style.display='block';
+item.doneEl.innerHTML=`<span style="color:#4ade80;">✓ Забрано: ${item.photo.name}</span>`;
+item.resultEl.classList.remove('active');
+item.doneEl.style.display='block';
+item.actionsEl.parentElement.classList.add('active');
+checkAllResolved();
+}
+
+function handleStripSell(item){
+if(item.status!=='pending')return;
+const price=item.photo.price;
 balance+=price;
 profile.stats.sold++;profile.stats.earned+=price;
 if(price>profile.stats.expensiveSale)profile.stats.expensiveSale=price;
 saveProfile();updateBalance();playCoin();
-resultEl.innerHTML=`Продал: <b style="color:${rarityColors[pendingPhoto.rarity]}">${pendingPhoto.name}</b><br><span style="color:#fbbf24;">+ ${price} 🪙</span>`;
-resultEl.classList.add('show');
-resultActions.classList.remove('active');
-pendingPhoto=null;
+item.status='sold';
+item.actionsEl.style.display='none';
+item.doneEl.style.display='block';
+item.doneEl.innerHTML=`<span style="color:#fbbf24;">💰 Продано: ${item.photo.name} (+${price} 🪙)</span>`;
+item.resultEl.classList.remove('active');
+item.actionsEl.parentElement.classList.add('active');
+checkAllResolved();
+}
+
+function checkAllResolved(){
+const stillPending=pendingPhotos.filter(p=>p.status==='pending');
+updateBulkActions();
+if(stillPending.length===0){
+// всё решено — показать итог
+showSummary();
+}
+}
+
+function showSummary(){
+const soldTotal=pendingPhotos.filter(p=>p.status==='sold').reduce((s,p)=>s+p.photo.price,0);
+const keptCount=pendingPhotos.filter(p=>p.status==='kept').length;
+const net=soldTotal-spinCost;
+let cls='neutral';
+let icon='⚖️';
+let label='Ровно';
+if(net>0){cls='profit';icon='📈';label='Прибыль'}else if(net<0){cls='loss';icon='📉';label='Убыток'}
+const text=`${icon} <b>${label}</b><br>Потрачено: ${spinCost} 🪙 · Выручка: ${soldTotal} 🪙 · Итог: <b>${net>0?'+':''}${net} 🪙</b><br><span style="font-size:12px;opacity:0.8;">Забрано карточек: ${keptCount}</span>`;
+spinSummary.className='spin-summary active '+cls;
+spinSummary.innerHTML=text;
+setTimeout(()=>{
+spinSummary.classList.remove('active');
+resetAfterSpin();
+},2500);
+}
+
+function resetAfterSpin(){
+stripsContainer.innerHTML='';
+stripsContainer.classList.remove('active');
+bulkActions.classList.remove('active');
+pendingPhotos=[];
 casePreview.style.display='flex';
-startBtn.classList.add('active');startBtn.disabled=false;
-stripWrapper.classList.remove('active');
-updateStartBtn();
+startBtn.classList.add('active');
+modeSelector.style.display='flex';
+caseContentsBlock.style.display='block';
+updateModeSelectorUI();
+}
+
+// Bulk кнопки
+keepAllBtn.addEventListener('click',()=>{
+if(isSpinning)return;
+const pending=pendingPhotos.filter(p=>p.status==='pending');
+if(pending.length===0)return;
+pending.forEach(item=>handleStripKeep(item));
+});
+sellAllBtn.addEventListener('click',()=>{
+if(isSpinning)return;
+const pending=pendingPhotos.filter(p=>p.status==='pending');
+if(pending.length===0)return;
+pending.forEach(item=>handleStripSell(item));
 });
 
 function updateBestDrop(photo){
@@ -1385,6 +1623,7 @@ updateUpgradeUI();
 renderUpgradeInventory();
 drawRouletteWheel();
 updateRouletteUI();
+updateModeSelectorUI();
 
 if(!profile.since){setTimeout(()=>showWelcome(),300)}else{renderProfile()}
 document.addEventListener('click',()=>{if(soundEnabled)getAudioCtx()},{once:true});
