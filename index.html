@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PashaDrop v6.1</title>
+<title>PashaDrop v6.2</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg-base:#0b0c10;--bg-deep:#08090d;--bg-mid:#12131a;--bg-card:#171820;--bg-elev:#1e2029;--bg-soft:#252836;--border-dark:#1a1c24;--border:#262934;--border-soft:#343846;--border-light:#454a5c;--text:#d8dae4;--text-dim:#8a8fa3;--text-mute:#555a6e;--red:#e11d48;--red-light:#f43f5e;--red-glow:rgba(225,29,72,0.55);--purple:#8b5cf6;--gold:#fbbf24}
@@ -201,7 +201,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .upgrade-inventory-grid .inv-item{aspect-ratio:3/4}
 .chance-text{text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:14px;min-height:20px}
 .chance-text b{color:#fff;font-size:15px}
-/* РУЛЕТКА */
+/* РУЛЕТКА — только монеты */
 .roulette-screen{width:100%;max-width:640px}
 .roulette-wheel-wrap{position:relative;width:260px;height:260px;margin:20px auto 24px;flex-shrink:0}
 .roulette-wheel-svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 30px rgba(220,38,38,0.3))}
@@ -217,23 +217,10 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .roulette-bets-block{width:100%;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
 .roulette-bets-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .roulette-bets-header h3{font-size:13px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
-.roulette-bet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;background:var(--bg-deep);border:1px solid var(--border);border-radius:12px;margin-bottom:14px}
-.roulette-bet-tab{padding:10px 8px;font-size:12px;font-weight:800;background:transparent;border:1px solid transparent;border-radius:8px;color:var(--text-dim);cursor:pointer;transition:all 0.2s}
-.roulette-bet-tab:hover{color:var(--text)}
-.roulette-bet-tab.active{background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(139,92,246,0.15));color:#fff;border-color:rgba(225,29,72,0.5);box-shadow:0 0 12px rgba(225,29,72,0.25)}
 .roulette-coins-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .roulette-coin-btn{padding:12px 4px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;transition:all 0.2s}
 .roulette-coin-btn:hover{border-color:rgba(251,191,36,0.5);color:#fbbf24}
 .roulette-coin-btn.selected{background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(225,29,72,0.1));border-color:rgba(251,191,36,0.6);color:#fbbf24;box-shadow:0 0 15px rgba(251,191,36,0.3)}
-.roulette-card-slot{width:100%;display:flex;flex-direction:column;align-items:center}
-.roulette-card-slot-inner{width:100%;max-width:140px;aspect-ratio:3/4;border-radius:12px;background:var(--bg-deep);border:2px dashed var(--border-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:all 0.2s;margin-bottom:10px}
-.roulette-card-slot-inner:hover{border-color:rgba(225,29,72,0.5)}
-.roulette-card-slot-inner.filled{border-style:solid;border-color:var(--border-soft)}
-.roulette-card-slot-inner img,.roulette-card-slot-inner svg{width:100%;height:100%;object-fit:cover;display:block}
-.roulette-card-slot-inner .swap-plus{font-size:42px;color:var(--border-light);font-weight:200}
-.roulette-card-slot-inner .swap-label{position:absolute;bottom:0;left:0;right:0;padding:5px 4px;text-align:center;font-size:9px;font-weight:800;text-transform:uppercase;background:rgba(0,0,0,0.9);line-height:1.2}
-.roulette-card-info{text-align:center;font-size:12px;color:var(--text-dim)}
-.roulette-card-info b{color:#fff}
 .roulette-chances{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .roulette-chance-btn{padding:14px 6px;font-size:14px;font-weight:900;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:12px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;text-align:center}
 .roulette-chance-btn .mult{display:block;font-size:10px;font-weight:700;margin-top:4px;opacity:0.7}
@@ -422,24 +409,12 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <div class="roulette-arrow" id="rouletteArrow"></div>
 </div>
 <div class="roulette-bets-block">
-<div class="roulette-bets-header"><h3>💰 Ставка</h3></div>
-<div class="roulette-bet-tabs">
-<button class="roulette-bet-tab active" data-bet="coins">🪙 Монеты</button>
-<button class="roulette-bet-tab" data-bet="card">🎴 Карточка</button>
-</div>
-<div id="rouletteCoinsPanel">
+<div class="roulette-bets-header"><h3>💰 Ставка (монеты)</h3></div>
 <div class="roulette-coins-row">
 <button class="roulette-coin-btn" data-amount="100">100</button>
 <button class="roulette-coin-btn" data-amount="500">500</button>
 <button class="roulette-coin-btn" data-amount="1000">1K</button>
 <button class="roulette-coin-btn" data-amount="5000">5K</button>
-</div>
-</div>
-<div id="rouletteCardPanel" style="display:none;">
-<div class="roulette-card-slot">
-<div class="roulette-card-slot-inner" id="rouletteCardSlot"><span class="swap-plus">+</span></div>
-<div class="roulette-card-info" id="rouletteCardInfo">Выбери карточку из инвентаря</div>
-</div>
 </div>
 </div>
 <div class="roulette-chances">
@@ -496,15 +471,6 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <button class="modal-close" id="modalClose">Закрыть</button>
 <button class="btn-sell" id="modalSell">Продать</button>
 </div>
-</div>
-</div>
-
-<div class="modal-overlay" id="roulettePickModal">
-<div class="modal-box" style="max-width: 460px;">
-<h3 style="margin-bottom: 8px; font-size: 16px; color:#fff; font-weight: 800;">Выбери карточку для ставки</h3>
-<p style="font-size: 12px;">Золотые нельзя ставить</p>
-<div id="roulettePickGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; max-height: 400px; overflow-y: auto; margin-top: 12px;"></div>
-<button class="modal-close" id="roulettePickClose" style="width:100%; margin-top: 16px;">Отмена</button>
 </div>
 </div>
 
@@ -645,7 +611,7 @@ const workBtn=$('workBtn'),workEarned=$('workEarned'),workTotal=$('workTotal');
 let sessionEarned=0;
 const itemModal=$('itemModal'),modalImgWrap=$('modalImgWrap'),modalName=$('modalName'),modalRarity=$('modalRarity'),modalCount=$('modalCount'),modalPrice=$('modalPrice'),modalClose=$('modalClose'),modalSell=$('modalSell');
 const chanceCircleChance=$('chanceCircleChance'),chanceCircleValue=$('chanceCircleValue'),outerArrow=$('outerArrow'),chanceText=$('chanceText'),upgradeMainBtn=$('upgradeMainBtn'),srcSwap=$('srcSwap'),dstSwap=$('dstSwap'),upgradeInventoryGrid=$('upgradeInventoryGrid');
-const rouletteWheelSvg=$('rouletteWheelSvg'),rouletteArrow=$('rouletteArrow'),rouletteCenterValue=$('rouletteCenterValue'),rouletteSpinBtn=$('rouletteSpinBtn'),rouletteResult=$('rouletteResult'),rouletteHistory=$('rouletteHistory'),rouletteCoinsPanel=$('rouletteCoinsPanel'),rouletteCardPanel=$('rouletteCardPanel'),rouletteCardSlot=$('rouletteCardSlot'),rouletteCardInfo=$('rouletteCardInfo'),roulettePickModal=$('roulettePickModal'),roulettePickGrid=$('roulettePickGrid'),roulettePickClose=$('roulettePickClose');
+const rouletteWheelSvg=$('rouletteWheelSvg'),rouletteArrow=$('rouletteArrow'),rouletteCenterValue=$('rouletteCenterValue'),rouletteSpinBtn=$('rouletteSpinBtn'),rouletteResult=$('rouletteResult'),rouletteHistory=$('rouletteHistory');
 const welcomeModal=$('welcomeModal'),welcomeName=$('welcomeName'),welcomeAvatarGrid=$('welcomeAvatarGrid'),welcomeStart=$('welcomeStart');
 const editNameModal=$('editNameModal'),editNameInput=$('editNameInput'),editNameCancel=$('editNameCancel'),editNameSave=$('editNameSave');
 const editAvatarModal=$('editAvatarModal'),editAvatarGrid=$('editAvatarGrid'),editAvatarClose=$('editAvatarClose');
@@ -660,8 +626,8 @@ let inventory={},studied={},pendingPhoto=null;
 let upgradeChance=0.5,selectedSrcId=null,autoDstId=null,isUpgrading=false,tickInterval=null;
 let profile={name:'Игрок',avatar:'👤',since:null,stats:{casesOpened:0,spent:0,earned:0,bestDrop:null,expensiveSale:0,upgrades:0,sold:0}};
 let collectionFilter='all';
-// Рулетка
-let rouletteBetType='coins',rouletteBetAmount=0,rouletteBetCard=null,rouletteChanceVal=0.5,rouletteColor=null;
+// Рулетка — только монеты
+let rouletteBetAmount=0,rouletteChanceVal=0.5,rouletteColor=null;
 let rouletteHistoryData=[],isRouletteSpinning=false;
 
 // ==================== ХРАНИЛИЩЕ ====================
@@ -692,12 +658,11 @@ function updateSoundIcon(){soundToggle.textContent=soundEnabled?'🔊':'🔇'}
 
 soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;localStorage.setItem(STORAGE_SOUND,soundEnabled?'1':'0');updateSoundIcon();if(soundEnabled)playStart()});
 
-// ==================== ЛОГОТИП — НА ГЛАВНУЮ ====================
+// ==================== ЛОГОТИП — на главную ====================
 logoBlock.addEventListener('click',()=>{
 if(isSpinning||isUpgrading||isRouletteSpinning)return;
-// Сбрасываем всё
-currentCase=null;currentCaseKey=null;
-pendingPhoto=null;
+// Если есть pendingPhoto — в инвентарь
+if(pendingPhoto){addToInventory(pendingPhoto,1);updateBestDrop(pendingPhoto);pendingPhoto=null;}
 resultActions.classList.remove('active');
 resultEl.classList.remove('show');
 resultEl.textContent='';
@@ -705,7 +670,6 @@ stripWrapper.classList.remove('active');
 strip.innerHTML='';
 casePreview.style.display='flex';
 startBtn.classList.add('active');startBtn.disabled=false;
-// Переключаем вкладки
 setActiveTab(tabCases);
 viewCases.style.display='block';
 viewInventory.style.display='none';
@@ -731,6 +695,16 @@ else if(name==='upgrade')screenUpgrade.classList.add('active');
 else if(name==='profile')screenProfile.classList.add('active');
 else if(name==='roulette')screenRoulette.classList.add('active');
 window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// АВТОМАТИЧЕСКОЕ ЗАБИРАНИЕ В ИНВЕНТАРЬ при уходе с экрана кейса
+function autoCollectPending(){
+if(pendingPhoto){
+addToInventory(pendingPhoto,1);
+updateBestDrop(pendingPhoto);
+pendingPhoto=null;
+}
+resultActions.classList.remove('active');
 }
 
 function renderProfile(){
@@ -854,6 +828,11 @@ modalClose.addEventListener('click',()=>{itemModal.classList.remove('active');mo
 modalSell.addEventListener('click',()=>{if(!modalPhotoId||!inventory[modalPhotoId])return;const item=inventory[modalPhotoId];const price=item.price;removeFromInventory(modalPhotoId,1);balance+=price;profile.stats.sold++;profile.stats.earned+=price;if(price>profile.stats.expensiveSale)profile.stats.expensiveSale=price;saveProfile();updateBalance();playCoin();itemModal.classList.remove('active');modalPhotoId=null;renderInventory();renderCollection();renderUpgradeInventory()});
 
 // ==================== АПГРЕЙД ====================
+// Логика v5.3: сначала Math.random() → потом стрелка в нужную зону
+// Круг: красный = 360° от 0° (сверху) по часовой
+// Зелёная зона = снизу, от (180° - chanceAngle) до (180° + chanceAngle)
+// Стрелка rotate(0) = смотрит вверх; rotate(180) = смотрит вниз
+
 function pickAutoTarget(srcRarity,chance){
 const srcItem=inventory[selectedSrcId];if(!srcItem)return null;
 const srcPrice=srcItem.price;
@@ -910,7 +889,7 @@ dstSwap.addEventListener('click',()=>{if(isUpgrading)return;if(!selectedSrcId){a
 
 document.querySelectorAll('.mode-btn[data-chance]').forEach(btn=>{btn.addEventListener('click',()=>{if(isUpgrading)return;document.querySelectorAll('.mode-btn[data-chance]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');upgradeChance=parseFloat(btn.dataset.chance);if(selectedSrcId)recalcUpgrade()})});
 
-// ==================== АПГРЕЙД — КРУТКА (синхронизированная) ====================
+// ==================== КРУТКА АПГРЕЙДА (логика v5.3) ====================
 upgradeMainBtn.addEventListener('click',()=>{
 if(isUpgrading)return;
 if(!selectedSrcId||!autoDstId)return;
@@ -919,50 +898,40 @@ const srcItem=inventory[selectedSrcId];
 const dstItem=allPhotos[autoDstId];
 if(!srcItem||!dstItem)return;
 const chance=getRealChance();
-
-// ФИНАЛЬНЫЙ УГОЛ и РЕЗУЛЬТАТ — синхронизированы
-// Круг: стрелка стартует сверху (0°), крутится по часовой
-// Зелёная зона СНИЗУ = от 180° - chanceAngle до 180°+... (по центру 180°)
-// Красная зона = всё остальное
-// Выбираем угол случайно, и по нему вычисляем success
-const totalRotationBeforeRandom = 360*5; // 5 полных оборотов
-
-// Случайный угол 0-360
-const randomAngle = Math.random() * 360;
-
-// Зелёная зона: 180° ± (chanceAngle/2)
-const chanceAngle = chance * 360;
-const greenStart = 180 - chanceAngle/2;
-const greenEnd = 180 + chanceAngle/2;
-
-// Проверяем, попадает ли randomAngle в зелёную зону
-let success;
-// Нормализуем randomAngle
-let a = randomAngle;
-if (greenStart >= 0 && greenEnd <= 360) {
-    // Зона не пересекает 0
-    success = (a >= greenStart && a <= greenEnd);
-} else if (greenStart < 0) {
-    // Зона пересекает 0 (левая часть)
-    success = (a >= (greenStart+360) || a <= greenEnd);
-} else if (greenEnd > 360) {
-    // Зона пересекает 360 (правая часть)
-    success = (a >= greenStart || a <= (greenEnd-360));
-} else {
-    success = false;
-}
-
-const finalAngle = randomAngle;
-const totalRotation = totalRotationBeforeRandom + finalAngle;
-
+// Сначала решаем success
+const success=Math.random()<chance;
 isUpgrading=true;
 upgradeMainBtn.disabled=true;
 playStart();
-
 clearInterval(tickInterval);
 let tickCount=0;
 tickInterval=setInterval(()=>{playUpgradeTick();tickCount++;if(tickCount>25){clearInterval(tickInterval);tickInterval=setInterval(()=>playUpgradeTick(),200)}},80);
 
+// Круг: 0° = верх, идём по часовой
+// Зелёная зона СНИЗУ: от 180° - chanceAngle/2 до 180° + chanceAngle/2
+// (то есть центр зелёной зоны = 180° = низ)
+const chanceAngle=chance*360;
+const greenCenter=180;
+const greenHalf=chanceAngle/2;
+
+let finalAngle;
+if(success){
+// Внутри зелёной зоны: greenCenter ± greenHalf
+const rand=Math.random();
+finalAngle=greenCenter-greenHalf+rand*(greenHalf*2);
+}else{
+// Вне зелёной зоны
+const redRange=360-chanceAngle;
+// Красная зона: от 180+greenHalf до 180-greenHalf (через 0)
+// Случайная точка вне [greenCenter-greenHalf, greenCenter+greenHalf]
+let a;
+do{
+a=Math.random()*360;
+}while(a>=(greenCenter-greenHalf)&&a<=(greenCenter+greenHalf));
+finalAngle=a;
+}
+
+const totalRotation=360*5+finalAngle;
 outerArrow.style.transition='none';
 outerArrow.style.transform='rotate(0deg)';
 void outerArrow.offsetWidth;
@@ -985,46 +954,26 @@ renderInventory();renderCollection();renderUpgradeInventory();
 isUpgrading=false;
 setTimeout(()=>{updateUpgradeUI();renderUpgradeInventory()},1500);
 }
-                    </script>
-<script>
-// ==================== РУЛЕТКА ====================
-// Логика: сектора **твоего цвета** = выбранный шанс
-// Если выбран красный + 25% → 25% красных, 75% чёрных
-// Если выбран чёрный + 25% → 25% чёрных, 75% красных
 
+// ==================== РУЛЕТКА (только монеты) ====================
 function drawRouletteWheel(){
 const svg=rouletteWheelSvg;
 svg.innerHTML='';
 const cx=100,cy=100,rOuter=90,rInner=55,totalSectors=24;
 const anglePerSector=360/totalSectors;
-
-// Определяем "цвет игрока". Если не выбран — по умолчанию красный
-const playerColor = rouletteColor || 'red';
-const otherColor = playerColor === 'red' ? 'black' : 'red';
-
-// Сколько секторов цвета игрока (по шансу)
-const playerSectors = Math.round(totalSectors * rouletteChanceVal);
-const otherSectors = totalSectors - playerSectors;
-
-// Создаём массивы для чередования
-const playersArr = [], othersArr = [];
-for (let i = 0; i < playerSectors; i++) playersArr.push(playerColor);
-for (let i = 0; i < otherSectors; i++) othersArr.push(otherColor);
-
-// Чередуем сектора
-const shuffled = [];
-let pIdx = 0, oIdx = 0;
-for (let i = 0; i < totalSectors; i++) {
-    if (pIdx / playersArr.length <= oIdx / othersArr.length && pIdx < playersArr.length) {
-        shuffled.push(playerColor); pIdx++;
-    } else if (oIdx < othersArr.length) {
-        shuffled.push(otherColor); oIdx++;
-    } else {
-        shuffled.push(playerColor); pIdx++;
-    }
+const playerColor=rouletteColor||'red';
+const otherColor=playerColor==='red'?'black':'red';
+const playerSectors=Math.round(totalSectors*rouletteChanceVal);
+const playersArr=[],othersArr=[];
+for(let i=0;i<playerSectors;i++)playersArr.push(playerColor);
+for(let i=0;i<(totalSectors-playerSectors);i++)othersArr.push(otherColor);
+const shuffled=[];
+let pIdx=0,oIdx=0;
+for(let i=0;i<totalSectors;i++){
+if(pIdx/playersArr.length<=oIdx/othersArr.length&&pIdx<playersArr.length){shuffled.push(playerColor);pIdx++}
+else if(oIdx<othersArr.length){shuffled.push(otherColor);oIdx++}
+else{shuffled.push(playerColor);pIdx++}
 }
-
-// Рисуем сектора
 for(let i=0;i<totalSectors;i++){
 const startAngle=i*anglePerSector-90-anglePerSector/2;
 const endAngle=startAngle+anglePerSector;
@@ -1038,8 +987,6 @@ path.setAttribute('d',`M ${x1} ${y1} A ${rOuter} ${rOuter} 0 0 1 ${x2} ${y2} L $
 path.setAttribute('class',shuffled[i]==='red'?'roulette-sector-red':'roulette-sector-black');
 svg.appendChild(path);
 }
-
-// Разделители
 for(let i=0;i<totalSectors;i++){
 const angle=i*anglePerSector-90-anglePerSector/2;
 const rad=angle*Math.PI/180;
@@ -1049,14 +996,10 @@ const line=document.createElementNS('http://www.w3.org/2000/svg','line');
 line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
 line.setAttribute('class','roulette-divider');svg.appendChild(line);
 }
-
-// Внешнее кольцо
 const outerRing=document.createElementNS('http://www.w3.org/2000/svg','circle');
 outerRing.setAttribute('cx',cx);outerRing.setAttribute('cy',cy);outerRing.setAttribute('r',rOuter);
 outerRing.setAttribute('fill','none');outerRing.setAttribute('stroke','#0a0a0d');outerRing.setAttribute('stroke-width','3');
 svg.appendChild(outerRing);
-
-// Внутреннее кольцо
 const innerRing=document.createElementNS('http://www.w3.org/2000/svg','circle');
 innerRing.setAttribute('cx',cx);innerRing.setAttribute('cy',cy);innerRing.setAttribute('r',rInner);
 innerRing.setAttribute('fill','none');innerRing.setAttribute('stroke','#0a0a0d');innerRing.setAttribute('stroke-width','3');
@@ -1079,7 +1022,7 @@ document.querySelectorAll('.roulette-chance-btn').forEach(btn=>{
 const ch=parseFloat(btn.dataset.chance);
 if(Math.abs(ch-rouletteChanceVal)<0.01)btn.classList.add('active');else btn.classList.remove('active');
 });
-const hasBet=(rouletteBetType==='coins'&&rouletteBetAmount>0&&balance>=rouletteBetAmount)||(rouletteBetType==='card'&&rouletteBetCard&&inventory[rouletteBetCard]);
+const hasBet=rouletteBetAmount>0&&balance>=rouletteBetAmount;
 const hasColor=rouletteColor!==null;
 if(hasBet&&hasColor&&!isRouletteSpinning)rouletteSpinBtn.disabled=false;else rouletteSpinBtn.disabled=true;
 let mult='1';
@@ -1087,18 +1030,6 @@ if(rouletteChanceVal===0.25)mult='3';else if(rouletteChanceVal===0.5)mult='2';el
 if(hasBet&&hasColor)rouletteSpinBtn.innerHTML=`🎰 КРУТИТЬ (${mult}×)`;else rouletteSpinBtn.innerHTML='🎰 КРУТИТЬ';
 renderRouletteHistory();
 }
-
-document.querySelectorAll('.roulette-bet-tab').forEach(tab=>{
-tab.addEventListener('click',()=>{
-if(isRouletteSpinning)return;
-document.querySelectorAll('.roulette-bet-tab').forEach(t=>t.classList.remove('active'));
-tab.classList.add('active');
-rouletteBetType=tab.dataset.bet;
-if(rouletteBetType==='coins'){rouletteCoinsPanel.style.display='block';rouletteCardPanel.style.display='none'}
-else{rouletteCoinsPanel.style.display='none';rouletteCardPanel.style.display='block'}
-updateRouletteUI();
-});
-});
 
 document.querySelectorAll('.roulette-coin-btn').forEach(btn=>{
 btn.addEventListener('click',()=>{
@@ -1112,40 +1043,6 @@ updateRouletteUI();
 });
 });
 
-rouletteCardSlot.addEventListener('click',()=>{
-if(isRouletteSpinning)return;
-if(rouletteBetCard){rouletteBetCard=null;rouletteCardSlot.classList.remove('filled');rouletteCardSlot.innerHTML=`<span class="swap-plus">+</span>`;rouletteCardInfo.textContent='Выбери карточку из инвентаря';updateRouletteUI();return}
-openRoulettePickModal();
-});
-
-function openRoulettePickModal(){
-const ids=Object.keys(inventory);
-if(ids.length===0){alert('Инвентарь пуст');return}
-roulettePickGrid.innerHTML='';
-let hasAny=false;
-ids.forEach(id=>{
-const item=inventory[id];
-if(item.rarity==='golden')return;
-hasAny=true;
-const el=document.createElement('div');
-el.className=`inv-item rarity-${item.rarity}`;
-el.innerHTML=`${makeCardSVG({id:id,num:item.num||'?',price:item.price,rarity:item.rarity})}<div class="inv-name">${item.name||'Карточка'}</div><div class="inv-count">×${item.count}</div><div class="inv-rarity">${rarityNames[item.rarity]}</div>`;
-el.addEventListener('click',()=>{
-rouletteBetCard=id;
-rouletteCardSlot.classList.add('filled');
-rouletteCardSlot.innerHTML=`${makeCardSVG({id:id,num:item.num||'?',price:item.price,rarity:item.rarity})}<div class="swap-label" style="color:${rarityColors[item.rarity]}">${item.name}</div>`;
-rouletteCardInfo.innerHTML=`<b>${item.name}</b> · ${rarityNames[item.rarity]} · 🪙 ${item.price}`;
-roulettePickModal.classList.remove('active');
-updateRouletteUI();
-});
-roulettePickGrid.appendChild(el);
-});
-if(!hasAny){roulettePickGrid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text-mute);padding:30px 20px;font-size:12px;">Нет карточек для ставки<br>(золотые ставить нельзя)</div>';return}
-roulettePickModal.classList.add('active');
-}
-
-roulettePickClose.addEventListener('click',()=>roulettePickModal.classList.remove('active'));
-
 document.querySelectorAll('.roulette-chance-btn').forEach(btn=>{
 btn.addEventListener('click',()=>{
 if(isRouletteSpinning)return;
@@ -1155,9 +1052,6 @@ drawRouletteWheel();
 });
 });
 
-// ВАЖНО: при выборе цвета — перерисовываем колесо
-// Логика: выбранный цвет = "твой", его секторов = шанс
-// При смене цвета меняются местами (красный <-> чёрный)
 document.querySelectorAll('.roulette-color-btn').forEach(btn=>{
 btn.addEventListener('click',()=>{
 if(isRouletteSpinning)return;
@@ -1165,18 +1059,14 @@ document.querySelectorAll('.roulette-color-btn').forEach(b=>b.classList.remove('
 btn.classList.add('selected');
 rouletteColor=btn.dataset.color;
 updateRouletteUI();
-drawRouletteWheel(); // ← перерисовка с новым цветом!
+drawRouletteWheel();
 });
 });
 
 rouletteSpinBtn.addEventListener('click',()=>{
 if(isRouletteSpinning)return;
-if(rouletteBetType==='coins'){
 if(!rouletteBetAmount||rouletteBetAmount<=0){alert('Выбери сумму ставки');return}
 if(balance<rouletteBetAmount){alert('Недостаточно монет');return}
-}else{
-if(!rouletteBetCard||!inventory[rouletteBetCard]){alert('Выбери карточку');return}
-}
 if(!rouletteColor){alert('Выбери цвет');return}
 
 isRouletteSpinning=true;
@@ -1184,52 +1074,39 @@ rouletteSpinBtn.disabled=true;
 rouletteResult.classList.remove('show','win','lose');
 rouletteResult.textContent='';
 
-let betValue=0;
-let betCardId=null;
-if(rouletteBetType==='coins'){balance-=rouletteBetAmount;betValue=rouletteBetAmount;updateBalance()}
-else{betCardId=rouletteBetCard;betValue=inventory[betCardId].price}
+balance-=rouletteBetAmount;
+updateBalance();
+const betValue=rouletteBetAmount;
 
-// ВЫЧИСЛЯЕМ РЕЗУЛЬТАТ ЗАРАНЕЕ
 const win=Math.random()<rouletteChanceVal;
 
-// Определяем целевую зону на колесе
-// Колесо: сектор 0 — сверху, идём по часовой
-// Стрелка: rotate(0deg) — смотрит вверх, растёт по часовой
 const totalSectors=24;
 const anglePerSector=360/totalSectors;
-const playerColor = rouletteColor;
-const otherColor = playerColor === 'red' ? 'black' : 'red';
-const playerSectors = Math.round(totalSectors * rouletteChanceVal);
-const playersArr = [], othersArr = [];
-for (let i = 0; i < playerSectors; i++) playersArr.push(playerColor);
-for (let i = 0; i < (totalSectors - playerSectors); i++) othersArr.push(otherColor);
-const shuffled = [];
-let pIdx = 0, oIdx = 0;
-for (let i = 0; i < totalSectors; i++) {
-    if (pIdx / playersArr.length <= oIdx / othersArr.length && pIdx < playersArr.length) {
-        shuffled.push(playerColor); pIdx++;
-    } else if (oIdx < othersArr.length) {
-        shuffled.push(otherColor); oIdx++;
-    } else {
-        shuffled.push(playerColor); pIdx++;
-    }
+const playerColor=rouletteColor;
+const otherColor=playerColor==='red'?'black':'red';
+const playerSectors=Math.round(totalSectors*rouletteChanceVal);
+const playersArr=[],othersArr=[];
+for(let i=0;i<playerSectors;i++)playersArr.push(playerColor);
+for(let i=0;i<(totalSectors-playerSectors);i++)othersArr.push(otherColor);
+const shuffled=[];
+let pIdx=0,oIdx=0;
+for(let i=0;i<totalSectors;i++){
+if(pIdx/playersArr.length<=oIdx/othersArr.length&&pIdx<playersArr.length){shuffled.push(playerColor);pIdx++}
+else if(oIdx<othersArr.length){shuffled.push(otherColor);oIdx++}
+else{shuffled.push(playerColor);pIdx++}
 }
-
-// Находим все сектора "цвета игрока" и "не цвета игрока"
 const matchingSectors=[],oppositeSectors=[];
 for(let i=0;i<totalSectors;i++){
 if(shuffled[i]===playerColor)matchingSectors.push(i);
 else oppositeSectors.push(i);
 }
-
 let targetSector;
 if(win){
 targetSector=matchingSectors[Math.floor(Math.random()*matchingSectors.length)];
 }else{
-if(oppositeSectors.length===0){targetSector=matchingSectors[Math.floor(Math.random()*matchingSectors.length)]}
-else{targetSector=oppositeSectors[Math.floor(Math.random()*oppositeSectors.length)]}
+if(oppositeSectors.length===0)targetSector=matchingSectors[Math.floor(Math.random()*matchingSectors.length)];
+else targetSector=oppositeSectors[Math.floor(Math.random()*oppositeSectors.length)];
 }
-
 const centerAngle=targetSector*anglePerSector;
 const jitter=(Math.random()-0.5)*10;
 const finalAngle=centerAngle+jitter;
@@ -1246,23 +1123,10 @@ void rouletteArrow.offsetWidth;
 rouletteArrow.style.transition='transform 4.5s cubic-bezier(0.15,0.85,0.3,1)';
 rouletteArrow.style.transform=`rotate(${totalRotation}deg)`;
 
-setTimeout(()=>{clearInterval(tickInterval);tickInterval=null;finishRouletteSpin(win,betValue,betCardId)},4700);
+setTimeout(()=>{clearInterval(tickInterval);tickInterval=null;finishRouletteSpin(win,betValue)},4700);
 });
 
-function findCardByPrice(targetPrice,srcRarity){
-const srcIdx=rarityOrder.indexOf(srcRarity);
-let best=null,bestDist=Infinity;
-for(const id in allPhotos){
-const p=allPhotos[id];
-const idx=rarityOrder.indexOf(p.rarity);
-if(idx<srcIdx)continue;
-const dist=Math.abs(p.price-targetPrice);
-if(dist<bestDist){bestDist=dist;best=p}
-}
-return best;
-}
-
-function finishRouletteSpin(win,betValue,betCardId){
+function finishRouletteSpin(win,betValue){
 isRouletteSpinning=false;
 const curRot=parseFloat((rouletteArrow.style.transform.match(/rotate\(([\d.\-]+)deg\)/)||[0,0])[1]);
 const finalAngle=((curRot%360)+360)%360;
@@ -1273,7 +1137,6 @@ rouletteArrow.style.transition='transform 4.5s cubic-bezier(0.15,0.85,0.3,1)';
 
 if(win){
 playSuccess();
-if(rouletteBetType==='coins'){
 let mult=1;
 if(rouletteChanceVal===0.25)mult=3;else if(rouletteChanceVal===0.5)mult=2;else mult=1.33;
 const winAmount=Math.round(betValue*mult);
@@ -1282,56 +1145,17 @@ profile.stats.earned+=winAmount;
 updateBalance();
 rouletteResult.className='roulette-result show win';
 rouletteResult.innerHTML=`✅ Победа!<br><b>+${winAmount} 🪙</b> (ставка × ${mult})`;
-rouletteBetAmount=0;
-document.querySelectorAll('.roulette-coin-btn').forEach(b=>b.classList.remove('selected'));
-}else{
-const item=inventory[betCardId];
-if(item){
-let mult=1;
-if(rouletteChanceVal===0.25)mult=3;else if(rouletteChanceVal===0.5)mult=2;else mult=1.33;
-const newPrice=item.price*mult;
-const newCard=findCardByPrice(newPrice,item.rarity);
-removeFromInventory(betCardId,1);
-if(newCard){
-addToInventory(newCard,1);
-rouletteResult.className='roulette-result show win';
-rouletteResult.innerHTML=`✅ Победа!<br>Карточка улучшена до <b>${newCard.name}</b><br>${rarityNames[newCard.rarity]} · 🪙 ${newCard.price}`;
-}else{
-balance+=Math.round(newPrice);
-updateBalance();
-rouletteResult.className='roulette-result show win';
-rouletteResult.innerHTML=`✅ Победа!<br>Получено <b>+${Math.round(newPrice)} 🪙</b>`;
-}
-rouletteBetCard=null;
-rouletteCardSlot.classList.remove('filled');
-rouletteCardSlot.innerHTML=`<span class="swap-plus">+</span>`;
-rouletteCardInfo.textContent='Выбери карточку из инвентаря';
-}
-}
 rouletteHistoryData.push({win:true});
 }else{
 playFail();
-if(rouletteBetType==='coins'){
 rouletteResult.className='roulette-result show lose';
 rouletteResult.innerHTML=`❌ Проигрыш<br><b>−${betValue} 🪙</b>`;
-rouletteBetAmount=0;
-document.querySelectorAll('.roulette-coin-btn').forEach(b=>b.classList.remove('selected'));
-}else{
-const item=inventory[betCardId];
-const lostName=item?item.name:'Карточка';
-removeFromInventory(betCardId,1);
-rouletteResult.className='roulette-result show lose';
-rouletteResult.innerHTML=`❌ Проигрыш<br>Карточка <b>${lostName}</b> потеряна`;
-rouletteBetCard=null;
-rouletteCardSlot.classList.remove('filled');
-rouletteCardSlot.innerHTML=`<span class="swap-plus">+</span>`;
-rouletteCardInfo.textContent='Выбери карточку из инвентаря';
-}
 rouletteHistoryData.push({win:false});
 }
+rouletteBetAmount=0;
+document.querySelectorAll('.roulette-coin-btn').forEach(b=>b.classList.remove('selected'));
 saveRouletteHistory();
 if(rouletteHistoryData.length>15)rouletteHistoryData=rouletteHistoryData.slice(-15);
-renderInventory();renderCollection();renderUpgradeInventory();
 updateRouletteUI();
 }
 
@@ -1341,11 +1165,11 @@ function setActiveTab(activeBtn){
 activeBtn.classList.add('active');
 }
 
-tabCases.addEventListener('click',()=>{setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
-tabInventory.addEventListener('click',()=>{setActiveTab(tabInventory);viewCases.style.display='none';viewInventory.style.display='block';viewWork.style.display='none';renderInventory();switchScreen('choose')});
-tabWork.addEventListener('click',()=>{setActiveTab(tabWork);viewCases.style.display='none';viewInventory.style.display='none';viewWork.style.display='block';switchScreen('choose')});
-tabUpgradeNav.addEventListener('click',()=>{selectedSrcId=null;autoDstId=null;updateUpgradeUI();renderUpgradeInventory();switchScreen('upgrade')});
-tabRouletteNav.addEventListener('click',()=>{drawRouletteWheel();updateRouletteUI();switchScreen('roulette')});
+tabCases.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
+tabInventory.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabInventory);viewCases.style.display='none';viewInventory.style.display='block';viewWork.style.display='none';renderInventory();switchScreen('choose')});
+tabWork.addEventListener('click',()=>{autoCollectPending();setActiveTab(tabWork);viewCases.style.display='none';viewInventory.style.display='none';viewWork.style.display='block';switchScreen('choose')});
+tabUpgradeNav.addEventListener('click',()=>{autoCollectPending();selectedSrcId=null;autoDstId=null;updateUpgradeUI();renderUpgradeInventory();switchScreen('upgrade')});
+tabRouletteNav.addEventListener('click',()=>{autoCollectPending();drawRouletteWheel();updateRouletteUI();switchScreen('roulette')});
 
 upgradeBackBtn.addEventListener('click',()=>{if(isUpgrading)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()});
 rouletteBackBtn.addEventListener('click',()=>{if(isRouletteSpinning)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
@@ -1366,9 +1190,11 @@ clearTimeout(workBtn._t);
 workBtn._t=setTimeout(()=>{workEarned.textContent=''},400);
 });
 
-backBtn.addEventListener('click',()=>{if(isSpinning)return;
-if(pendingPhoto){alert('Сначала реши: забрать или продать!');return}
-setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()});
+backBtn.addEventListener('click',()=>{
+if(isSpinning)return;
+autoCollectPending();
+setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()
+});
 
 // ==================== КЕЙСЫ ====================
 function shuffle(array){const arr=[...array];for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
@@ -1431,7 +1257,6 @@ strip.style.transform=`translateX(${targetX}px)`;
 setTimeout(()=>{
 clearInterval(tickInterval);tickInterval=null;
 const rarity=wonPhoto.rarity;const color=rarityColors[rarity];const cardPrice=wonPhoto.price;
-// КАРТОЧКА ПОКА НЕ В ИНВЕНТАРЕ — ждём решение игрока
 playReveal();
 pendingPhoto=wonPhoto;
 resultEl.innerHTML=`Выпало: <b style="color:${color}">${wonPhoto.name}</b><br><span style="color:${color};font-size:13px;">${rarityNames[rarity]}</span><br><span style="color:#888;font-size:12px;">Забрать или продать за 🪙 ${cardPrice}?</span>`;
@@ -1442,7 +1267,6 @@ isSpinning=false;
 },duration+50);
 }
 
-// КНОПКА ЗАБРАТЬ — карточка идёт в инвентарь, без монет
 keepBtn.addEventListener('click',()=>{
 if(!pendingPhoto)return;
 addToInventory(pendingPhoto,1);
@@ -1458,7 +1282,6 @@ stripWrapper.classList.remove('active');
 updateStartBtn();
 });
 
-// КНОПКА ПРОДАТЬ — карточка НЕ идёт в инвентарь, +монеты
 sellBtn.addEventListener('click',()=>{
 if(!pendingPhoto)return;
 const price=pendingPhoto.price;
