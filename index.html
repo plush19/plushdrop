@@ -926,7 +926,8 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <!-- ⬆️⬆️⬆️ КОНЕЦ ЧАСТИ 1 ⬆️⬆️⬆️ -->
 
 <!-- ⬇️⬇️⬇️ НИЖЕ БУДЕТ ЧАСТЬ 2 (JavaScript) ⬇️⬇️⬇️ -->
-  
+<!-- НЕ ЗАКРЫВАЙ ФАЙЛ. НЕ СТАВЬ </body></html>. ДОЖДИСЬ ЧАСТИ 2, 3, 4. -->
+
 <!-- ============================================================ -->
 <!-- PashaDrop v7.1 — ЧАСТЬ 2: JavaScript (начало)                -->
 <!-- ============================================================ -->
@@ -1108,7 +1109,7 @@ const riskClickBtn=$('riskClickBtn'),riskCashoutBtn=$('riskCashoutBtn'),riskCash
 const riskStatBest=$('riskStatBest'),riskStatCashouts=$('riskStatCashouts'),riskStatFails=$('riskStatFails'),riskStatMaxClicks=$('riskStatMaxClicks');
 // Казино
 const plinkoBoard=$('plinkoBoard'),plinkoPlayBtn=$('plinkoPlayBtn'),plinkoRiskRow=$('plinkoRiskRow');
-const minesGrid=$('minesGrid'),minesStartBtn=$('minesStartBtn'),minesCashoutBtn=$('minesCashoutBtn'),minesMultiplier=$('minesMultiplier'),minesCashout=$('minesCashout'),minesChances=$('minesChances');
+const minesGridEl=$('minesGrid'),minesStartBtn=$('minesStartBtn'),minesCashoutBtn=$('minesCashoutBtn'),minesMultiplierEl=$('minesMultiplier'),minesCashoutEl=$('minesCashout'),minesChances=$('minesChances');
 const reel0=$('reel0'),reel1=$('reel1'),reel2=$('reel2'),slotsPlayBtn=$('slotsPlayBtn');
 
 // ============================================================
@@ -1354,11 +1355,7 @@ activeBtn.classList.add('active');
 }
 
 // ============================================================
-// КОНЕЦ ЧАСТИ 2
-// ⚠️ НЕ ЗАКРЫВАЙ
-// ЭТО БУДЕТ В ЧАСТИ 4.
-// ============================================================
-
+// КОНЕЦ ЧАСТИ 
 // ============================================================
 // PashaDrop v7.1 — ЧАСТЬ 3: Профиль, Кейсы, Апгрейд, Рулетка
 // ============================================================
@@ -1920,9 +1917,9 @@ updateRouletteUI();
 
 // ============================================================
 // КОНЕЦ ЧАСТИ 3
-// ⚠️ НЕ 
+// 
 // ============================================================
-  
+
 // ============================================================
 // PashaDrop v7.1 — ЧАСТЬ 4: Казино (Плинко, Мины, Слоты) + События
 // ============================================================
@@ -2140,8 +2137,6 @@ minesGridEl.appendChild(cell);
 }
 }
 
-let minesGridEl=$('minesGrid');
-
 function handleMineClick(idx,cell){
 if(!minesActive)return;
 if(cell.classList.contains('opened'))return;
@@ -2169,9 +2164,6 @@ minesMultiplier=Math.max(1,0.97/chance);
 minesMultiplierEl.textContent='×'+minesMultiplier.toFixed(2);
 minesCashoutEl.textContent=Math.floor(minesBet*minesMultiplier).toLocaleString('ru-RU')+' 🪙';
 }
-
-let minesMultiplierEl=$('minesMultiplier');
-let minesCashoutEl=$('minesCashout');
 
 function revealAllMines(){
 document.querySelectorAll('.mine-cell').forEach((cell,i)=>{
