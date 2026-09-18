@@ -1578,7 +1578,9 @@ checkAllResolved();
 function checkAllResolved(){
 const stillPending=pendingPhotos.filter(p=>p.status==='pending');
 updateBulkActions();
-if(stillPending.length===0){showSummary()}
+if(stillPending.length===0){
+setTimeout(()=>{resetAfterSpin()},400);
+}
 }
 
 function showSummary(){
