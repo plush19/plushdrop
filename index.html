@@ -570,7 +570,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <b>📐 Формулы:</b><br>
 Сумма: клики 1–7 — удваивание (<span class="formula">2<sup>n-1</sup></span>), после 7 — ×1.2<br>
 Риск: <span class="formula">(n/15)<sup>2.2</sup> × 100%</span>, обрезка на 98%<br>
-Штраф при провале: <span class="formula">3% от баланса</span>
+При провале теряешь только накопленное
 </div>
 </div>
 </div>
@@ -1175,13 +1175,10 @@ riskResultText.textContent='Ты забрал!';
 riskResultText.className='risk-result-text win';
 riskResultSub.innerHTML=`Получено: <b>+${riskSumValue.toLocaleString('ru-RU')} 🪙</b><br>Кликов: ${riskClicks}`;
 }else{
-const penalty=Math.floor(balance*RISK_FAIL_PENALTY_PERCENT/100);
-balance=Math.max(0,balance-penalty);
-saveBalance();
 riskResultIcon.textContent='💥';
 riskResultText.textContent='БАБАХ!';
 riskResultText.className='risk-result-text lose';
-riskResultSub.innerHTML=`Потеряно: <b class="red-b">${riskSumValue.toLocaleString('ru-RU')} 🪙</b><br>+ штраф <b class="red-b">${penalty.toLocaleString('ru-RU')} 🪙</b> (${RISK_FAIL_PENALTY_PERCENT}% баланса)<br>Кликов: ${riskClicks}`;
+riskResultSub.innerHTML=`Потеряно: <b class="red-b">${riskSumValue.toLocaleString('ru-RU')} 🪙</b><br>Кликов: ${riskClicks}`;
 }
 updateBalance();
 updateRiskUI();
