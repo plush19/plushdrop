@@ -1,16 +1,24 @@
+<!-- ===================================================== -->
+<!-- PashaDrop v7.1 — финальная версия с казино            -->
+<!-- ЧАСТЬ 1: HTML + CSS                                    -->
+<!-- НЕ ЗАКРЫВАЙ файл — дождись Части 2, 3, 4               -->
+<!-- ===================================================== -->
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PashaDrop v7.0</title>
+<title>PashaDrop v7.1</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg-base:#0b0c10;--bg-deep:#08090d;--bg-mid:#12131a;--bg-card:#171820;--bg-elev:#1e2029;--bg-soft:#252836;--border-dark:#1a1c24;--border:#262934;--border-soft:#343846;--border-light:#454a5c;--text:#d8dae4;--text-dim:#8a8fa3;--text-mute:#555a6e;--red:#e11d48;--red-light:#f43f5e;--red-glow:rgba(225,29,72,0.55);--purple:#8b5cf6;--gold:#fbbf24}
+:root{--bg-base:#0b0c10;--bg-deep:#08090d;--bg-mid:#12131a;--bg-card:#171820;--bg-elev:#1e2029;--bg-soft:#252836;--border-dark:#1a1c24;--border:#262934;--border-soft:#343846;--border-light:#454a5c;--text:#d8dae4;--text-dim:#8a8fa3;--text-mute:#555a6e;--red:#e11d48;--red-light:#f43f5e;--red-glow:rgba(225,29,72,0.55);--purple:#8b5cf6;--gold:#fbbf24;--green:#22c55e}
 html,body{background:var(--bg-base)}
 body{min-height:100vh;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(139,92,246,0.12),transparent 60%),radial-gradient(ellipse 60% 40% at 90% 100%,rgba(225,29,72,0.08),transparent 60%),linear-gradient(180deg,var(--bg-base) 0%,var(--bg-deep) 100%);z-index:-3}
 body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:40px 40px;z-index:-2;pointer-events:none}
+
+/* ============ ШАПКА ============ */
 .sticky-header{position:sticky;top:0;z-index:100;background:rgba(11,12,16,0.95);border-bottom:1px solid var(--border-dark);padding:10px 16px}
 .sticky-header::after{content:'';position:absolute;bottom:-1px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.3),rgba(225,29,72,0.3),transparent)}
 .top-panel{width:100%;max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px}
@@ -27,15 +35,20 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .balance .amount{color:#fff;text-shadow:0 0 12px rgba(251,191,36,0.4)}
 .sound-toggle{width:42px;height:42px;border-radius:10px;background:var(--bg-elev);border:1px solid var(--border);font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0;transition:all 0.2s}
 .sound-toggle:hover{border-color:rgba(225,29,72,0.5);box-shadow:0 0 15px rgba(225,29,72,0.25)}
+
+/* ============ НАВИГАЦИЯ (2 РЯДА) ============ */
 .top-bar{width:100%;max-width:720px;margin:12px auto 0;display:flex;justify-content:center}
-.nav-btns{display:flex;gap:3px;padding:4px;background:linear-gradient(135deg,rgba(23,24,32,0.95),rgba(15,16,20,0.95));border:1px solid var(--border);border-radius:14px;justify-content:center;width:100%;max-width:640px;box-shadow:0 4px 15px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04)}
-.nav-btn{flex:1;background:transparent;border:1px solid transparent;padding:10px 4px;font-size:11px;font-weight:700;color:var(--text-dim);border-radius:10px;cursor:pointer;transition:all 0.25s;white-space:nowrap}
+.nav-btns{display:flex;flex-wrap:wrap;gap:3px;padding:4px;background:linear-gradient(135deg,rgba(23,24,32,0.95),rgba(15,16,20,0.95));border:1px solid var(--border);border-radius:14px;justify-content:center;width:100%;max-width:680px;box-shadow:0 4px 15px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.04)}
+.nav-btn{flex:1 1 calc(25% - 6px);min-width:70px;background:transparent;border:1px solid transparent;padding:10px 4px;font-size:11px;font-weight:700;color:var(--text-dim);border-radius:10px;cursor:pointer;transition:all 0.25s;white-space:nowrap}
 .nav-btn:hover{color:var(--text);background:rgba(255,255,255,0.04)}
 .nav-btn.active{background:linear-gradient(135deg,rgba(225,29,72,0.18),rgba(139,92,246,0.12));color:#fff;border-color:rgba(225,29,72,0.45);box-shadow:0 0 0 1px rgba(225,29,72,0.2),0 4px 15px rgba(225,29,72,0.25)}
+
 .content-area{max-width:720px;margin:0 auto;padding:20px 16px 40px;width:100%}
 .screen{display:none;flex-direction:column;align-items:center;width:100%}
 .screen.active{display:flex;animation:screenFadeIn 0.3s ease}
 @keyframes screenFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ КЕЙСЫ ============ */
 .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
 .case-card{position:relative;padding:20px 12px 16px;border-radius:16px;background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg-mid) 100%);border:1px solid var(--border);cursor:pointer;text-align:center;transition:all 0.3s ease;overflow:hidden;display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.04)}
 .case-card.stars{background:radial-gradient(ellipse at 50% 100%,rgba(250,220,60,0.25),transparent 70%),linear-gradient(180deg,var(--bg-card),var(--bg-mid))}
@@ -63,12 +76,16 @@ body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(r
 .case-name{font-size:14px;font-weight:800;margin-bottom:3px;color:#fff}
 .case-desc{font-size:10px;color:var(--text-mute);margin-bottom:10px;text-transform:uppercase;font-weight:700}
 .case-price{display:inline-block;padding:5px 14px;border-radius:100px;background:linear-gradient(135deg,rgba(251,191,36,0.12),rgba(225,29,72,0.08));border:1px solid rgba(251,191,36,0.4);font-size:12px;font-weight:800;color:#fbbf24}
+
+/* ============ ОБЩИЕ КНОПКИ ============ */
 button{font-family:inherit;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--bg-elev),var(--bg-card));border:1px solid rgba(225,29,72,0.35);border-radius:12px;padding:14px 32px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 12px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06)}
 button:hover:not(:disabled){border-color:rgba(225,29,72,0.75);box-shadow:0 6px 20px rgba(225,29,72,0.35);transform:translateY(-1px)}
 button:active:not(:disabled){transform:translateY(0) scale(0.97)}
 button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-shadow:none}
 .back-btn{align-self:flex-start;background:transparent;padding:8px 16px;font-size:12px;margin-bottom:20px;border:1px solid var(--border-soft);color:var(--text-dim);box-shadow:none}
 .back-btn:hover{border-color:var(--border-light);color:var(--text)}
+
+/* ============ ЭКРАН КЕЙСА ============ */
 .mode-selector{display:flex;gap:8px;margin:16px auto 0;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:5px;justify-content:center;max-width:280px;width:100%}
 .mode-selector-btn{flex:1;padding:12px 20px;font-size:15px;font-weight:900;background:transparent;border:1px solid transparent;border-radius:10px;color:var(--text-dim);cursor:pointer;transition:all 0.25s;box-shadow:none;letter-spacing:0.5px}
 .mode-selector-btn:hover:not(:disabled){color:var(--text);background:rgba(255,255,255,0.04)}
@@ -76,13 +93,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .mode-selector-btn:disabled{opacity:0.3;cursor:not-allowed}
 .open-btn{width:100%;max-width:360px;padding:18px;font-size:16px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,#e11d48,#8b5cf6);border:none;border-radius:14px;box-shadow:0 8px 25px rgba(225,29,72,0.45);margin-top:16px;display:none}
 .open-btn.active{display:block}
-.result-actions{display:none;gap:10px;margin-top:16px;width:100%;max-width:400px}
-.result-actions.active{display:flex}
-.result-actions button{flex:1;padding:14px 12px;font-size:14px}
-.btn-keep{border-color:rgba(34,197,94,0.45)}
-.btn-keep:hover:not(:disabled){border-color:rgba(34,197,94,0.85);box-shadow:0 0 20px rgba(34,197,94,0.35)}
-.btn-sell{border-color:rgba(251,191,36,0.45)}
-.btn-sell:hover:not(:disabled){border-color:rgba(251,191,36,0.85);box-shadow:0 0 20px rgba(251,191,36,0.35)}
+
 .strips-container{width:100%;display:none;flex-direction:column;gap:14px;margin-top:20px}
 .strips-container.active{display:flex}
 .strip-block{width:100%;background:linear-gradient(180deg,#06070a,#0d0e14);border:1px solid rgba(225,29,72,0.3);border-radius:14px;overflow:hidden;position:relative}
@@ -107,19 +118,13 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .strip-result-actions{display:flex;gap:8px}
 .strip-result-actions button{flex:1;padding:10px 8px;font-size:12px;border-radius:10px}
 .strip-result-done{padding:12px;text-align:center;font-size:13px;font-weight:700}
+
 .bulk-actions{display:none;gap:10px;margin-top:16px;width:100%;max-width:500px}
 .bulk-actions.active{display:flex}
 .bulk-actions button{flex:1;padding:14px 12px;font-size:14px;border-radius:12px}
 .bulk-actions .btn-keep-all{border-color:rgba(34,197,94,0.45)}
-.bulk-actions .btn-keep-all:hover:not(:disabled){border-color:rgba(34,197,94,0.85);box-shadow:0 0 20px rgba(34,197,94,0.35)}
 .bulk-actions .btn-sell-all{border-color:rgba(251,191,36,0.45)}
-.bulk-actions .btn-sell-all:hover:not(:disabled){border-color:rgba(251,191,36,0.85);box-shadow:0 0 20px rgba(251,191,36,0.35)}
-.spin-summary{display:none;padding:16px;border-radius:14px;text-align:center;font-size:14px;font-weight:700;line-height:1.6;margin-top:16px;animation:slideUp 0.3s ease}
-.spin-summary.active{display:block}
-.spin-summary.profit{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(22,163,74,0.05));border:1px solid rgba(34,197,94,0.4);color:#4ade80}
-.spin-summary.loss{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(153,27,27,0.05));border:1px solid rgba(239,68,68,0.4);color:#f87171}
-.spin-summary.neutral{background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(88,28,135,0.05));border:1px solid rgba(139,92,246,0.4);color:#a78bfa}
-.spin-summary b{font-size:17px}
+
 .case-contents-block{width:100%;max-width:600px;margin-top:24px}
 .case-contents-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:all 0.2s;user-select:none}
 .case-contents-header:hover{border-color:var(--border-soft)}
@@ -133,13 +138,14 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .case-contents-body::-webkit-scrollbar-track{background:var(--bg-deep);border-radius:3px}
 .case-contents-body::-webkit-scrollbar-thumb{background:var(--border-soft);border-radius:3px}
 .contents-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.contents-item{position:relative;border-radius:10px;overflow:hidden;background:var(--bg-mid);border:1px solid var(--border);cursor:default;transition:all 0.2s}
-.contents-item:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.5)}
+.contents-item{position:relative;border-radius:10px;overflow:hidden;background:var(--bg-mid);border:1px solid var(--border)}
 .contents-item-img{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;background:var(--bg-deep)}
 .contents-item-img svg{width:100%;height:100%;display:block}
 .contents-price-tag{position:absolute;top:6px;left:6px;padding:3px 8px;border-radius:6px;background:linear-gradient(135deg,#ea580c,#c2410c);color:#fff;font-size:11px;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,0.5);z-index:2}
 .contents-item-name{padding:6px 8px;font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .contents-rarity-bar{height:4px;width:100%}
+
+/* ============ РЕДКОСТИ ============ */
 .rarity-common{border-color:#94a3b8}.rarity-common .rarity-badge{color:#94a3b8}
 .rarity-uncommon{border-color:#22c55e;box-shadow:0 0 12px rgba(34,197,94,0.4)}.rarity-uncommon .rarity-badge{color:#22c55e}
 .rarity-epic{border-color:#a855f7;box-shadow:0 0 14px rgba(168,85,247,0.5)}.rarity-epic .rarity-badge{color:#a855f7}
@@ -147,6 +153,8 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .rarity-legendary{border-color:#f59e0b;box-shadow:0 0 18px rgba(245,158,11,0.65)}.rarity-legendary .rarity-badge{color:#f59e0b}
 .rarity-pink{border-color:#ec4899;box-shadow:0 0 22px rgba(236,72,153,0.75)}.rarity-pink .rarity-badge{color:#ec4899}
 .rarity-golden{border-color:#facc15;box-shadow:0 0 24px rgba(250,204,21,0.85)}.rarity-golden .rarity-badge{color:#facc15}
+
+/* ============ ИНВЕНТАРЬ ============ */
 .inventory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;width:100%;margin-top:10px}
 .inv-item{position:relative;border-radius:12px;overflow:hidden;border:2px solid var(--border);cursor:pointer;background:var(--bg-mid);aspect-ratio:3/4;transition:all 0.25s;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
 .inv-item:hover{border-color:rgba(225,29,72,0.6);transform:translateY(-3px);box-shadow:0 10px 25px rgba(0,0,0,0.5)}
@@ -347,9 +355,6 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .risk-result-sub .red-b{color:#f87171}
 .risk-shake{animation:fieldShake 0.3s ease}
 @keyframes fieldShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.danger-overlay{position:fixed;inset:0;background:radial-gradient(circle at center,transparent 30%,rgba(225,29,72,0.25) 100%);pointer-events:none;z-index:50;opacity:0;transition:opacity 0.3s}
-.danger-overlay.active{opacity:1;animation:dangerPulse 1s ease infinite}
-@keyframes dangerPulse{0%,100%{opacity:0.6}50%{opacity:1}}
 .risk-stats-block{background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:16px;padding:18px;margin-top:16px;width:100%;max-width:520px}
 .risk-stats-title{font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .risk-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -362,6 +367,85 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .risk-info-block{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.3);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--text-dim);line-height:1.7;margin-top:16px;width:100%;max-width:520px}
 .risk-info-block b{color:#fff}
 .risk-info-block .formula{display:inline-block;background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:6px;font-family:monospace;color:#a78bfa;font-size:11px}
+.danger-overlay{position:fixed;inset:0;background:radial-gradient(circle at center,transparent 30%,rgba(225,29,72,0.25) 100%);pointer-events:none;z-index:50;opacity:0;transition:opacity 0.3s}
+.danger-overlay.active{opacity:1;animation:dangerPulse 1s ease infinite}
+@keyframes dangerPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+
+/* ============ КАЗИНО (ПЛИНКО, МИНЫ, СЛОТЫ) ============ */
+.casino-tabs{display:flex;gap:6px;padding:6px;background:linear-gradient(135deg,rgba(23,24,32,0.95),rgba(15,16,20,0.95));border:1px solid var(--border);border-radius:14px;margin-bottom:20px;width:100%}
+.casino-tab{flex:1;padding:12px 8px;font-size:13px;font-weight:800;color:var(--text-dim);background:transparent;border:1px solid transparent;border-radius:10px;cursor:pointer;transition:all 0.25s;font-family:inherit;white-space:nowrap}
+.casino-tab:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.casino-tab.active{background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(139,92,246,0.15));color:#fff;border-color:rgba(225,29,72,0.45);box-shadow:0 0 15px rgba(225,29,72,0.3)}
+.casino-panel{display:none}
+.casino-panel.active{display:block;animation:fadeIn 0.3s ease}
+.casino-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:20px;padding:24px 20px;margin-bottom:16px;box-shadow:0 10px 30px rgba(0,0,0,0.4);position:relative;overflow:hidden}
+.casino-card::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,0.4),transparent)}
+.casino-title{font-size:22px;font-weight:900;color:#fff;text-align:center;margin-bottom:6px;letter-spacing:0.5px}
+.casino-subtitle{font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:20px}
+.label-sm{font-size:11px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px;display:block}
+.bet-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.bet-btn{padding:12px 4px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;transition:all 0.2s;font-family:inherit}
+.bet-btn:hover:not(:disabled){border-color:rgba(251,191,36,0.5);color:#fbbf24}
+.bet-btn.selected{background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(225,29,72,0.1));border-color:rgba(251,191,36,0.6);color:#fbbf24;box-shadow:0 0 15px rgba(251,191,36,0.3)}
+.casino-btn{width:100%;padding:18px;font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,#e11d48,#8b5cf6);border:none;border-radius:14px;color:#fff;cursor:pointer;transition:all 0.2s;font-family:inherit;box-shadow:0 8px 25px rgba(225,29,72,0.45);margin-bottom:12px}
+.casino-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 35px rgba(225,29,72,0.7)}
+.casino-btn:active:not(:disabled){transform:scale(0.97)}
+.casino-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+.casino-btn.green{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 8px 25px rgba(34,197,94,0.5)}
+
+/* Плинко */
+.plinko-board{position:relative;width:100%;height:380px;background:var(--bg-deep);border-radius:14px;overflow:hidden;margin-bottom:16px;border:1px solid var(--border);padding:0 4px}
+.plinko-peg{position:absolute;width:6px;height:6px;background:rgba(255,255,255,0.15);border-radius:50%;transform:translate(-50%,-50%)}
+.plinko-ball{position:absolute;width:14px;height:14px;background:radial-gradient(circle,#fbbf24,#d97706);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px rgba(251,191,36,0.9);z-index:5;transition:all 0.08s linear}
+.plinko-slots{position:absolute;bottom:0;left:0;right:0;display:flex;height:36px}
+.plinko-slot{flex:1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;border-right:1px solid rgba(0,0,0,0.3);position:relative}
+.plinko-slot:last-child{border-right:none}
+.plinko-slot.win{animation:slotFlash 0.6s ease}
+@keyframes slotFlash{0%,100%{filter:brightness(1)}50%{filter:brightness(2)}}
+.plinko-risk-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.plinko-risk-btn{padding:12px 4px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:10px;color:var(--text-dim);cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:center}
+.plinko-risk-btn.selected{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff}
+
+/* Мины */
+.mines-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
+.mines-stat{flex:1;background:var(--bg-deep);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center}
+.mines-stat-label{font-size:10px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.mines-stat-value{font-size:18px;font-weight:900;color:#fbbf24}
+.mines-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;max-width:400px;margin-left:auto;margin-right:auto}
+.mine-cell{aspect-ratio:1;background:linear-gradient(135deg,var(--bg-elev),var(--bg-card));border:1px solid var(--border-soft);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;transition:all 0.2s;user-select:none;font-family:inherit;padding:0}
+.mine-cell:hover:not(:disabled):not(.opened){border-color:rgba(225,29,72,0.6);transform:translateY(-2px);box-shadow:0 4px 15px rgba(225,29,72,0.3)}
+.mine-cell:active:not(:disabled):not(.opened){transform:scale(0.95)}
+.mine-cell.opened{background:linear-gradient(135deg,rgba(34,197,94,0.15),rgba(34,197,94,0.05));border-color:rgba(34,197,94,0.5);cursor:default;animation:cellPop 0.3s ease}
+.mine-cell.opened.bomb{background:linear-gradient(135deg,rgba(239,68,68,0.3),rgba(239,68,68,0.1));border-color:#ef4444;animation:cellBoom 0.4s ease}
+.mine-cell:disabled{cursor:default}
+@keyframes cellPop{0%{transform:scale(0.8)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes cellBoom{0%{transform:scale(1)}25%{transform:scale(1.2) rotate(-5deg)}50%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1)}}
+.mines-chances{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.mines-mines-btn{padding:12px 4px;font-size:13px;font-weight:800;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border);border-radius:10px;color:var(--text-dim);cursor:pointer;transition:all 0.2s;font-family:inherit;text-align:center}
+.mines-mines-btn.selected{background:linear-gradient(135deg,rgba(225,29,72,0.25),rgba(139,92,246,0.15));border-color:rgba(225,29,72,0.6);color:#fff}
+
+/* Слоты */
+.slots-visual{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;background:var(--bg-deep);border-radius:14px;margin-bottom:16px;border:1px solid var(--border);position:relative}
+.slots-visual::before{content:'';position:absolute;inset:8px;border-radius:10px;border:1px dashed rgba(225,29,72,0.3);pointer-events:none}
+.slot-reel{aspect-ratio:1;background:linear-gradient(135deg,var(--bg-elev),var(--bg-card));border-radius:12px;border:2px solid var(--border-soft);display:flex;align-items:center;justify-content:center;font-size:48px;user-select:none;transition:all 0.1s;overflow:hidden;position:relative}
+.slot-reel.spinning{animation:reelSpin 0.08s linear infinite}
+@keyframes reelSpin{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
+.slot-reel.win{border-color:#fbbf24;box-shadow:0 0 25px rgba(251,191,36,0.7);animation:slotWin 0.6s ease}
+@keyframes slotWin{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.slot-reel.lose{opacity:0.5}
+.slots-paytable{background:var(--bg-deep);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:16px;font-size:12px}
+.slots-paytable-title{font-size:10px;font-weight:800;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.slots-paytable-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.slots-paytable-row:last-child{border-bottom:none}
+.slots-paytable-row .sym{font-size:16px}
+.slots-paytable-row .mult{color:#fbbf24;font-weight:800}
+
+/* Result toast */
+.result-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);padding:20px 40px;border-radius:20px;font-size:22px;font-weight:900;opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);z-index:1000;pointer-events:none;text-align:center}
+.result-toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.result-toast.win{background:linear-gradient(135deg,rgba(34,197,94,0.95),rgba(22,163,74,0.95));color:#fff;box-shadow:0 20px 60px rgba(34,197,94,0.6)}
+.result-toast.lose{background:linear-gradient(135deg,rgba(239,68,68,0.95),rgba(153,27,27,0.95));color:#fff;box-shadow:0 20px 60px rgba(239,68,68,0.6)}
+.result-toast .big{display:block;font-size:36px;margin-bottom:6px}
 
 /* ============ БЕТА-ЗАГЛУШКА ============ */
 .beta-screen{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:9999;background:var(--bg-base)}
@@ -369,7 +453,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .beta-box{max-width:440px;width:100%;background:linear-gradient(135deg,var(--bg-card),var(--bg-mid));border:1px solid var(--border-soft);border-radius:24px;padding:40px 32px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 60px rgba(225,29,72,0.15);position:relative;overflow:hidden;animation:boxFadeIn 0.5s ease}
 @keyframes boxFadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .beta-box::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(225,29,72,0.7),rgba(139,92,246,0.7),transparent)}
-.beta-lock{font-size:72px;margin-bottom:16px;display:block;animation:lockPulse 2.5s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(225,29,72,0.5))}
+.beta-lock{font-size:72px;margin-bottom:16px;display:block;animation:lockPulse 2.5s ease-in-out infinite}
 @keyframes lockPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .beta-title{font-size:26px;font-weight:900;color:#fff;letter-spacing:0.5px;margin-bottom:6px}
 .beta-title .accent{color:var(--red-light);text-shadow:0 0 15px var(--red-glow)}
@@ -405,7 +489,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .avatar-btn{font-size:20px}
 .sound-toggle{font-size:15px}
 .balance{font-size:13px;padding:9px 14px}
-.nav-btn{padding:9px 3px;font-size:10px}
+.nav-btn{padding:9px 2px;font-size:10px;min-width:60px}
 .strip-wrapper{height:150px}
 .strip-wrapper.single{height:240px}
 .photo{flex:0 0 95px;height:130px;border-radius:8px}
@@ -444,12 +528,15 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 .beta-title{font-size:22px}
 .beta-input{font-size:14px;padding:14px 16px}
 .beta-btn{padding:14px;font-size:14px}
+.casino-tab{padding:10px 4px;font-size:11px}
+.casino-title{font-size:18px}
+.plinko-board{height:340px}
+.slot-reel{font-size:38px}
+.bet-btn{padding:10px 2px;font-size:12px}
 }
 </style>
 </head>
 <body>
-
-<div class="danger-overlay" id="dangerOverlay"></div>
 
 <!-- ============ БЕТА-ЗАГЛУШКА ============ -->
 <div class="beta-screen" id="betaScreen">
@@ -472,6 +559,8 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <!-- ============ ОСНОВНОЙ ИНТЕРФЕЙС ============ -->
 <div id="mainApp" style="display:none;">
 
+<div class="danger-overlay" id="dangerOverlay"></div>
+
 <div class="sticky-header">
 <div class="top-panel">
 <div class="logo-block" id="logoBlock" title="На главную">
@@ -492,11 +581,16 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <button class="nav-btn" id="tabUpgradeNav">Апгрейд</button>
 <button class="nav-btn" id="tabInventory">Инвентарь</button>
 <button class="nav-btn" id="tabRouletteNav">🎰 Рулетка</button>
+<button class="nav-btn" id="tabPlinkoNav">🎯 Плинко</button>
+<button class="nav-btn" id="tabMinesNav">💣 Мины</button>
+<button class="nav-btn" id="tabSlotsNav">🎰 Слоты</button>
 </div>
 </div>
 </div>
 
 <div class="content-area">
+
+<!-- Экран выбора (Кейсы / Инвентарь / Работа) -->
 <div class="screen active" id="screenChoose">
 <div id="viewCases" style="width:100%;"><div class="case-grid" id="caseGrid"></div></div>
 <div id="viewInventory" style="width:100%; display:none;">
@@ -535,7 +629,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <button class="btn-risk-cashout" id="riskCashoutBtn">✓ ЗАБРАТЬ <span id="riskCashoutAmount">0</span> 🪙</button>
 </div>
 <div class="risk-meta">
-Кликов: <b id="riskClickCount">0</b> 
+Кликов: <b id="riskClickCount">0</b>
 </div>
 </div>
 <div class="risk-result-screen" id="riskResultScreen">
@@ -548,22 +642,10 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <div class="risk-stats-block">
 <div class="risk-stats-title">📊 Статистика</div>
 <div class="risk-stats-grid">
-<div class="risk-stat-item">
-<div class="risk-stat-label">Лучший заход</div>
-<div class="risk-stat-value gold" id="riskStatBest">0</div>
-</div>
-<div class="risk-stat-item">
-<div class="risk-stat-label">Забрано</div>
-<div class="risk-stat-value green" id="riskStatCashouts">0</div>
-</div>
-<div class="risk-stat-item">
-<div class="risk-stat-label">Провалов</div>
-<div class="risk-stat-value red" id="riskStatFails">0</div>
-</div>
-<div class="risk-stat-item">
-<div class="risk-stat-label">Макс. кликов</div>
-<div class="risk-stat-value" id="riskStatMaxClicks">0</div>
-</div>
+<div class="risk-stat-item"><div class="risk-stat-label">Лучший заход</div><div class="risk-stat-value gold" id="riskStatBest">0</div></div>
+<div class="risk-stat-item"><div class="risk-stat-label">Забрано</div><div class="risk-stat-value green" id="riskStatCashouts">0</div></div>
+<div class="risk-stat-item"><div class="risk-stat-label">Провалов</div><div class="risk-stat-value red" id="riskStatFails">0</div></div>
+<div class="risk-stat-item"><div class="risk-stat-label">Макс. кликов</div><div class="risk-stat-value" id="riskStatMaxClicks">0</div></div>
 </div>
 </div>
 <div class="risk-info-block">
@@ -576,6 +658,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 </div>
 </div>
 
+<!-- Экран крутки кейса -->
 <div class="screen" id="screenSpin">
 <button class="back-btn" id="backBtn">← Назад</button>
 <h1 id="caseTitle" style="font-size:26px; font-weight:900; color:#fff; margin-bottom:6px;">Кейс</h1>
@@ -593,7 +676,6 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <button class="btn-keep-all" id="keepAllBtn">✓ Забрать всё</button>
 <button class="btn-sell-all" id="sellAllBtn">💰 Продать всё за 0 🪙</button>
 </div>
-<div class="spin-summary" id="spinSummary"></div>
 <div class="case-contents-block" id="caseContentsBlock">
 <div class="case-contents-header" id="caseContentsHeader">
 <div class="case-contents-title">📋 Содержимое кейса: <span id="caseContentsName">—</span></div>
@@ -605,6 +687,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 </div>
 </div>
 
+<!-- Экран апгрейда -->
 <div class="screen" id="screenUpgrade">
 <button class="back-btn" id="upgradeBackBtn">← Назад</button>
 <div class="upgrade-screen">
@@ -644,6 +727,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 </div>
 </div>
 
+<!-- Экран рулетки -->
 <div class="screen" id="screenRoulette">
 <button class="back-btn" id="rouletteBackBtn">← Назад</button>
 <div class="roulette-screen">
@@ -681,6 +765,93 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 </div>
 </div>
 
+<!-- Экран Плинко -->
+<div class="screen" id="screenPlinko">
+<button class="back-btn" id="plinkoBackBtn">← Назад</button>
+<div class="casino-card" style="width:100%;max-width:640px;">
+<h1 class="casino-title">🎯 Плинко</h1>
+<p class="casino-subtitle">Шарик падает по колышкам. Чем выше риск — тем больше разброс</p>
+<div class="plinko-board" id="plinkoBoard"></div>
+<span class="label-sm">Риск</span>
+<div class="plinko-risk-row" id="plinkoRiskRow">
+<button class="plinko-risk-btn" data-risk="low">🟢 Низкий</button>
+<button class="plinko-risk-btn selected" data-risk="medium">🟡 Средний</button>
+<button class="plinko-risk-btn" data-risk="high">🔴 Высокий</button>
+</div>
+<span class="label-sm">Ставка</span>
+<div class="bet-row" data-game="plinko">
+<button class="bet-btn" data-amount="100">100</button>
+<button class="bet-btn" data-amount="500">500</button>
+<button class="bet-btn" data-amount="1000">1K</button>
+<button class="bet-btn" data-amount="5000">5K</button>
+</div>
+<button class="casino-btn" id="plinkoPlayBtn" disabled>🎯 ЗАПУСТИТЬ</button>
+</div>
+</div>
+
+<!-- Экран Мины -->
+<div class="screen" id="screenMines">
+<button class="back-btn" id="minesBackBtn">← Назад</button>
+<div class="casino-card" style="width:100%;max-width:640px;">
+<h1 class="casino-title">💣 Мины</h1>
+<p class="casino-subtitle">Открывай клетки и расти множитель. Не попади на мину!</p>
+<div class="mines-top">
+<div class="mines-stat"><div class="mines-stat-label">Множитель</div><div class="mines-stat-value" id="minesMultiplier">×1.00</div></div>
+<div class="mines-stat"><div class="mines-stat-label">Выигрыш</div><div class="mines-stat-value" id="minesCashout">0 🪙</div></div>
+</div>
+<div class="mines-grid" id="minesGrid"></div>
+<span class="label-sm">Количество мин</span>
+<div class="mines-chances" id="minesChances">
+<button class="mines-mines-btn" data-mines="1">1 мина</button>
+<button class="mines-mines-btn selected" data-mines="3">3 мины</button>
+<button class="mines-mines-btn" data-mines="5">5 мин</button>
+</div>
+<span class="label-sm">Ставка</span>
+<div class="bet-row" data-game="mines">
+<button class="bet-btn" data-amount="100">100</button>
+<button class="bet-btn" data-amount="500">500</button>
+<button class="bet-btn" data-amount="1000">1K</button>
+<button class="bet-btn" data-amount="5000">5K</button>
+</div>
+<button class="casino-btn" id="minesStartBtn" disabled>💣 НАЧАТЬ</button>
+<button class="casino-btn green" id="minesCashoutBtn" style="display:none;">💰 ЗАБРАТЬ</button>
+</div>
+</div>
+
+<!-- Экран Слоты -->
+<div class="screen" id="screenSlots">
+<button class="back-btn" id="slotsBackBtn">← Назад</button>
+<div class="casino-card" style="width:100%;max-width:640px;">
+<h1 class="casino-title">🎰 Слот-машина</h1>
+<p class="casino-subtitle">Три одинаковых символа = победа!</p>
+<div class="slots-visual">
+<div class="slot-reel" id="reel0">🍒</div>
+<div class="slot-reel" id="reel1">🍒</div>
+<div class="slot-reel" id="reel2">🍒</div>
+</div>
+<div class="slots-paytable">
+<div class="slots-paytable-title">Таблица выплат</div>
+<div class="slots-paytable-row"><span><span class="sym">⭐</span> × 3</span><span class="mult">×250 🎉</span></div>
+<div class="slots-paytable-row"><span><span class="sym">7️⃣</span> × 3</span><span class="mult">×50</span></div>
+<div class="slots-paytable-row"><span><span class="sym">💎</span> × 3</span><span class="mult">×25</span></div>
+<div class="slots-paytable-row"><span><span class="sym">🔔</span> × 3</span><span class="mult">×12</span></div>
+<div class="slots-paytable-row"><span><span class="sym">🍊</span> × 3</span><span class="mult">×7</span></div>
+<div class="slots-paytable-row"><span><span class="sym">🍋</span> × 3</span><span class="mult">×5</span></div>
+<div class="slots-paytable-row"><span><span class="sym">🍒</span> × 3</span><span class="mult">×2</span></div>
+<div class="slots-paytable-row"><span>Любые 2 одинаковых</span><span class="mult">×1.5</span></div>
+</div>
+<span class="label-sm">Ставка</span>
+<div class="bet-row" data-game="slots">
+<button class="bet-btn" data-amount="100">100</button>
+<button class="bet-btn" data-amount="500">500</button>
+<button class="bet-btn" data-amount="1000">1K</button>
+<button class="bet-btn" data-amount="5000">5K</button>
+</div>
+<button class="casino-btn" id="slotsPlayBtn" disabled>🎰 КРУТИТЬ</button>
+</div>
+</div>
+
+<!-- Экран профиля -->
 <div class="screen" id="screenProfile">
 <button class="back-btn" id="profileBackBtn">← Назад</button>
 <div class="profile-header-card">
@@ -707,8 +878,10 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <div class="inventory-grid" id="collectionGrid" style="margin-top:8px;"></div>
 </div>
 </div>
+
 </div>
 
+<!-- Модалки -->
 <div class="modal-overlay" id="itemModal">
 <div class="modal-box">
 <div id="modalImgWrap"></div>
@@ -755,9 +928,13 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 </div>
 
 </div><!-- /mainApp -->
+
+<!-- ⬆️⬆️⬆️ КОНЕЦ ЧАСТИ 1 ⬆️⬆️⬆️ -->
+
+<!-- ⬇️⬇️⬇️ НИЖЕ БУДЕТ ЧАСТЬ 2 (JavaScript) ⬇️⬇️⬇️ -->
   
 <!-- ============================================================ -->
-<!-- ЧАСТЬ 2 — JAVASCRIPT (начало)                                -->
+<!-- PashaDrop v7.1 — ЧАСТЬ 2: JavaScript (начало)                -->
 <!-- ============================================================ -->
 
 <script>
@@ -807,7 +984,6 @@ const priceRanges={common:[10,50],uncommon:[50,150],epic:[150,300],mythic:[300,7
 // ============================================================
 // КЕЙСЫ
 // ============================================================
-// ⚠️ ЦЕНА ЗВЁЗД ИЗМЕНЕНА: 25 → 50
 const casePrices={stars:50,silver:100,zeus:200,dustin:600,mirage:1000,kalash:2300,chingis:3700};
 const caseConfig={
 stars:{title:'Звёзды',emoji:'⭐',desc:'Для новичков',img:'images/zvezdi.png',distribution:{common:7,uncommon:11,epic:2}},
@@ -867,33 +1043,21 @@ photos.push({id:ck+'_'+num,num:num,name:'Карточка #'+num,price:price,rar
 cases[ck]={title:cfg.title,emoji:cfg.emoji,photos:photos};
 });
 
-// 20 ЗОЛОТЫХ ДЛЯ АПГРЕЙДА
+// 20 золотых для апгрейда
 const UPGRADE_ONLY_PRICE_MIN=4000;
 const UPGRADE_ONLY_PRICE_MAX=8000;
 const UPGRADE_ONLY_COUNT=20;
-
 const upgradeOnlyPrices=[];
 for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
 let price;
-do{
-price=UPGRADE_ONLY_PRICE_MIN+Math.floor(Math.random()*(UPGRADE_ONLY_PRICE_MAX-UPGRADE_ONLY_PRICE_MIN+1));
-}while(upgradeOnlyPrices.includes(price));
+do{price=UPGRADE_ONLY_PRICE_MIN+Math.floor(Math.random()*(UPGRADE_ONLY_PRICE_MAX-UPGRADE_ONLY_PRICE_MIN+1))}while(upgradeOnlyPrices.includes(price));
 upgradeOnlyPrices.push(price);
 }
 upgradeOnlyPrices.sort((a,b)=>a-b);
-
 const upgradeOnlyPhotos=[];
 for(let i=0;i<UPGRADE_ONLY_COUNT;i++){
 const num=cardIdCounter++;
-upgradeOnlyPhotos.push({
-id:'upgrade_golden_'+(i+1),
-num:num,
-name:'Золотая #'+(i+1),
-price:upgradeOnlyPrices[i],
-rarity:'golden',
-src:null,
-upgradeOnly:true
-});
+upgradeOnlyPhotos.push({id:'upgrade_golden_'+(i+1),num:num,name:'Золотая #'+(i+1),price:upgradeOnlyPrices[i],rarity:'golden',src:null,upgradeOnly:true});
 }
 
 const allPhotos={};
@@ -919,15 +1083,17 @@ const $=id=>document.getElementById(id);
 const betaScreen=$('betaScreen'),betaInput=$('betaInput'),betaBtn=$('betaBtn'),betaMessage=$('betaMessage');
 const mainApp=$('mainApp');
 const screenChoose=$('screenChoose'),screenSpin=$('screenSpin'),screenUpgrade=$('screenUpgrade'),screenProfile=$('screenProfile'),screenRoulette=$('screenRoulette');
+const screenPlinko=$('screenPlinko'),screenMines=$('screenMines'),screenSlots=$('screenSlots');
 const logoBlock=$('logoBlock'),avatarBtn=$('avatarBtn'),soundToggle=$('soundToggle');
 const caseGrid=$('caseGrid'),caseTitle=$('caseTitle'),casePreview=$('casePreview'),casePreviewImg=$('casePreviewImg');
 const backBtn=$('backBtn'),upgradeBackBtn=$('upgradeBackBtn'),profileBackBtn=$('profileBackBtn'),rouletteBackBtn=$('rouletteBackBtn');
+const plinkoBackBtn=$('plinkoBackBtn'),minesBackBtn=$('minesBackBtn'),slotsBackBtn=$('slotsBackBtn');
 const startBtn=$('startBtn');
 const modeSelector=$('modeSelector'),modeBtn1=$('modeBtn1'),modeBtn3=$('modeBtn3');
 const stripsContainer=$('stripsContainer'),bulkActions=$('bulkActions'),keepAllBtn=$('keepAllBtn'),sellAllBtn=$('sellAllBtn');
-const spinSummary=$('spinSummary');
 const caseContentsBlock=$('caseContentsBlock'),caseContentsHeader=$('caseContentsHeader'),caseContentsName=$('caseContentsName'),caseContentsBody=$('caseContentsBody'),contentsGrid=$('contentsGrid');
 const tabCases=$('tabCases'),tabWork=$('tabWork'),tabUpgradeNav=$('tabUpgradeNav'),tabInventory=$('tabInventory'),tabRouletteNav=$('tabRouletteNav');
+const tabPlinkoNav=$('tabPlinkoNav'),tabMinesNav=$('tabMinesNav'),tabSlotsNav=$('tabSlotsNav');
 const viewCases=$('viewCases'),viewInventory=$('viewInventory'),viewWork=$('viewWork');
 const inventoryGrid=$('inventoryGrid'),inventoryEmpty=$('inventoryEmpty');
 const itemModal=$('itemModal'),modalImgWrap=$('modalImgWrap'),modalName=$('modalName'),modalRarity=$('modalRarity'),modalCount=$('modalCount'),modalPrice=$('modalPrice'),modalClose=$('modalClose'),modalSell=$('modalSell');
@@ -946,6 +1112,10 @@ const riskField=$('riskField'),riskPlayArea=$('riskPlayArea'),riskResultScreen=$
 const riskSum=$('riskSum'),riskSuccessChance=$('riskSuccessChance'),riskFailChance=$('riskFailChance'),riskBarFill=$('riskBarFill');
 const riskClickBtn=$('riskClickBtn'),riskCashoutBtn=$('riskCashoutBtn'),riskCashoutAmount=$('riskCashoutAmount'),riskClickCount=$('riskClickCount'),riskNewSessionBtn=$('riskNewSessionBtn');
 const riskStatBest=$('riskStatBest'),riskStatCashouts=$('riskStatCashouts'),riskStatFails=$('riskStatFails'),riskStatMaxClicks=$('riskStatMaxClicks');
+// Казино
+const plinkoBoard=$('plinkoBoard'),plinkoPlayBtn=$('plinkoPlayBtn'),plinkoRiskRow=$('plinkoRiskRow');
+const minesGrid=$('minesGrid'),minesStartBtn=$('minesStartBtn'),minesCashoutBtn=$('minesCashoutBtn'),minesMultiplier=$('minesMultiplier'),minesCashout=$('minesCashout'),minesChances=$('minesChances');
+const reel0=$('reel0'),reel1=$('reel1'),reel2=$('reel2'),slotsPlayBtn=$('slotsPlayBtn');
 
 // ============================================================
 // СОСТОЯНИЕ
@@ -960,13 +1130,12 @@ let profile={name:'Игрок',avatar:'👤',since:null,stats:{casesOpened:0,spe
 let collectionFilter='all';
 let rouletteBetAmount=0,rouletteChanceVal=0.5,rouletteColor=null;
 let rouletteHistoryData=[],isRouletteSpinning=false;
-// Риск-кликер состояние
+// Риск-кликер
 let riskClicks=0,riskSumValue=0,riskSessionActive=false;
 let riskStats={best:0,cashouts:0,fails:0,maxClicks:0};
-const RISK_FAIL_PENALTY_PERCENT=0;
 
 // ============================================================
-// ХРАНИЛИЩЕ (ключи НЕ меняем — прогресс сохраняется!)
+// ХРАНИЛИЩЕ (ключи не меняем — прогресс сохраняется!)
 // ============================================================
 const STORAGE_BALANCE='pashadrop_balance_v53';
 const STORAGE_INVENTORY='pashadrop_inventory_v53';
@@ -987,6 +1156,7 @@ try{const sp=JSON.parse(localStorage.getItem(STORAGE_PROFILE));if(sp&&typeof sp=
 if(localStorage.getItem(STORAGE_SOUND)==='0')soundEnabled=false;
 try{const mm=parseInt(localStorage.getItem(STORAGE_MULTI_MODE));if(mm===1||mm===3)multiMode=mm}catch(e){}
 
+function saveBalance(){try{localStorage.setItem(STORAGE_BALANCE,balance)}catch(e){}}
 function saveInventory(){try{localStorage.setItem(STORAGE_INVENTORY,JSON.stringify(inventory))}catch(e){}}
 function saveStudied(){try{localStorage.setItem(STORAGE_STUDIED,JSON.stringify(studied))}catch(e){}}
 function saveProfile(){try{localStorage.setItem(STORAGE_PROFILE,JSON.stringify(profile))}catch(e){}}
@@ -994,7 +1164,7 @@ function saveRouletteHistory(){try{localStorage.setItem(STORAGE_ROULETTE_HISTORY
 function saveMultiMode(){try{localStorage.setItem(STORAGE_MULTI_MODE,multiMode.toString())}catch(e){}}
 function saveRiskStats(){try{localStorage.setItem(STORAGE_RISK_STATS,JSON.stringify(riskStats))}catch(e){}}
 
-function updateBalance(){localStorage.setItem(STORAGE_BALANCE,balance);balanceEls.forEach(el=>{if(el)el.textContent=balance});updateCaseAvailability();updateStartBtn()}
+function updateBalance(){saveBalance();balanceEls.forEach(el=>{if(el)el.textContent=balance});updateCaseAvailability();updateStartBtn();updateAllGameButtons()}
 function updateCaseAvailability(){document.querySelectorAll('.case-card').forEach(card=>{const price=casePrices[card.dataset.case];if(balance<price)card.classList.add('disabled');else card.classList.remove('disabled')})}
 function updateStartBtn(){
 if(!currentCaseKey)return;
@@ -1024,11 +1194,7 @@ const data=encoder.encode(text);
 const buf=await crypto.subtle.digest('SHA-256',data);
 return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-
-function showMainApp(){
-betaScreen.classList.remove('visible');
-mainApp.style.display='block';
-}
+function showMainApp(){betaScreen.classList.remove('visible');mainApp.style.display='block'}
 function showBetaScreen(){
 betaScreen.classList.add('visible');
 mainApp.style.display='none';
@@ -1046,13 +1212,7 @@ showBetaScreen();
 }
 async function handleBetaLogin(){
 const input=betaInput.value.trim();
-if(!input){
-betaMessage.textContent='⚠️ Введи код';
-betaMessage.className='beta-message error';
-betaInput.classList.add('error');
-setTimeout(()=>betaInput.classList.remove('error'),400);
-return;
-}
+if(!input){betaMessage.textContent='⚠️ Введи код';betaMessage.className='beta-message error';betaInput.classList.add('error');setTimeout(()=>betaInput.classList.remove('error'),400);return}
 betaBtn.disabled=true;
 betaBtn.textContent='Проверка...';
 const inputHash=await sha256(input);
@@ -1061,12 +1221,7 @@ betaInput.classList.add('success');
 betaMessage.textContent='✅ Доступ разрешён! Загрузка...';
 betaMessage.className='beta-message success';
 localStorage.setItem(STORAGE_BETA_ACCESS,'true');
-setTimeout(()=>{
-showMainApp();
-initGame();
-betaBtn.disabled=false;
-betaBtn.textContent='✓ Войти';
-},800);
+setTimeout(()=>{showMainApp();initGame();betaBtn.disabled=false;betaBtn.textContent='✓ Войти'},800);
 }else{
 betaInput.classList.add('error');
 betaMessage.textContent='❌ Неверный код доступа';
@@ -1078,7 +1233,6 @@ betaInput.value='';
 betaInput.focus();
 }
 }
-
 betaBtn.addEventListener('click',handleBetaLogin);
 betaInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')handleBetaLogin()});
 
@@ -1132,11 +1286,7 @@ riskSumValue=calcRiskSum(riskClicks);
 playRiskClick();
 if(calcRiskPercent(riskClicks)>=30)playRiskTense();
 const risk=calcRiskPercent(riskClicks);
-if(risk>=60){
-riskField.classList.remove('risk-shake');
-void riskField.offsetWidth;
-riskField.classList.add('risk-shake');
-}
+if(risk>=60){riskField.classList.remove('risk-shake');void riskField.offsetWidth;riskField.classList.add('risk-shake')}
 updateRiskUI();
 const failRoll=Math.random()*100;
 if(failRoll<risk){
@@ -1183,55 +1333,43 @@ riskResultSub.innerHTML=`Потеряно: <b class="red-b">${riskSumValue.toLoc
 updateBalance();
 updateRiskUI();
 }
-function saveBalance(){try{localStorage.setItem(STORAGE_BALANCE,balance)}catch(e){}}
 
 // ============================================================
-// ОБЩИЕ ФУНКЦИИ (профиль, навигация, кейсы)
+// ОБЩИЕ ФУНКЦИИ
 // ============================================================
 const AVATARS=['🐱','🐶','🦊','🐼','🐸','🐷','🐯','🦁','🐺','🐵','🐰','🐭','🐹','🐻','🐨','🐮','🐔','🐧','🦅','🦉','🐴','🦄'];
 
 function escapeHtml(str){const div=document.createElement('div');div.textContent=str;return div.innerHTML}
 
 function switchScreen(name){
-screenChoose.classList.remove('active');screenSpin.classList.remove('active');screenUpgrade.classList.remove('active');screenProfile.classList.remove('active');screenRoulette.classList.remove('active');
+[screenChoose,screenSpin,screenUpgrade,screenProfile,screenRoulette,screenPlinko,screenMines,screenSlots].forEach(s=>s.classList.remove('active'));
 if(name==='choose')screenChoose.classList.add('active');
 else if(name==='spin')screenSpin.classList.add('active');
 else if(name==='upgrade')screenUpgrade.classList.add('active');
 else if(name==='profile')screenProfile.classList.add('active');
 else if(name==='roulette')screenRoulette.classList.add('active');
+else if(name==='plinko')screenPlinko.classList.add('active');
+else if(name==='mines')screenMines.classList.add('active');
+else if(name==='slots')screenSlots.classList.add('active');
 window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function setActiveTab(activeBtn){
-[tabCases,tabWork,tabUpgradeNav,tabInventory,tabRouletteNav].forEach(b=>b.classList.remove('active'));
+[tabCases,tabWork,tabUpgradeNav,tabInventory,tabRouletteNav,tabPlinkoNav,tabMinesNav,tabSlotsNav].forEach(b=>b.classList.remove('active'));
 activeBtn.classList.add('active');
-}
-
-// ==================== initGame ====================
-function initGame(){
-updateSoundIcon();
-renderCaseGrid();
-updateBalance();
-renderInventory();
-updateUpgradeUI();
-renderUpgradeInventory();
-drawRouletteWheel();
-updateRouletteUI();
-updateModeSelectorUI();
-updateRiskUI();
-startRiskSession();
-if(!profile.since){setTimeout(()=>showWelcome(),300)}else{renderProfile()}
 }
 
 // ============================================================
 // КОНЕЦ ЧАСТИ 2
-// ⚠️ НЕ ЗАКРЫВАЙ  И НЕ СТАВЬ!
-// ЭТО БУДЕТ В ЧАСТИ 3.
-// ПРОСТО ОСТАВЬ КУРСОР НА НОВОЙ СТРОКЕ — ТАМ БУДЕТ ЧАСТЬ 3.
-  
+// ⚠️ НЕ ЗАКРЫВАЙ
+// ЭТО БУДЕТ В ЧАСТИ 4.
 // ============================================================
-// ПРОФИЛЬ
+
 // ============================================================
+// PashaDrop v7.1 — ЧАСТЬ 3: Профиль, Кейсы, Апгрейд, Рулетка
+// ============================================================
+
+// ==================== ПРОФИЛЬ ====================
 function renderProfile(){
 profileAvatar.textContent=profile.avatar;
 profileName.innerHTML=`${escapeHtml(profile.name)} <span class="edit-icon">✏️</span>`;
@@ -1288,9 +1426,7 @@ collectionGrid.appendChild(el);
 });
 }
 
-// ============================================================
-// ИНВЕНТАРЬ
-// ============================================================
+// ==================== ИНВЕНТАРЬ ====================
 function addToInventory(photo,count=1){if(!inventory[photo.id]){inventory[photo.id]={count:0,num:photo.num,name:photo.name,rarity:photo.rarity,price:photo.price}}inventory[photo.id].count+=count;studied[photo.id]=true;saveInventory();saveStudied()}
 function removeFromInventory(photoId,count=1){if(!inventory[photoId])return false;inventory[photoId].count-=count;if(inventory[photoId].count<=0)delete inventory[photoId];saveInventory();return true}
 
@@ -1312,9 +1448,7 @@ inventoryGrid.appendChild(el);
 let modalPhotoId=null;
 function openItemModal(id){const item=inventory[id];if(!item)return;modalPhotoId=id;modalImgWrap.innerHTML=makeCardSVG({id:id,num:item.num||'?',price:item.price,rarity:item.rarity});modalName.textContent=item.name||'Карточка';modalRarity.textContent=rarityNames[item.rarity];modalRarity.style.color=rarityColors[item.rarity];modalCount.textContent=`В инвентаре: ${item.count}`;modalPrice.textContent=`Цена продажи: 🪙 ${item.price}`;itemModal.classList.add('active')}
 
-// ============================================================
-// ГЛАВНАЯ / СЕТКА КЕЙСОВ
-// ============================================================
+// ==================== КЕЙСЫ ====================
 function renderCaseGrid(){
 caseGrid.innerHTML='';
 Object.keys(caseConfig).forEach(key=>{
@@ -1366,9 +1500,6 @@ contentsGrid.appendChild(el);
 });
 }
 
-// ============================================================
-// АВТОСБОР И СБРОС ЭКРАНА
-// ============================================================
 function autoCollectAllPending(){
 if(pendingPhotos.length===0)return;
 pendingPhotos.forEach(item=>{
@@ -1385,8 +1516,6 @@ function resetSpinScreen(){
 stripsContainer.innerHTML='';
 stripsContainer.classList.remove('active');
 bulkActions.classList.remove('active');
-spinSummary.classList.remove('active','profit','loss','neutral');
-spinSummary.innerHTML='';
 casePreview.style.display='flex';
 startBtn.classList.add('active');startBtn.disabled=false;
 modeSelector.style.display='flex';
@@ -1396,9 +1525,6 @@ caseContentsHeader.classList.remove('open');
 updateModeSelectorUI();
 }
 
-// ============================================================
-// КРУТКА КЕЙСА
-// ============================================================
 function shuffle(array){const arr=[...array];for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 
 function buildStripHTML(photos,stripEl){
@@ -1425,13 +1551,11 @@ if(balance<total){
 if(multiMode===3&&balance>=price){multiMode=1;saveMultiMode();updateModeSelectorUI();return}
 return;
 }
-
 balance-=total;
 profile.stats.casesOpened+=multiMode;
 profile.stats.spent+=total;
 saveProfile();updateBalance();
 spinCost=total;
-
 isSpinning=true;
 startBtn.classList.remove('active');startBtn.disabled=true;
 modeSelector.style.display='none';
@@ -1439,15 +1563,12 @@ caseContentsBlock.style.display='none';
 caseContentsBody.classList.remove('open');
 caseContentsHeader.classList.remove('open');
 casePreview.style.display='none';
-spinSummary.classList.remove('active');
 bulkActions.classList.remove('active');
 pendingPhotos=[];
-
 stripsContainer.innerHTML='';
 stripsContainer.classList.add('active');
 
 const stripCount=multiMode;
-
 for(let i=0;i<stripCount;i++){
 const block=document.createElement('div');
 block.className='strip-block';
@@ -1530,13 +1651,10 @@ item.resultEl.classList.add('active');
 updateBulkActions();
 }
 
-// ⚠️ ИСПРАВЛЕН БАГ: общие кнопки ТОЛЬКО при ×3
+// Общие кнопки только при ×3
 function updateBulkActions(){
 const pending=pendingPhotos.filter(p=>p.status==='pending');
-if(multiMode!==3||pending.length===0){
-bulkActions.classList.remove('active');
-return;
-}
+if(multiMode!==3||pending.length===0){bulkActions.classList.remove('active');return}
 const totalSell=pending.reduce((sum,p)=>sum+p.photo.price,0);
 sellAllBtn.textContent=`💰 Продать всё за ${totalSell} 🪙`;
 bulkActions.classList.add('active');
@@ -1580,23 +1698,6 @@ setTimeout(()=>{resetAfterSpin()},400);
 }
 }
 
-function showSummary(){
-const soldTotal=pendingPhotos.filter(p=>p.status==='sold').reduce((s,p)=>s+p.photo.price,0);
-const keptCount=pendingPhotos.filter(p=>p.status==='kept').length;
-const net=soldTotal-spinCost;
-let cls='neutral';
-let icon='⚖️';
-let label='Ровно';
-if(net>0){cls='profit';icon='📈';label='Прибыль'}else if(net<0){cls='loss';icon='📉';label='Убыток'}
-const text=`${icon} <b>${label}</b><br>Потрачено: ${spinCost} 🪙 · Выручка: ${soldTotal} 🪙 · Итог: <b>${net>0?'+':''}${net} 🪙</b><br><span style="font-size:12px;opacity:0.8;">Забрано карточек: ${keptCount}</span>`;
-spinSummary.className='spin-summary active '+cls;
-spinSummary.innerHTML=text;
-setTimeout(()=>{
-spinSummary.classList.remove('active');
-resetAfterSpin();
-},2500);
-}
-
 function resetAfterSpin(){
 stripsContainer.innerHTML='';
 stripsContainer.classList.remove('active');
@@ -1617,9 +1718,7 @@ else{const oldIdx=rarityOrder.indexOf(oldBest.rarity);if(newIdx>oldIdx||(newIdx=
 saveProfile();
 }
 
-// ============================================================
-// АПГРЕЙД
-// ============================================================
+// ==================== АПГРЕЙД ====================
 const UPGRADE_MAX_PRICE=8000;
 
 function pickAutoTarget(srcRarity,chance){
@@ -1717,9 +1816,7 @@ isUpgrading=false;
 setTimeout(()=>{updateUpgradeUI();renderUpgradeInventory()},1500);
 }
 
-// ============================================================
-// РУЛЕТКА
-// ============================================================
+// ==================== РУЛЕТКА ====================
 function drawRouletteWheel(){
 const svg=rouletteWheelSvg;
 svg.innerHTML='';
@@ -1828,26 +1925,423 @@ updateRouletteUI();
 }
 
 // ============================================================
-// НАВИГАЦИЯ
+// КОНЕЦ ЧАСТИ 3
+// ⚠️ НЕ 
+// ============================================================
+  
+// ============================================================
+// PashaDrop v7.1 — ЧАСТЬ 4: Казино (Плинко, Мины, Слоты) + События
+// ============================================================
+
+// ==================== ОБЩИЕ ФУНКЦИИ КАЗИНО ====================
+const bets={plinko:0,mines:0,slots:0};
+
+function updateAllGameButtons(){
+plinkoPlayBtn.disabled=!bets.plinko||balance<bets.plinko;
+minesStartBtn.disabled=!bets.mines||balance<bets.mines;
+slotsPlayBtn.disabled=!bets.slots||balance<bets.slots;
+}
+
+document.querySelectorAll('.bet-row').forEach(row=>{
+const game=row.dataset.game;
+if(!game)return;
+row.querySelectorAll('.bet-btn').forEach(btn=>{
+btn.addEventListener('click',()=>{
+row.querySelectorAll('.bet-btn').forEach(b=>b.classList.remove('selected'));
+btn.classList.add('selected');
+bets[game]=parseInt(btn.dataset.amount);
+updateAllGameButtons();
+});
+});
+});
+
+// ============================================================
+// ПЛИНКО
+// ============================================================
+let plinkoRisk='medium';
+let plinkoActive=false;
+const PLINKO_ROWS=12;
+const PLINKO_SLOTS=PLINKO_ROWS+1;
+const PLINKO_MULT={
+low:[1.5,1.2,1.1,1.0,0.9,0.7,0.5,0.7,0.9,1.0,1.1,1.2,1.5],
+medium:[5,3,2,1.5,1.2,0.7,0.4,0.7,1.2,1.5,2,3,5],
+high:[30,15,8,4,2,0.5,0.2,0.5,2,4,8,15,30]
+};
+
+function buildPlinkoBoard(){
+if(!plinkoBoard)return;
+plinkoBoard.innerHTML='';
+const w=plinkoBoard.offsetWidth;
+const h=plinkoBoard.offsetHeight;
+const bottomReserved=40;
+const availH=h-bottomReserved;
+
+const slotsDiv=document.createElement('div');
+slotsDiv.className='plinko-slots';
+const mults=PLINKO_MULT[plinkoRisk];
+for(let i=0;i<PLINKO_SLOTS;i++){
+const slot=document.createElement('div');
+slot.className='plinko-slot';
+slot.textContent=mults[i]+'×';
+const m=mults[i];
+if(m>=10)slot.style.background='linear-gradient(180deg,#dc2626,#991b1b)';
+else if(m>=3)slot.style.background='linear-gradient(180deg,#f59e0b,#b45309)';
+else if(m>=1)slot.style.background='linear-gradient(180deg,#22c55e,#166534)';
+else slot.style.background='linear-gradient(180deg,#4b5563,#1f2937)';
+slotsDiv.appendChild(slot);
+}
+plinkoBoard.appendChild(slotsDiv);
+
+const pegGapY=availH/(PLINKO_ROWS+1);
+for(let row=0;row<PLINKO_ROWS;row++){
+const count=row+1;
+const rowWidth=w*(count/(PLINKO_ROWS+1));
+const startX=(w-rowWidth)/2+rowWidth/(count*2);
+const gapX=rowWidth/count;
+const y=pegGapY*(row+1);
+for(let col=0;col<count;col++){
+const peg=document.createElement('div');
+peg.className='plinko-peg';
+peg.style.left=(startX+col*gapX)+'px';
+peg.style.top=y+'px';
+plinkoBoard.appendChild(peg);
+}
+}
+}
+
+document.querySelectorAll('#plinkoRiskRow .plinko-risk-btn').forEach(btn=>{
+btn.addEventListener('click',()=>{
+if(plinkoActive)return;
+document.querySelectorAll('#plinkoRiskRow .plinko-risk-btn').forEach(b=>b.classList.remove('selected'));
+btn.classList.add('selected');
+plinkoRisk=btn.dataset.risk;
+buildPlinkoBoard();
+});
+});
+
+plinkoPlayBtn.addEventListener('click',()=>{
+if(plinkoActive)return;
+const bet=bets.plinko;
+if(!bet||balance<bet)return;
+balance-=bet;
+updateBalance();
+plinkoActive=true;
+plinkoPlayBtn.disabled=true;
+
+const w=plinkoBoard.offsetWidth;
+const h=plinkoBoard.offsetHeight;
+const bottomReserved=40;
+const availH=h-bottomReserved;
+const pegGapY=availH/(PLINKO_ROWS+1);
+
+let rightMoves=0;
+for(let i=0;i<PLINKO_ROWS;i++){if(Math.random()<0.5)rightMoves++}
+const slotIndex=rightMoves;
+const mults=PLINKO_MULT[plinkoRisk];
+const mult=mults[slotIndex];
+const winAmount=Math.floor(bet*mult);
+
+const ball=document.createElement('div');
+ball.className='plinko-ball';
+plinkoBoard.appendChild(ball);
+
+const decisions=[];
+let remainingRight=rightMoves;
+for(let i=0;i<PLINKO_ROWS;i++){
+const remainingRows=PLINKO_ROWS-i;
+const probRight=remainingRight/remainingRows;
+if(Math.random()<probRight){decisions.push('R');remainingRight--}
+else{decisions.push('L')}
+}
+
+const ballX=[w/2];
+const ballY=[pegGapY*0.5];
+let x=w/2;
+for(let row=0;row<PLINKO_ROWS;row++){
+const count=row+1;
+const rowWidth=w*(count/(PLINKO_ROWS+1));
+const startX=(w-rowWidth)/2+rowWidth/(count*2);
+const gapX=rowWidth/count;
+let colPos;
+if(decisions[row]==='R')colPos=Math.floor((x-startX)/gapX)+1;
+else colPos=Math.floor((x-startX)/gapX);
+colPos=Math.max(0,Math.min(count-1,colPos));
+x=startX+colPos*gapX;
+ballX.push(x);
+ballY.push(pegGapY*(row+2));
+}
+const slotWidth=w/PLINKO_SLOTS;
+const finalX=slotIndex*slotWidth+slotWidth/2;
+ballX.push(finalX);
+ballY.push(availH+20);
+
+let step=0;
+const animInterval=setInterval(()=>{
+if(step>=ballX.length){
+clearInterval(animInterval);
+finalizePlinko(slotIndex,mult,winAmount,bet);
+return;
+}
+ball.style.left=ballX[step]+'px';
+ball.style.top=ballY[step]+'px';
+step++;
+},60);
+});
+
+function finalizePlinko(slotIndex,mult,winAmount,bet){
+const slots=plinkoBoard.querySelectorAll('.plinko-slot');
+if(slots[slotIndex]){
+slots[slotIndex].classList.add('win');
+setTimeout(()=>slots[slotIndex].classList.remove('win'),600);
+}
+if(mult>1){
+balance+=winAmount;
+profile.stats.earned+=winAmount;
+saveProfile();
+updateBalance();
+showResultToast(`<span class="big">🎉 +${winAmount.toLocaleString('ru-RU')}</span>Попал в ${mult}×`,true);
+}else if(mult===1){
+balance+=winAmount;
+updateBalance();
+showResultToast(`<span class="big">↩️ Возврат</span>${mult}×`,true);
+}else{
+showResultToast(`<span class="big">💥 −${bet.toLocaleString('ru-RU')}</span>${mult}×`,false);
+}
+plinkoActive=false;
+updateAllGameButtons();
+setTimeout(()=>{const ball=plinkoBoard.querySelector('.plinko-ball');if(ball)ball.remove()},800);
+}
+
+// ============================================================
+// МИНЫ
+// ============================================================
+let minesBet=0,minesCount=3,minesMultiplier=1,minesActive=false,minesGrid=[],minesOpened=0;
+const MINES_TOTAL=25;
+
+document.querySelectorAll('#minesChances .mines-mines-btn').forEach(btn=>{
+btn.addEventListener('click',()=>{
+if(minesActive)return;
+document.querySelectorAll('#minesChances .mines-mines-btn').forEach(b=>b.classList.remove('selected'));
+btn.classList.add('selected');
+minesCount=parseInt(btn.dataset.mines);
+});
+});
+
+function buildMinesGrid(){
+minesGrid=[];
+for(let i=0;i<MINES_TOTAL;i++)minesGrid.push('empty');
+let placed=0;
+while(placed<minesCount){
+const idx=Math.floor(Math.random()*MINES_TOTAL);
+if(minesGrid[idx]==='empty'){minesGrid[idx]='mine';placed++}
+}
+minesGridEl.innerHTML='';
+for(let i=0;i<MINES_TOTAL;i++){
+const cell=document.createElement('button');
+cell.className='mine-cell';
+cell.dataset.index=i;
+cell.type='button';
+cell.addEventListener('click',()=>handleMineClick(i,cell));
+minesGridEl.appendChild(cell);
+}
+}
+
+let minesGridEl=$('minesGrid');
+
+function handleMineClick(idx,cell){
+if(!minesActive)return;
+if(cell.classList.contains('opened'))return;
+if(minesGrid[idx]==='mine'){
+cell.classList.add('opened','bomb');
+cell.textContent='💣';
+revealAllMines();
+finalizeMines(false);
+}else{
+cell.classList.add('opened');
+cell.textContent='💎';
+cell.disabled=true;
+minesOpened++;
+updateMinesMultiplier();
+}
+}
+
+function updateMinesMultiplier(){
+const safeTotal=25-minesCount;
+let chance=1;
+for(let i=0;i<minesOpened;i++){
+chance*=(safeTotal-i)/(25-i);
+}
+minesMultiplier=Math.max(1,0.97/chance);
+minesMultiplierEl.textContent='×'+minesMultiplier.toFixed(2);
+minesCashoutEl.textContent=Math.floor(minesBet*minesMultiplier).toLocaleString('ru-RU')+' 🪙';
+}
+
+let minesMultiplierEl=$('minesMultiplier');
+let minesCashoutEl=$('minesCashout');
+
+function revealAllMines(){
+document.querySelectorAll('.mine-cell').forEach((cell,i)=>{
+if(minesGrid[i]==='mine'&&!cell.classList.contains('opened')){
+cell.classList.add('opened','bomb');
+cell.textContent='💣';
+}
+cell.disabled=true;
+});
+}
+
+function finalizeMines(won){
+minesActive=false;
+if(won){
+const winAmount=Math.floor(minesBet*minesMultiplier);
+balance+=winAmount;
+profile.stats.earned+=winAmount;
+saveProfile();
+updateBalance();
+showResultToast(`<span class="big">💰 +${winAmount.toLocaleString('ru-RU')}</span>Забрал ×${minesMultiplier.toFixed(2)}`,true);
+}else{
+showResultToast(`<span class="big">💥 −${minesBet.toLocaleString('ru-RU')}</span>Попал на мину!`,false);
+}
+minesStartBtn.style.display='block';
+minesCashoutBtn.style.display='none';
+setTimeout(()=>buildMinesGrid(),1500);
+updateAllGameButtons();
+}
+
+minesStartBtn.addEventListener('click',()=>{
+if(minesActive)return;
+const bet=bets.mines;
+if(!bet||balance<bet)return;
+balance-=bet;
+updateBalance();
+minesBet=bet;
+minesActive=true;
+minesOpened=0;
+minesMultiplier=1;
+buildMinesGrid();
+updateMinesMultiplier();
+minesStartBtn.style.display='none';
+minesCashoutBtn.style.display='block';
+});
+
+minesCashoutBtn.addEventListener('click',()=>{
+if(!minesActive)return;
+if(minesOpened===0)return;
+finalizeMines(true);
+});
+
+// ============================================================
+// СЛОТЫ
+// ============================================================
+const SLOT_SYMBOLS=['🍒','🍋','🍊','🔔','💎','7️⃣','⭐'];
+const SLOT_WEIGHTS=[500,250,120,60,30,15,3];
+const SLOT_PAYTABLE={'⭐':250,'7️⃣':50,'💎':25,'🔔':12,'🍊':7,'🍋':5,'🍒':2};
+
+function pickSlotSymbol(){
+const total=SLOT_WEIGHTS.reduce((a,b)=>a+b,0);
+let r=Math.random()*total;
+for(let i=0;i<SLOT_SYMBOLS.length;i++){
+if(r<SLOT_WEIGHTS[i])return SLOT_SYMBOLS[i];
+r-=SLOT_WEIGHTS[i];
+}
+return SLOT_SYMBOLS[0];
+}
+
+let slotsActive=false;
+
+slotsPlayBtn.addEventListener('click',()=>{
+if(slotsActive)return;
+const bet=bets.slots;
+if(!bet||balance<bet)return;
+balance-=bet;
+updateBalance();
+slotsActive=true;
+slotsPlayBtn.disabled=true;
+
+const reels=[reel0,reel1,reel2];
+reels.forEach(r=>r.classList.remove('win','lose'));
+reels.forEach(r=>r.classList.add('spinning'));
+
+const spinIntervals=[];
+reels.forEach((r,i)=>{
+spinIntervals.push(setInterval(()=>{
+r.textContent=SLOT_SYMBOLS[Math.floor(Math.random()*SLOT_SYMBOLS.length)];
+},60));
+});
+
+setTimeout(()=>{clearInterval(spinIntervals[0]);reels[0].classList.remove('spinning');reels[0].textContent=pickSlotSymbol()},600);
+setTimeout(()=>{clearInterval(spinIntervals[1]);reels[1].classList.remove('spinning');reels[1].textContent=pickSlotSymbol()},900);
+setTimeout(()=>{clearInterval(spinIntervals[2]);reels[2].classList.remove('spinning');reels[2].textContent=pickSlotSymbol()},1200);
+
+setTimeout(()=>{finalizeSlots(bet)},1400);
+});
+
+function finalizeSlots(bet){
+const s=[reel0.textContent,reel1.textContent,reel2.textContent];
+let mult=0;
+let winType='';
+if(s[0]===s[1]&&s[1]===s[2]){
+mult=SLOT_PAYTABLE[s[0]]||0;
+winType='3 одинаковых!';
+}else if(s[0]===s[1]||s[1]===s[2]||s[0]===s[2]){
+mult=1.5;
+winType='2 одинаковых';
+}
+const reels=[reel0,reel1,reel2];
+if(mult>0){
+const winAmount=Math.floor(bet*mult);
+balance+=winAmount;
+profile.stats.earned+=winAmount;
+saveProfile();
+updateBalance();
+reels.forEach(r=>r.classList.add('win'));
+showResultToast(`<span class="big">🎉 +${winAmount.toLocaleString('ru-RU')}</span>${winType} ×${mult}`,true);
+}else{
+reels.forEach(r=>r.classList.add('lose'));
+showResultToast(`<span class="big">💥 −${bet.toLocaleString('ru-RU')}</span>Не повезло`,false);
+}
+slotsActive=false;
+updateAllGameButtons();
+setTimeout(()=>{reels.forEach(r=>r.classList.remove('win','lose'))},2000);
+}
+
+// ==================== RESULT TOAST ====================
+function showResultToast(html,isWin){
+let toast=document.getElementById('resultToastGlobal');
+if(!toast){
+toast=document.createElement('div');
+toast.id='resultToastGlobal';
+toast.className='result-toast';
+document.body.appendChild(toast);
+}
+toast.innerHTML=html;
+toast.className='result-toast show '+(isWin?'win':'lose');
+clearTimeout(toast._t);
+toast._t=setTimeout(()=>toast.classList.remove('show'),1500);
+}
+
+// ============================================================
+// НАВИГАЦИЯ (вкладки)
 // ============================================================
 tabCases.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
 tabInventory.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabInventory);viewCases.style.display='none';viewInventory.style.display='block';viewWork.style.display='none';renderInventory();switchScreen('choose')});
 tabWork.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();setActiveTab(tabWork);viewCases.style.display='none';viewInventory.style.display='none';viewWork.style.display='block';switchScreen('choose')});
 tabUpgradeNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();selectedSrcId=null;autoDstId=null;updateUpgradeUI();renderUpgradeInventory();switchScreen('upgrade')});
 tabRouletteNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();drawRouletteWheel();updateRouletteUI();switchScreen('roulette')});
+tabPlinkoNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();switchScreen('plinko');setActiveTab(tabPlinkoNav);setTimeout(()=>{buildPlinkoBoard();updateAllGameButtons()},100)});
+tabMinesNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();switchScreen('mines');setActiveTab(tabMinesNav);if(!minesActive)buildMinesGrid();updateAllGameButtons()});
+tabSlotsNav.addEventListener('click',()=>{autoCollectAllPending();resetSpinScreen();switchScreen('slots');setActiveTab(tabSlotsNav);updateAllGameButtons()});
 
+// Кнопки "Назад" на экранах
 upgradeBackBtn.addEventListener('click',()=>{if(isUpgrading)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()});
 rouletteBackBtn.addEventListener('click',()=>{if(isRouletteSpinning)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
+plinkoBackBtn.addEventListener('click',()=>{if(plinkoActive)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
+minesBackBtn.addEventListener('click',()=>{if(minesActive)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
+slotsBackBtn.addEventListener('click',()=>{if(slotsActive)return;setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose')});
 
-backBtn.addEventListener('click',()=>{
-if(isSpinning)return;
-autoCollectAllPending();
-resetSpinScreen();
-setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()
-});
+backBtn.addEventListener('click',()=>{if(isSpinning)return;autoCollectAllPending();resetSpinScreen();setActiveTab(tabCases);viewCases.style.display='block';viewInventory.style.display='none';viewWork.style.display='none';switchScreen('choose');renderInventory()});
 
 logoBlock.addEventListener('click',()=>{
-if(isSpinning||isUpgrading||isRouletteSpinning)return;
+if(isSpinning||isUpgrading||isRouletteSpinning||plinkoActive||minesActive||slotsActive)return;
 autoCollectAllPending();
 resetSpinScreen();
 setActiveTab(tabCases);
@@ -1862,20 +2356,18 @@ avatarBtn.addEventListener('click',()=>{renderProfile();switchScreen('profile')}
 profileBackBtn.addEventListener('click',()=>switchScreen('choose'));
 
 // ============================================================
-// МОДАЛКИ И ПРОФИЛЬ (события)
+// МОДАЛКИ И ПРОФИЛЬ
 // ============================================================
 function initWelcomeAvatarGrid(){welcomeAvatarGrid.innerHTML='';AVATARS.slice(0,12).forEach(emoji=>{const btn=document.createElement('button');btn.className='avatar-option';btn.textContent=emoji;btn.type='button';if(emoji===profile.avatar)btn.classList.add('selected');btn.addEventListener('click',()=>{welcomeAvatarGrid.querySelectorAll('.avatar-option').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected')});welcomeAvatarGrid.appendChild(btn)})}
 function initEditAvatarGrid(){editAvatarGrid.innerHTML='';AVATARS.forEach(emoji=>{const btn=document.createElement('button');btn.className='avatar-option';btn.textContent=emoji;btn.type='button';if(emoji===profile.avatar)btn.classList.add('selected');btn.addEventListener('click',()=>{profile.avatar=emoji;saveProfile();editAvatarModal.classList.remove('active');renderProfile()});editAvatarGrid.appendChild(btn)})}
 function showWelcome(){initWelcomeAvatarGrid();welcomeName.value='';welcomeModal.classList.add('active')}
 
 welcomeStart.addEventListener('click',()=>{const name=welcomeName.value.trim()||'Игрок';const selected=welcomeAvatarGrid.querySelector('.avatar-option.selected');const avatar=selected?selected.textContent:'👤';profile.name=name.slice(0,16);profile.avatar=avatar;profile.since=new Date().toISOString();saveProfile();welcomeModal.classList.remove('active');renderProfile()});
-
 profileAvatar.addEventListener('click',()=>{initEditAvatarGrid();editAvatarModal.classList.add('active')});
 profileName.addEventListener('click',()=>{editNameInput.value=profile.name;editNameModal.classList.add('active')});
 editNameCancel.addEventListener('click',()=>editNameModal.classList.remove('active'));
 editNameSave.addEventListener('click',()=>{const name=editNameInput.value.trim()||'Игрок';profile.name=name.slice(0,16);saveProfile();editNameModal.classList.remove('active');renderProfile()});
 editAvatarClose.addEventListener('click',()=>editAvatarModal.classList.remove('active'));
-
 modalClose.addEventListener('click',()=>{itemModal.classList.remove('active');modalPhotoId=null});
 modalSell.addEventListener('click',()=>{if(!modalPhotoId||!inventory[modalPhotoId])return;const item=inventory[modalPhotoId];const price=item.price;removeFromInventory(modalPhotoId,1);balance+=price;profile.stats.sold++;profile.stats.earned+=price;if(price>profile.stats.expensiveSale)profile.stats.expensiveSale=price;saveProfile();updateBalance();playCoin();itemModal.classList.remove('active');modalPhotoId=null;renderInventory();renderCollection();renderUpgradeInventory()});
 
@@ -1889,22 +2381,9 @@ modeBtn3.addEventListener('click',()=>{if(isSpinning)return;if(modeBtn3.disabled
 // СОБЫТИЯ: КЕЙСЫ
 // ============================================================
 startBtn.addEventListener('click',spin);
-keepAllBtn.addEventListener('click',()=>{
-if(isSpinning)return;
-const pending=pendingPhotos.filter(p=>p.status==='pending');
-if(pending.length===0)return;
-pending.forEach(item=>handleStripKeep(item));
-});
-sellAllBtn.addEventListener('click',()=>{
-if(isSpinning)return;
-const pending=pendingPhotos.filter(p=>p.status==='pending');
-if(pending.length===0)return;
-pending.forEach(item=>handleStripSell(item));
-});
-caseContentsHeader.addEventListener('click',()=>{
-caseContentsHeader.classList.toggle('open');
-caseContentsBody.classList.toggle('open');
-});
+keepAllBtn.addEventListener('click',()=>{if(isSpinning)return;const pending=pendingPhotos.filter(p=>p.status==='pending');if(pending.length===0)return;pending.forEach(item=>handleStripKeep(item))});
+sellAllBtn.addEventListener('click',()=>{if(isSpinning)return;const pending=pendingPhotos.filter(p=>p.status==='pending');if(pending.length===0)return;pending.forEach(item=>handleStripSell(item))});
+caseContentsHeader.addEventListener('click',()=>{caseContentsHeader.classList.toggle('open');caseContentsBody.classList.toggle('open')});
 soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;localStorage.setItem(STORAGE_SOUND,soundEnabled?'1':'0');updateSoundIcon();if(soundEnabled)playStart()});
 
 // ============================================================
@@ -1932,10 +2411,7 @@ let tickCount=0;
 tickInterval=setInterval(()=>{
 playUpgradeTick();
 tickCount++;
-if(tickCount>20){
-clearInterval(tickInterval);
-tickInterval=setInterval(()=>playUpgradeTick(),250);
-}
+if(tickCount>20){clearInterval(tickInterval);tickInterval=setInterval(()=>playUpgradeTick(),250)}
 },120);
 const chanceAngle=chance*360;
 const greenCenter=180;
@@ -1955,11 +2431,7 @@ outerArrow.style.transform='rotate(0deg)';
 void outerArrow.offsetWidth;
 outerArrow.style.transition='transform 4s cubic-bezier(0.15,0.85,0.3,1)';
 outerArrow.style.transform=`rotate(${totalRotation}deg)`;
-setTimeout(()=>{
-clearInterval(tickInterval);
-tickInterval=null;
-showUpgradeResult(srcItem,dstItem,success,chance);
-},4200);
+setTimeout(()=>{clearInterval(tickInterval);tickInterval=null;showUpgradeResult(srcItem,dstItem,success,chance)},4200);
 });
 
 // ============================================================
@@ -2059,16 +2531,39 @@ riskCashoutBtn.addEventListener('click',handleRiskCashout);
 riskNewSessionBtn.addEventListener('click',startRiskSession);
 
 // ============================================================
+// INIT GAME
+// ============================================================
+function initGame(){
+updateSoundIcon();
+renderCaseGrid();
+updateBalance();
+renderInventory();
+updateUpgradeUI();
+renderUpgradeInventory();
+drawRouletteWheel();
+updateRouletteUI();
+updateModeSelectorUI();
+updateRiskUI();
+startRiskSession();
+setTimeout(()=>{buildPlinkoBoard();buildMinesGrid();updateAllGameButtons()},100);
+if(!profile.since){setTimeout(()=>showWelcome(),300)}else{renderProfile()}
+}
+
+// ============================================================
 // СТАРТ
 // ============================================================
 document.addEventListener('click',()=>{if(soundEnabled)getAudioCtx()},{once:true});
+
+window.addEventListener('resize',()=>{
+if(!plinkoActive)buildPlinkoBoard();
+});
 
 // Запускаем проверку бета-доступа
 checkAccess();
 
 </script>
 
-<!-- ⬆️⬆️⬆️ КОНЕЦ ЧАСТИ 3 — КОНЕЦ ФАЙЛА ⬆️⬆️⬆️ -->
+<!-- ⬆️⬆️⬆️ КОНЕЦ ЧАСТИ 4 — КОНЕЦ ФАЙЛА ⬆️⬆️⬆️ -->
 
 </body>
 </html>
