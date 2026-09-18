@@ -535,7 +535,7 @@ button:disabled{opacity:0.35;cursor:not-allowed;border-color:var(--border);box-s
 <button class="btn-risk-cashout" id="riskCashoutBtn">✓ ЗАБРАТЬ <span id="riskCashoutAmount">0</span> 🪙</button>
 </div>
 <div class="risk-meta">
-Кликов: <b id="riskClickCount">0</b> · Штраф при провале: <b style="color:#f87171;">3% от баланса</b>
+Кликов: <b id="riskClickCount">0</b> 
 </div>
 </div>
 <div class="risk-result-screen" id="riskResultScreen">
@@ -963,7 +963,7 @@ let rouletteHistoryData=[],isRouletteSpinning=false;
 // Риск-кликер состояние
 let riskClicks=0,riskSumValue=0,riskSessionActive=false;
 let riskStats={best:0,cashouts:0,fails:0,maxClicks:0};
-const RISK_FAIL_PENALTY_PERCENT=3;
+const RISK_FAIL_PENALTY_PERCENT=0;
 
 // ============================================================
 // ХРАНИЛИЩЕ (ключи НЕ меняем — прогресс сохраняется!)
